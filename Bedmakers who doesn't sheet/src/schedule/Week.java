@@ -2,7 +2,8 @@ package schedule;
 
 import java.util.ArrayList;
 
-import project.Activity;
+import activity.Activity;
+
 
 public class Week {
 	
