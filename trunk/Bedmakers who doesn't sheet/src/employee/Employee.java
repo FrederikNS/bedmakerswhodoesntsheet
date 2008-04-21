@@ -2,8 +2,9 @@ package employee;
 
 import java.util.ArrayList;
 
-import project.Activity;
-import project.Project;
+import activity.Activity;
+import activity.Project;
+
 
 public class Employee {
 	
