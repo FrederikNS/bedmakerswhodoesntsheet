@@ -17,4 +17,5 @@ public class Activity {
 	ArrayList<Employee> assignedEmployees;
 	int state;
 	int completion;
+	//woot=?
 }
