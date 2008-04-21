@@ -1,17 +1,20 @@
-package activity;
+package project;
 
 import java.util.ArrayList;
+
+import employee.Employee;
 
 public class Activity {
 	
 	enum states{NOT_STARTED,IN_PROGRESS,COMPLETED};
 	
+	String name;
+	Project partOfProject;
 	int startWeek;
 	int endWeek;
 	float workHours;
 	String description;
 	ArrayList<Employee> assignedEmployees;
-	String name;
 	int state;
 	int completion;
 }
