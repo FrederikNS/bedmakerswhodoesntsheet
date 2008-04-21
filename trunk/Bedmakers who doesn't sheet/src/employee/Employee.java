@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import activity.Activity;
 import activity.Project;
 
-
 public class Employee {
 	
 	String name;
