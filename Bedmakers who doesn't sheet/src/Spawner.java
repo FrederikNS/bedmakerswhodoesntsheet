@@ -1,3 +1,5 @@
+import gui.MainFrame;
+
 
 public class Spawner {
 
@@ -5,6 +7,6 @@ public class Spawner {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		new MainFrame();
 	}
 }
