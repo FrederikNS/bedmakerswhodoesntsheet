@@ -2,11 +2,15 @@ package gui;
 
 import javax.swing.JPanel;
 
-public interface SharedVariables {
+public class SharedVariables {
 	
-	JPanel gantt = new Gantt();
-	JPanel resources = new Resources();
-	JPanel resourceUsage = new ResourceUsage();
-	JPanel tasks = new Tasks();
+	public static JPanel gantt;
+	public static JPanel resources;
+	public static JPanel resourceUsage;
+	public static JPanel tasks;
+	
+	public static String taskTableData[][] = {{"Sleeping","Today","Tomorrow","FrederikNS"},
+			{"Sleeping","Today","Tomorrow","Jacob"}};
+	public static Object[][] resourceTableData = {{"Frederik Nordahl Sabroe","FNS","SoftEng","Coding","Everything"}};
 
 }
