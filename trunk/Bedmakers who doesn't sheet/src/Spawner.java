@@ -1,6 +1,5 @@
 import gui.MainFrame;
 
-
 public class Spawner {
 
 	/**
