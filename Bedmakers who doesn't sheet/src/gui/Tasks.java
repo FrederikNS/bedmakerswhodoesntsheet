@@ -1,8 +1,11 @@
 package gui;
 
+import java.awt.GridLayout;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.TableColumn;
 
 public class Tasks extends JPanel {
 	
@@ -12,10 +15,15 @@ public class Tasks extends JPanel {
 	private static final long serialVersionUID = 4421925036291362007L;
 
 	public Tasks(){
-		JScrollPane scroller = new JScrollPane();
-		JTable listOfTasks = new JTable();
+		this.setLayout(new GridLayout(0,1));
+		
+		String columnNames[] = {"Task","Start Date","Deadline","Participants"};
+		JTable taskTable = new JTable(SharedVariables.taskTableData,columnNames);
+		JScrollPane scroller = new JScrollPane(taskTable);
+		
+		taskTable.setFillsViewportHeight(true);
+		taskTable.addColumn(new TableColumn());
 		
 		add(scroller);
-		scroller.add(listOfTasks);
 	}
 }

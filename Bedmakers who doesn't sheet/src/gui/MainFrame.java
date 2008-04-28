@@ -1,12 +1,16 @@
 package gui;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-public class MainFrame extends JFrame implements SharedVariables{
+public class MainFrame extends JFrame{
 
 	/**
 	 * Serialised UID
@@ -14,6 +18,7 @@ public class MainFrame extends JFrame implements SharedVariables{
 	private static final long serialVersionUID = -8026416994513756565L;
 	
 	public MainFrame(){
+		super("Planner");
 		
 		JMenuBar menu = new JMenuBar();
 
@@ -26,6 +31,10 @@ public class MainFrame extends JFrame implements SharedVariables{
 		JMenuItem quitMenuItem = new JMenuItem("Quit");
 		
 		JTabbedPane mode = new JTabbedPane();
+		mode.setPreferredSize(new Dimension(1024,768));
+		
+		JPanel toolbar = new Toolbar();
+		
 		setJMenuBar(menu);
 		menu.add(fileMenu);
 		menu.add(helpMenu);
@@ -34,12 +43,13 @@ public class MainFrame extends JFrame implements SharedVariables{
 		fileMenu.add(saveAsMenuItem);
 		fileMenu.add(quitMenuItem);
 		
-		mode.addTab("Gantt", gantt);
-		mode.addTab("Tasks", tasks);
-		mode.addTab("Resources", resources);
-		mode.addTab("Resource Usage", resourceUsage);
+		mode.addTab("Gantt", SharedVariables.gantt=new Gantt());
+		mode.addTab("Tasks", SharedVariables.tasks=new Tasks());
+		mode.addTab("Resources", SharedVariables.resources=new Resources());
+		mode.addTab("Resource Usage", SharedVariables.resourceUsage=new ResourceUsage());
 		
 		add(mode);
+		add(toolbar,BorderLayout.NORTH);
 		
 		pack();
 		setVisible(true);
