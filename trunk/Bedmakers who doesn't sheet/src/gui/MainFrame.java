@@ -9,7 +9,7 @@ import javax.swing.JTabbedPane;
 public class MainFrame extends JFrame implements SharedVariables{
 
 	/**
-	 * 
+	 * Serialised UID
 	 */
 	private static final long serialVersionUID = -8026416994513756565L;
 	
