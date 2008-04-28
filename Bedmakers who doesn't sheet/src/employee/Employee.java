@@ -21,6 +21,15 @@ public class Employee {
 		assignedProjectsLead = new ArrayList<Project>();
 	}
 
+	public String CreateInitialsFromName(String name){
+		String firstInitial = name.substring(0,2);
+		int secondInitialIndex = name.lastIndexOf(" ") +1;
+		String secondInitial = name.substring(secondInitialIndex,secondInitialIndex+2);
+		initials = firstInitial+secondInitial;
+		System.out.println(initials);
+		return initials;
+		}
+	
 	public void assignProject(Project project) {
 		assignedProjects.add(project);
 	}
