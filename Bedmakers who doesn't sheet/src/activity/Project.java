@@ -22,8 +22,8 @@ public class Project {
 		setName(name);
 	}
 	
-	void assignLeader(Employee leader)  {
-		this.leader = leader;
+	void assignLeader(Employee l)  {
+		this.leader = l;
 	}
 	
 	void addActivity(Activity activity) {
