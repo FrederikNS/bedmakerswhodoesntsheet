@@ -15,7 +15,7 @@ public class Project {
 	}
 	
 	public Project(String name) {
-		Project(name, null);
+		//XXX Project(name, null);
 	}
 	
 	void setName(String name) {
