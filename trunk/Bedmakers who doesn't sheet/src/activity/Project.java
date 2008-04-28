@@ -9,21 +9,21 @@ public class Project {
 	ArrayList<Activity> activities;
 	Employee leader;
 	
-	public Project(String name, Employee leader) {
-		this.name = name;
-		this.leader = leader;
-	}
-	
 	public Project(String name) {
-		//XXX Project(name, null);
+		setName(name); //duplikeret kode
+	}
+
+	public Project(String name, Employee leader) {
+		setName(name);
+		assignLeader(leader);
 	}
 	
 	void setName(String name) {
-		this.name = name;
+		setName(name);
 	}
 	
-	void assignLeader(Employee leader1)  {
-		this.leader = leader1;
+	void assignLeader(Employee leader)  {
+		this.leader = leader;
 	}
 	
 	void addActivity(Activity activity) {
