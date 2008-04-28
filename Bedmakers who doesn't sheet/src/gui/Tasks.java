@@ -1,6 +1,5 @@
 package gui;
 
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -19,5 +18,4 @@ public class Tasks extends JPanel {
 		add(scroller);
 		scroller.add(listOfTasks);
 	}
-
 }
