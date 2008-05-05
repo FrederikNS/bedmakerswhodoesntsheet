@@ -33,12 +33,11 @@ public class Employee {
 	public String CreateInit() {
 		String nameSplitted[] = name.split(" ");
 		String nameInits = null;
-		if(nameSplitted[0].length() > 2 && nameSplitted[nameSplitted.length-1].length() > 2){
-			nameInits+=nameSplitted[0];
-			nameInits+=nameSplitted[nameSplitted.length-1];
-			return nameInits;
-		}
-		return null;
+		
+		nameInits+=nameSplitted[0];
+		nameInits+=nameSplitted[nameSplitted.length-1];
+		
+		return nameInits;
 	}
 
 	public String getInitials(){
