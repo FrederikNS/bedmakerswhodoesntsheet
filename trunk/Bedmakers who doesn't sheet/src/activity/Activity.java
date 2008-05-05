@@ -17,7 +17,10 @@ public class Activity {
 	HashMap<Week,Float> weeks;
 	String description;
 	ArrayList<Employee> assignedEmployees;
-	//Ubrugte felter.
+	ArrayList<Employee> assistants;
+	int workload;
+	int progress;
+	
 	//int startWeek;
 	//int endWeek;
 	//int state;
