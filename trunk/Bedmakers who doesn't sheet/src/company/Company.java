@@ -42,4 +42,16 @@ public class Company {
 		}
 		return initials;
 	}
+	
+	public void addProject(int id) {
+		projects.add(new Project(id));
+	}
+	
+	public void addProject(int id, String name) {
+		projects.add(new Project(id, name));
+	}
+	
+	public void addProject(int id, String name, Employee leader) {
+		projects.add(new Project(id, name, leader));
+	}
 }
