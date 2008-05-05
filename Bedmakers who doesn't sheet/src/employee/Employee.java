@@ -20,10 +20,19 @@ public class Employee {
 		assignedProjects = new ArrayList<Project>();
 		assignedProjectsLead = new ArrayList<Project>();
 	}
-	
-	 public String getInitials(){
-		 return initials;
-	 }
+
+	public String CreateInitialsFromName() throws Exception{
+		String firstInitial = name.substring(0,2);
+		int secondInitialIndex = name.lastIndexOf(" ") +1;
+		String secondInitial = name.substring(secondInitialIndex,secondInitialIndex+2);
+		initials = firstInitial+secondInitial;
+		System.out.println(initials);
+		return initials;
+	}
+
+	public String getInitials(){
+		return initials;
+	}
 	
 	public void assignProject(Project project) {
 		assignedProjects.add(project);
@@ -34,7 +43,6 @@ public class Employee {
 		assignedProjectsLead.add(project);
 	}
 
-	
 	public void assignActivity(Activity activity) {
 		assignedActivities.add(activity);
 	}
@@ -42,5 +50,5 @@ public class Employee {
 	public void relieveFromActivity(Activity activity) {
 		assignedActivities.remove(activity);
 	}
-	
+
 }
