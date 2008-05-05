@@ -9,6 +9,7 @@ public class Project {
 	String name;
 	ArrayList<Activity> activities;
 	Employee leader;
+	
 	//FIXME: duplikeret kode i constructors
 	public Project(int id) {
 		setId(id);
