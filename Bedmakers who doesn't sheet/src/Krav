@@ -1,0 +1,49 @@
+Projektleder - opdeler projektet i aktiviteter.
+
+worst case-
+
+  Projekt oprettes:
+  Aktiviteter og tidspunkt ukendte. Kun kendt i mindre omfang.
+  Projektleder ikke udpeget
+  Projektleder opdeler projektet i aktiviteter
+
+---Systemkrav---
+
+x Aktiviteter skal kunne planlægges inden arbejdet begynder, og skal kunne ændres hyppigt.
+x Antal arbejdstimer til løsning af opgaven skal kunne anføres for hvert projekt.
+  Start- og sluttidspunkt skal kunne anføres.
+x Mere end en medarbejder skal kunne deltage i en aktivitet.
+  Kollega assistance skal være mulig - og dette registreres også, selvom kollegaen ikke er direkte sat til denne aktivitet.
+  Systemet skal hjælpe projektledere med at bemande projekter.
+  Skal give overblik over hvilke medarbejdere der er ledige på det tidspunkt aktiviteten skal udføres.
+x Systemet skal tillade en medarbejder op til 20 aktiviteter over en uge.
+  Der skal være faste aktiviteter til ferie, sygdom, kurser osv.
+  Der skal kunne laves rapporter til brug ved ugentligt projektmøde.
+  Det skal være muligt at se det forventede restarbejde på projektet.
+x Projektet skal kunne have et navn.
+
+  En medarbejder tager typisk mindre end 10 aktiviteter ad gangen.
+  Aktiviteter varer typisk 2-3 uger.
+  Opløsning foregår på ugenummer niveau.
+  Projektnumre skal tildeles af systemet og have formen årstal og et løbenummer, f.eks. 030901.
+
+  Systemet er til internt brug, så det er ikke nødvendigt med adgangskontroller.
+
+  (Hvad med hvor meget en medarbejder skal kunne gøre i forhold til en projektleder? Hvor stor tillid er der tale om?)
+
+---Medarbejder---
+
+  Medarbejderne skal registrere dagligt hvor meget tid de har brugt på en given aktivitet (½ times nøjagtighed).
+  Det skal kunne aflæses om alle timer er afregnet. 
+  Det skal være muligt at rette i allerede indtastede timer.
+  Det skal være muligt at registrere fremtidige aktiviteter - f.eks. ferie.
+
+  Identificeres med initialer på indtil 4 bogstaver.
+
+---Projektleder--
+
+  Projektlederne skal have adgang til at bemande projekter i god tid
+  (evt. sæt projektlederne til administratorer, og medarbejder som brugere? Logins required.)
+  Projektlederen skal kunen bruge systemet til opfølgning.
+  Projektlederen skal kunne se hvordan timeforbruget udvikler sig pr. aktivitet og for hele projektet
+  (multiple view options?)
