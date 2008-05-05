@@ -8,9 +8,6 @@ import schedule.Week;
 import employee.Employee;
 
 public class Activity {
-	
-	//enum states{NOT_STARTED,IN_PROGRESS,COMPLETED};
-	
 	String name;
 	Project parentProject;
 	HashMap<Week,Float> weeks;
@@ -20,6 +17,7 @@ public class Activity {
 	int workload;
 	int progress;
 	
+	//enum states{NOT_STARTED,IN_PROGRESS,COMPLETED};
 	//int startWeek;
 	//int endWeek;
 	//int state;
@@ -51,6 +49,10 @@ public class Activity {
 	
 	public Project getParentProject() {
 		return parentProject;
+	}
+	
+	public ArrayList<Employee> getAssignedEmployees() {
+		return assignedEmployees;
 	}
 	
 	public void remove() {
