@@ -6,9 +6,12 @@ import activity.Activity;
 
 
 public class Week {
-	
+	int index;
 	ArrayList<Activity> scheduledActivities;
-	int availableHours;
+	public Week(int index) {
+		this.index = index;
+		this.scheduledActivities = new ArrayList<Activity>();
+	}
 	public void addActivity(Activity activity) {
 		scheduledActivities.add(activity);
 	}

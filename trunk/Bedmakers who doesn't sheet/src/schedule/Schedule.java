@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import activity.Activity;
 
 public class Schedule {
+	int id;
 	ArrayList<Week> weeks;
 
 	public Schedule(int length) { //CON: Start date?
@@ -23,7 +24,7 @@ public class Schedule {
 	public void assignActivityToWeek(Activity activity, int hours, int weekIndex) {
 		assignActivityToWeek(activity, hours, getWeek(weekIndex));
 	}
-
+	
 	public void removeActivityFromWeek(Activity activity, Week week) {
 		activity.removeWeek(week);
 		week.removeActivity(activity);
