@@ -49,5 +49,13 @@ public class Project {
 	public void removeActivity(Activity activity) {
 		activities.add(activity);
 	}
+	
+	public int getRemainingWork() {
+		int load = 0;
+		for(Activity activity : activities){
+			load += activity.workload-activity.progress;
+		}
+		return load;
+	}
 }
 
