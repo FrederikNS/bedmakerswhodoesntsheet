@@ -36,6 +36,10 @@ public class Activity {
 		this.parentProject = parentProject;		
 	}
 	
+	public void renameActivity(String newName){
+		this.name = newName;		
+	}
+	
 	public int getId() {
 		return id;
 	}

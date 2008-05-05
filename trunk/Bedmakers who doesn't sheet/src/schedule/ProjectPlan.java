@@ -42,6 +42,19 @@ public class ProjectPlan {
 	public void removeActivity(Activity activity) {
 		activity.remove();
 	}
+	
+	public void renameActivity(Activity activity, String newName){
+		activity.renameActivity(newName);
+	}
+	
+	public void renameProject(Project project, String newName){
+		project.setName(newName);
+	}
+	
+	public void assignProjectLeader(Project project, Employee projectLeader){
+		project.assignLeader(projectLeader);
+	}
+	
 
 	//Funktioner med id's
 	public void assignActivityToWeek(int activity_id, int hours, int weekIndex) {
@@ -64,6 +77,17 @@ public class ProjectPlan {
 		getActivity(activity_id).remove();
 	}
 
+	public void renameActivity(int activity_id, String newName){
+		renameActivity(getActivity(activity_id), newName);
+	}
+	
+	public void renameProject(int project_id, String newName){
+		renameProject(getProject(project_id), newName);
+	}
+	
+	public void assignProjectLeader(int project_id, Employee projectLeader){
+		assignProjectLeader(getProject(project_id), projectLeader);
+	}
 	
 	//FIXME: ID's
 	public void addActivity(int id, String name) {
