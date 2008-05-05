@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import employee.Employee;
 
 public class Project {
-	int id;
+	int id; //FIXME: final
 	String name;
 	ArrayList<Activity> activities;
 	Employee leader;
@@ -47,7 +47,7 @@ public class Project {
 	}
 
 	public void removeActivity(Activity activity) {
-		activities.add(activity);
+		activities.remove(activity);
 	}
 	
 	public int getRemainingWork() {
