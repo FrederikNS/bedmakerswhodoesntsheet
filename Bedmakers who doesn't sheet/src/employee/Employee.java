@@ -30,10 +30,21 @@ public class Employee {
 		return initials;
 	}
 
+	public String CreateInit() {
+		String nameSplitted[] = name.split(" ");
+		String nameInits = null;
+		if(nameSplitted[0].length() > 2 && nameSplitted[nameSplitted.length-1].length() > 2){
+			nameInits+=nameSplitted[0];
+			nameInits+=nameSplitted[nameSplitted.length-1];
+			return nameInits;
+		}
+		return null;
+	}
+
 	public String getInitials(){
 		return initials;
 	}
-	
+
 	public void assignProject(Project project) {
 		assignedProjects.add(project);
 	}
