@@ -38,8 +38,8 @@ public class Project {
 		setName(name);
 	}
 	
-	public void assignLeader(Employee l)  {
-		this.leader = l;
+	public void assignLeader(Employee projectLeader)  {
+		this.leader = projectLeader;
 	}
 	
 	public void addActivity(Activity activity) {
