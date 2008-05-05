@@ -2,8 +2,12 @@ package employee;
 
 import java.util.ArrayList;
 
+import exceptions.EmployeeException;
+
 import activity.Activity;
 import activity.Project;
+
+//TODO: Lav enum's til Exceptions'ne i stedet for streng-beskeder
 
 public class Employee {
 
@@ -46,17 +50,17 @@ public class Employee {
 		return initials;
 	}
 
-	public void assignProject(Project project) {
+	public void assignProject(Project project) throws EmployeeException {
 		if(assignedProjects.contains(project)){
-			throw
+			throw new EmployeeException("Already assigned to project");
 		} else {
 			assignedProjects.add(project);	
 		}
 	}
 
-	public void assignProjectLead(Project project) throws AlreadyAssignedToProjectAsLeaderException{
-		if(assignedProjectsLead.contains(project));{
-			throw new Exception();
+	public void assignProjectLead(Project project) throws EmployeeException {
+		if(assignedProjectsLead.contains(project)) {
+			throw new EmployeeException("Already assigned as project leader");
 		} else {
 			if(!assignedProjects.contains(project)) {
 				assignProject(project);
@@ -67,38 +71,36 @@ public class Employee {
 		}
 	}
 
-	public void assignActivity(Activity activity) {
+	public void assignActivity(Activity activity) throws EmployeeException {
 		if(assignedActivities.contains(activity)){
-			throw new AlreadyAssignedToActivityException();
+			throw new EmployeeException("Already assigned to activity");
 		} else {
 			assignedActivities.add(activity);
 		}
 	}
 
-	public void relieveFromActivity(Activity activity) throws NotAssignedToActivityException {
+	public void relieveFromActivity(Activity activity) throws EmployeeException {
 		if(assignedProjects.contains(activity)){
 			assignedActivities.remove(activity);
 		} else {
-			throw new NotAssignedToActivityException();
+			throw new EmployeeException("Not assigned to activity");
 		}
 	}
 
-	public void assistingProject(Project project) throws AlreadyAssistingProjectException {
+	public void assistProject(Project project) throws EmployeeException {
 		if(assistingProject.contains(project)){
-			throw new AlreadyAssistingProjectException();
-			
+			throw new EmployeeException("Already assisting project");
+		} else if(assignedProjects.contains(project)){
+			throw new EmployeeException("Already assigned to project");
 		} else {
-			if(assignedProjects.contains(project)){
-				throw new AlreadyAssignedToProjectException();	
-			} else {
-				assistingProject.add(project);	
-			}
+			assistingProject.add(project);	
 		}
+
 	}
 
-	public void assistingActivity(Activity activity){
+	public void assistingActivity(Activity activity) throws EmployeeException {
 		if(assignedProjects.contains(activity)){
-			throw new AlreadyAssignedToProjectsException();
+			throw new EmployeeException("Already assigned to project");
 		} else {
 			assistingActivity.add(activity);
 		}

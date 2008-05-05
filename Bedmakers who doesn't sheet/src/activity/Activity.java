@@ -25,14 +25,17 @@ public class Activity {
 	
 	public Activity(String name) {
 		setName(name);
-		weeks = HashMap<Week,Float>();
+		weeks = new HashMap<Week,Float>();
 		assistants = new ArrayList<Employee>();
 		assignedEmployees = new ArrayList<Employee>();
 	}
 
 	public Activity(String name, Project parent) {
 		setParent(parent);
-		Activity(name);
+		setName(name);
+		weeks = new HashMap<Week,Float>();
+		assistants = new ArrayList<Employee>();
+		assignedEmployees = new ArrayList<Employee>();
 	}
 
 	public void setParent(Project parentProject) {

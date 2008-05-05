@@ -5,17 +5,16 @@ import java.util.ArrayList;
 import employee.Employee;
 
 public class Project {
-	final int id;
 	String name;
 	ArrayList<Activity> activities;
 	Employee leader;
 	
-	public Project(int id, String name) {
-		Project(id, name, null);
+	public Project(String name) {
+		activities = new ArrayList<Activity>();
+		setName(name);
 	}
 
-	public Project(int id, String name, Employee leader) {
-		this.id = id;
+	public Project(String name, Employee leader) {
 		activities = new ArrayList<Activity>();
 		setName(name);
 		assignLeader(leader);
@@ -45,8 +44,8 @@ public class Project {
 		return load;
 	}
 	
-	public Collection getEmployees() {
-		Collection employees = new Collection<Employee>();
+	public ArrayList<Employee> getEmployees() {
+		ArrayList<Employee> employees = new ArrayList<Employee>();
 		for(Activity a : activities) {
 			for(Employee e : a.getAssignedEmployees()) {
 				employees.add(e);
