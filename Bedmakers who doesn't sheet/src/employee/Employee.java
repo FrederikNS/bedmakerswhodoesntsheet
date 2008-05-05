@@ -12,6 +12,8 @@ public class Employee {
 	ArrayList<Activity> assignedActivities;
 	ArrayList<Project> assignedProjects;
 	ArrayList<Project> assignedProjectsLead;
+	ArrayList<Activity> assistingActivity;
+	ArrayList<Project> assistingProject;
 
 	public Employee(String name, String initials) {
 		this.name = name;
@@ -33,10 +35,10 @@ public class Employee {
 	public String CreateInit() {
 		String nameSplitted[] = name.split(" ");
 		String nameInits = null;
-		
+
 		nameInits+=nameSplitted[0];
 		nameInits+=nameSplitted[nameSplitted.length-1];
-		
+
 		return nameInits;
 	}
 
@@ -45,20 +47,61 @@ public class Employee {
 	}
 
 	public void assignProject(Project project) {
-		assignedProjects.add(project);
+		if(assignedProjects.contains(project)){
+			throw
+		} else {
+			assignedProjects.add(project);	
+		}
 	}
 
-	public void assignProjectLead(Project project) {
-		if(!assignedProjects.contains(project)) assignProject(project);
-		assignedProjectsLead.add(project);
+	public void assignProjectLead(Project project) throws AlreadyAssignedToProjectAsLeaderException{
+		if(assignedProjectsLead.contains(project));{
+			throw new Exception();
+		} else {
+			if(!assignedProjects.contains(project)) {
+				assignProject(project);
+			} else {
+
+			}
+			assignedProjectsLead.add(project);
+		}
 	}
 
 	public void assignActivity(Activity activity) {
-		assignedActivities.add(activity);
+		if(assignedActivities.contains(activity)){
+			throw new AlreadyAssignedToActivityException();
+		} else {
+			assignedActivities.add(activity);
+		}
 	}
 
-	public void relieveFromActivity(Activity activity) {
-		assignedActivities.remove(activity);
+	public void relieveFromActivity(Activity activity) throws NotAssignedToActivityException {
+		if(assignedProjects.contains(activity)){
+			assignedActivities.remove(activity);
+		} else {
+			throw new NotAssignedToActivityException();
+		}
 	}
 
+	public void assistingProject(Project project) throws AlreadyAssistingProjectException {
+		if(assistingProject.contains(project)){
+			throw new AlreadyAssistingProjectException();
+			
+		} else {
+			if(assignedProjects.contains(project)){
+				throw new AlreadyAssignedToProjectException();	
+			} else {
+				assistingProject.add(project);	
+			}
+		}
+	}
+
+	public void assistingActivity(Activity activity){
+		if(assignedProjects.contains(activity)){
+			throw new AlreadyAssignedToProjectsException();
+		} else {
+			assistingActivity.add(activity);
+		}
+	}
 }
+
