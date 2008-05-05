@@ -11,7 +11,6 @@ public class Activity {
 	
 	//enum states{NOT_STARTED,IN_PROGRESS,COMPLETED};
 	
-	int id;
 	String name;
 	Project parentProject;
 	HashMap<Week,Float> weeks;
@@ -26,22 +25,24 @@ public class Activity {
 	//int state;
 	//int completion;
 	
-	public Activity(int id, String name) {
-		this.name = name;
-		this.id = id;
-		//
+	public Activity(String name) {
+		setName(name);
+		weeks = HashMap<Week,Float>();
+		assistants = new ArrayList<Employee>();
+		assignedEmployees = new ArrayList<Employee>();
 	}
-	
+
+	public Activity(String name, Project parent) {
+		setParent(parent);
+		Activity(name);
+	}
+
 	public void setParent(Project parentProject) {
 		this.parentProject = parentProject;		
 	}
 	
-	public void renameActivity(String newName){
+	public void setName(String newName){
 		this.name = newName;		
-	}
-	
-	public int getId() {
-		return id;
 	}
 	
 	public String getName() {

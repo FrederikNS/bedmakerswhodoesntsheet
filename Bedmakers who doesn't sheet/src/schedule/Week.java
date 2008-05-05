@@ -17,6 +17,7 @@ public class Week {
 	}
 	public void removeActivity(Activity activity) {
 		scheduledActivities.remove(activity);
+		activity.
 	}
 	public float getAssignedHours() {
 		float hoursum = 0;
