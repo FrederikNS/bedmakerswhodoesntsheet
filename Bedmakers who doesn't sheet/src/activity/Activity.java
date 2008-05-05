@@ -26,10 +26,14 @@ public class Activity {
 	//int state;
 	//int completion;
 	
-	public Activity(int id, String name, Project parentProject) {
+	public Activity(int id, String name) {
 		this.name = name;
 		this.id = id;
-		this.parentProject = parentProject;
+		//
+	}
+	
+	public void setParent(Project parentProject) {
+		this.parentProject = parentProject;		
 	}
 	
 	public int getId() {
@@ -45,6 +49,7 @@ public class Activity {
 	}
 	
 	public void remove() {
+		parentProject.removeActivity(this);
 		for(Week week : weeks.keySet()) week.removeActivity(this);
 	}
 
