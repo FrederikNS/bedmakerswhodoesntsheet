@@ -57,6 +57,6 @@ public class Activity {
 	}
 
 	public float getHoursForWeek(Week week) {
-		return weeks.get(week); //FIXME: Hvad hvis ugen ikke er i array'en?
+		return weeks.get(week); //FIXME: Hvad hvis ugen ikke er i array'et?
 	}
 }
