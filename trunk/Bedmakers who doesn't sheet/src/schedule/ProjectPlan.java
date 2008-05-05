@@ -54,7 +54,7 @@ public class ProjectPlan {
 		project.setName(newName);
 	}
 	
-	public void assignProjectLeaderToProject(Employee projectLeader, Project project){
+	public void assignLeaderToProject(Employee projectLeader, Project project){
 		project.assignLeader(projectLeader);
 	}
 
@@ -91,23 +91,20 @@ public class ProjectPlan {
 		renameProject(getProject(project_id), newName);
 	}
 	
-	public void assignProjectLeader(int project_id, Employee projectLeader){
-		assignProjectLeader(getProject(project_id), projectLeader);
+	public void assignLeaderToProject(int project_id, Employee projectLeader){
+		assignLeaderToProject(projectLeader, getProject(project_id));
 	}
 	
 	//FIXME: ID's
 	public void addActivity(int id, String name) {
-		int id = 0;
-		activities.put(new Activity(name));
+		activities.put(id,new Activity(name));
 	}
 	
 	public void addProject(int id, String name) {
-		int id = 0;
 		projects.put(id,new Project(name));
 	}
 	
 	public void addProject(int id, String name, Employee leader) {
-		int id = 0;
 		projects.put(id,new Project(name, leader));
 	}
 	
