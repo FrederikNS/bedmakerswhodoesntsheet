@@ -5,29 +5,20 @@ import java.util.ArrayList;
 import employee.Employee;
 
 public class Project {
-	int id; //FIXME: final
+	final int id;
 	String name;
 	ArrayList<Activity> activities;
 	Employee leader;
 	
-	//FIXME: duplikeret kode i constructors
-
 	public Project(int id, String name) {
 		Project(id, name, null);
-//		setId(id);
-//		activities = new ArrayList<Activity>();
-//		setName(name);
 	}
 
 	public Project(int id, String name, Employee leader) {
-		setId(id);
+		this.id = id;
 		activities = new ArrayList<Activity>();
 		setName(name);
 		assignLeader(leader);
-	}
-	
-	void setId(int id) {
-		this.id = id;
 	}
 	
 	public void setName(String name) {
@@ -52,6 +43,16 @@ public class Project {
 			load += activity.workload-activity.progress;
 		}
 		return load;
+	}
+	
+	public Collection getEmployees() {
+		Collection employees = new Collection<Employee>();
+		for(Activity a : activities) {
+			for(Employee e : a.getAssignedEmployees()) {
+				employees.add(e);
+			}
+		}
+		return employees;
 	}
 }
 

@@ -23,12 +23,14 @@ public class ProjectPlan {
 	/*
 	 * WRAPPER FUNKTIONER MED KLASSE-PARAMTRE 
 	 */
+	
 	public void assignActivityToWeek(Activity activity, int hours, Week week) {
 		activity.addWeek(week, hours);
 		week.addActivity(activity);
 	}
 
 	public void removeActivityFromWeek(Activity activity, Week week) {
+		//Week kalder activity.removeWeek.
 		week.removeActivity(activity);
 	}
 
@@ -52,7 +54,7 @@ public class ProjectPlan {
 		project.setName(newName);
 	}
 	
-	public void assignProjectLeader(Project project, Employee projectLeader){
+	public void assignProjectLeaderToProject(Employee projectLeader, Project project){
 		project.assignLeader(projectLeader);
 	}
 
