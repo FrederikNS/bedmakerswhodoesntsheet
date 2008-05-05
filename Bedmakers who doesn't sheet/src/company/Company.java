@@ -14,7 +14,7 @@ public class Company {
 		employees = new ArrayList<Employee>();
 	}
 
-	public String createInitialsFromName(String name){
+	/*public String createInitialsFromName(String name){
 		String firstInitial = name.substring(0,2);
 		int secondInitialIndex = name.lastIndexOf(" ") +1;
 		String secondInitial = name.substring(secondInitialIndex,secondInitialIndex+2);
@@ -22,7 +22,8 @@ public class Company {
 		System.out.println(initials);
 		checkInitials(initials);
 		return initials;
-	}
+	}*/
+	
 //TODO Check if works.
 	public String checkInitials(String initials){
 		for(Employee emptemp: employees){
