@@ -1,21 +1,19 @@
 package company;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import activity.Project;
-
-import employee.Employee;
 import schedule.Schedule;
+import activity.Project;
+import employee.Employee;
 
 public class Company {
-	ArrayList<Project> projects;
+	HashMap<Integer,Project> projects;
 	Schedule schedule;
 	HashMap<String,Employee> employees;
 
 	public Company() {
 		schedule = new Schedule();
-		projects = new ArrayList<Project>();
+		projects = new HashMap<Integer,Project>();
 		employees = new HashMap<String,Employee>();
 	}
 
@@ -44,14 +42,14 @@ public class Company {
 	}
 	
 	public void addProject(int id) {
-		projects.add(new Project(id));
+		projects.put(id, new Project(id));
 	}
 	
 	public void addProject(int id, String name) {
-		projects.add(new Project(id, name));
+		projects.put(id,new Project(id, name));
 	}
 	
 	public void addProject(int id, String name, Employee leader) {
-		projects.add(new Project(id, name, leader));
+		projects.put(id,new Project(id, name, leader));
 	}
 }
