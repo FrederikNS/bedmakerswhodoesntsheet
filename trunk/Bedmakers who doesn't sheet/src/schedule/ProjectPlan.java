@@ -20,14 +20,15 @@ public class ProjectPlan {
 		activities = new HashMap<Integer,Activity>();
 	}
 	
-	//Funktioner med pointers
+	/*
+	 * WRAPPER FUNKTIONER MED KLASSE-PARAMTRE 
+	 */
 	public void assignActivityToWeek(Activity activity, int hours, Week week) {
 		activity.addWeek(week, hours);
 		week.addActivity(activity);
 	}
 
 	public void removeActivityFromWeek(Activity activity, Week week) {
-		activity.removeWeek(week);
 		week.removeActivity(activity);
 	}
 
@@ -44,7 +45,7 @@ public class ProjectPlan {
 	}
 	
 	public void renameActivity(Activity activity, String newName){
-		activity.renameActivity(newName);
+		activity.setName(newName);
 	}
 	
 	public void renameProject(Project project, String newName){
@@ -54,9 +55,12 @@ public class ProjectPlan {
 	public void assignProjectLeader(Project project, Employee projectLeader){
 		project.assignLeader(projectLeader);
 	}
-	
 
-	//Funktioner med id's
+	/*
+	 * WRAPPER FUNKTIONER MED ID VÆRDIER 
+	 * (Bliver typisk kaldt udefra)
+	 */
+	
 	public void assignActivityToWeek(int activity_id, int hours, int weekIndex) {
 		assignActivityToWeek(getActivity(activity_id), hours, getWeek(weekIndex));
 	}
@@ -91,26 +95,20 @@ public class ProjectPlan {
 	
 	//FIXME: ID's
 	public void addActivity(int id, String name) {
-		//FIXME: Fjern ID fra Activity
-		activities.put(id, new Activity(id, name));
-	}
-
-	public void addProject(int id) {
-		projects.put(id, new Project(id));
+		int id = 0;
+		activities.put(new Activity(name));
 	}
 	
 	public void addProject(int id, String name) {
-		projects.put(id,new Project(id, name));
+		int id = 0;
+		projects.put(id,new Project(name));
 	}
 	
 	public void addProject(int id, String name, Employee leader) {
-		projects.put(id,new Project(id, name, leader));
+		int id = 0;
+		projects.put(id,new Project(name, leader));
 	}
 	
-	private Project getProject(int id) {
-		//FIXME: Exception/contains
-		return projects.get(id);
-	}
 	
 	//CON: Make public?
 	private Week getWeek(int index) {
@@ -118,6 +116,11 @@ public class ProjectPlan {
 		if(!weeks.containsKey(index))
 			weeks.put(index,new Week(index));
 		return weeks.get(index);
+	}
+
+	private Project getProject(int id) {
+		//FIXME: Exception/contains
+		return projects.get(id);
 	}
 	
 	private Activity getActivity(int index) {

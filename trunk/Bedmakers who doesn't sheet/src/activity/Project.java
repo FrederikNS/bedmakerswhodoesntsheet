@@ -11,16 +11,12 @@ public class Project {
 	Employee leader;
 	
 	//FIXME: duplikeret kode i constructors
-	public Project(int id) {
-		setId(id);
-		activities = new ArrayList<Activity>();
-		setName("Unavngivet Projekt"); //FIXME: Static var til det her
-	}
-	
+
 	public Project(int id, String name) {
-		setId(id);
-		activities = new ArrayList<Activity>();
-		setName(name);
+		Project(id, name, null);
+//		setId(id);
+//		activities = new ArrayList<Activity>();
+//		setName(name);
 	}
 
 	public Project(int id, String name, Employee leader) {
