@@ -9,8 +9,9 @@ import employee.Employee;
 
 public class Activity {
 	
-	enum states{NOT_STARTED,IN_PROGRESS,COMPLETED};
+	//enum states{NOT_STARTED,IN_PROGRESS,COMPLETED};
 	
+	int id;
 	String name;
 	Project parentProject;
 	HashMap<Week,Float> weeks;
@@ -21,6 +22,24 @@ public class Activity {
 	//int endWeek;
 	//int state;
 	//int completion;
+	
+	public Activity(int id, String name, Project parentProject) {
+		this.name = name;
+		this.id = id;
+		this.parentProject = parentProject;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public Project getParentProject() {
+		return parentProject;
+	}
 	
 	public void remove() {
 		for(Week week : weeks.keySet()) week.removeActivity(this);
@@ -35,6 +54,6 @@ public class Activity {
 	}
 
 	public float getHoursForWeek(Week week) {
-		return weeks.get(week);
+		return weeks.get(week); //FIXME: Hvad hvis ugen ikke er i array'en?
 	}
 }

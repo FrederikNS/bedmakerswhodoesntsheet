@@ -1,17 +1,22 @@
 package company;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import activity.Project;
 
 import employee.Employee;
 import schedule.Schedule;
 
 public class Company {
+	ArrayList<Project> projects;
 	Schedule schedule;
-	ArrayList<Employee> employees;
+	HashMap<String,Employee> employees;
 
 	public Company() {
 		schedule = new Schedule();
-		employees = new ArrayList<Employee>();
+		projects = new ArrayList<Project>();
+		employees = new HashMap<String,Employee>();
 	}
 
 	/*public String createInitialsFromName(String name){
@@ -23,10 +28,10 @@ public class Company {
 		checkInitials(initials);
 		return initials;
 	}*/
-	
+
 //TODO Check if works.
 	public String checkInitials(String initials){
-		for(Employee emptemp: employees){
+		for(Employee emptemp: employees.values()){
 			if(emptemp.getInitials().equals(initials) && initials.length() == 4){
 				initials = initials + "1";
 				checkInitials(initials);
