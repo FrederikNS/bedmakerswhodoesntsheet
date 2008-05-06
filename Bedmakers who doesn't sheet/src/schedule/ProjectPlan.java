@@ -12,8 +12,13 @@ public class ProjectPlan {
 	HashMap<Integer,Week> weeks;
 	HashMap<String,Employee> employees;
 	HashMap<Integer,Activity> activities;
+	
+	int next_project_id
+	int next_activity_id;
 
 	public ProjectPlan() {
+		next_project_id = 0;
+		next_activity_id = 0;
 		weeks = new HashMap<Integer,Week>();
 		projects = new HashMap<Integer,Project>();
 		employees = new HashMap<String,Employee>();
@@ -21,9 +26,33 @@ public class ProjectPlan {
 	}
 	
 	/*
-	 * WRAPPER FUNKTIONER MED KLASSE-PARAMTRE 
+	 * ID funktioner
 	 */
 	
+	private int generateNewProjectID() {
+		return next_project_id++;
+	}
+
+	private int generateNewActivityID() {
+		return next_activity_id++;
+	}
+
+	/*
+	 * WRAPPER FUNKTIONER MED KLASSE-PARAMTRE 
+	 */
+
+	public void addActivity(int id, String name) {
+		activities.put(id,new Activity(name));
+	}
+	
+	public void addProject(int id, String name) {
+		projects.put(id,new Project(name));
+	}
+	
+	public void addProject(int id, String name, String leader_initials) {
+		projects.put(id,new Project(name, getEmployee(leader_initials)));
+	}
+
 	public void assignActivityToWeek(Activity activity, int hours, Week week) {
 		activity.addWeek(week, hours);
 		week.addActivity(activity);
@@ -63,6 +92,26 @@ public class ProjectPlan {
 	 * (Bliver typisk kaldt udefra)
 	 */
 	
+	public void addActivity(String name) {
+		addActivity(generateNewActivityID(),new Activity(name));
+	}
+	
+	public void addProject(String name) {
+		addProject(generateNewProjectID(), name);
+	}
+	
+	public void addProject(String name, Employee leader) {
+		addProject(generateNewProjectID(), name, leader);
+	}
+	
+	public void addEmployee(String name, String initials) {
+		employees.put(initials, new Employee(name, initials));
+	}
+
+	public void addEmployee(String name) {
+		employees.put(initials, new Employee(name, Employee.generateIntitialsFromName(name)));
+	}
+
 	public void assignActivityToWeek(int activity_id, int hours, int weekIndex) {
 		assignActivityToWeek(getActivity(activity_id), hours, getWeek(weekIndex));
 	}
@@ -91,23 +140,9 @@ public class ProjectPlan {
 		renameProject(getProject(project_id), newName);
 	}
 	
-	public void assignLeaderToProject(int project_id, Employee projectLeader){
-		assignLeaderToProject(projectLeader, getProject(project_id));
+	public void assignLeaderToProject(String leader_initials, int project_id,){
+		assignLeaderToProject(getEmployee(leader_initials), getProject(project_id));
 	}
-	
-	//FIXME: ID's
-	public void addActivity(int id, String name) {
-		activities.put(id,new Activity(name));
-	}
-	
-	public void addProject(int id, String name) {
-		projects.put(id,new Project(name));
-	}
-	
-	public void addProject(int id, String name, Employee leader) {
-		projects.put(id,new Project(name, leader));
-	}
-	
 	
 	//CON: Make public?
 	private Week getWeek(int index) {
@@ -125,6 +160,10 @@ public class ProjectPlan {
 	private Activity getActivity(int index) {
 		//FIXME: Exception/contains
 		return activities.get(index);
+	}
+	
+	private Employee getEmlployee(String intitials) {
+		return emplouyees.get(initials);
 	}
 }
 
