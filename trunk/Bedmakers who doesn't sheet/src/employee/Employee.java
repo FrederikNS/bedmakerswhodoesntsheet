@@ -27,12 +27,12 @@ public class Employee {
 		assignedProjectsLead = new ArrayList<Project>();
 	}
 
-	public static String generateInitialsFromName(name) throws Exception{
+	public static String generateInitialsFromName(String name) throws Exception{
 		String firstInitial = name.substring(0,2);
 		int secondInitialIndex = name.lastIndexOf(" ") +1;
 		String secondInitial = name.substring(secondInitialIndex,secondInitialIndex+2);
-		initials = firstInitial+secondInitial;
-		System.out.println(initials);
+		String initials = firstInitial+secondInitial;
+		//System.out.println(initials);
 		return initials;
 	}
 

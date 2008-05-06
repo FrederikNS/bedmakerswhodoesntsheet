@@ -13,7 +13,7 @@ public class ProjectPlan {
 	HashMap<String,Employee> employees;
 	HashMap<Integer,Activity> activities;
 	
-	int next_project_id
+	int next_project_id;
 	int next_activity_id;
 
 	public ProjectPlan() {
@@ -41,49 +41,49 @@ public class ProjectPlan {
 	 * WRAPPER FUNKTIONER MED KLASSE-PARAMTRE 
 	 */
 
-	public void addActivity(int id, String name) {
+	private void addActivity(int id, String name) {
 		activities.put(id,new Activity(name));
 	}
 	
-	public void addProject(int id, String name) {
+	private void addProject(int id, String name) {
 		projects.put(id,new Project(name));
 	}
 	
-	public void addProject(int id, String name, String leader_initials) {
+	private void addProject(int id, String name, String leader_initials) {
 		projects.put(id,new Project(name, getEmployee(leader_initials)));
 	}
 
-	public void assignActivityToWeek(Activity activity, int hours, Week week) {
+	private void assignActivityToWeek(Activity activity, int hours, Week week) {
 		activity.addWeek(week, hours);
 		week.addActivity(activity);
 	}
 
-	public void removeActivityFromWeek(Activity activity, Week week) {
-		//Week kalder activity.removeWeek.
+	private void removeActivityFromWeek(Activity activity, Week week) {
+		//Week kalder activity.removeWeek()
 		week.removeActivity(activity);
 	}
 
-	public void addActivityToProject(Activity activity, Project project) {
+	private void addActivityToProject(Activity activity, Project project) {
 		project.addActivity(activity);
 	}
 
-	public void removeActivityFromProject(Activity activity, Project project) {
+	private void removeActivityFromProject(Activity activity, Project project) {
 		project.removeActivity(activity);
 	}
 
-	public void removeActivity(Activity activity) {
+	private void removeActivity(Activity activity) {
 		activity.remove();
 	}
 	
-	public void renameActivity(Activity activity, String newName){
+	private void renameActivity(Activity activity, String newName){
 		activity.setName(newName);
 	}
 	
-	public void renameProject(Project project, String newName){
+	private void renameProject(Project project, String newName){
 		project.setName(newName);
 	}
 	
-	public void assignLeaderToProject(Employee projectLeader, Project project){
+	private void assignLeaderToProject(Employee projectLeader, Project project){
 		project.assignLeader(projectLeader);
 	}
 
@@ -93,23 +93,24 @@ public class ProjectPlan {
 	 */
 	
 	public void addActivity(String name) {
-		addActivity(generateNewActivityID(),new Activity(name));
+		addActivity(generateNewActivityID(), name);
 	}
 	
 	public void addProject(String name) {
 		addProject(generateNewProjectID(), name);
 	}
 	
-	public void addProject(String name, Employee leader) {
-		addProject(generateNewProjectID(), name, leader);
+	public void addProject(String name, String leader_initials) {
+		addProject(generateNewProjectID(), name, leader_initials);
 	}
 	
 	public void addEmployee(String name, String initials) {
 		employees.put(initials, new Employee(name, initials));
 	}
 
-	public void addEmployee(String name) {
-		employees.put(initials, new Employee(name, Employee.generateIntitialsFromName(name)));
+	public void addEmployee(String name) throws Exception {
+		String initials = Employee.generateInitialsFromName(name);
+		employees.put(initials, new Employee(name, initials));
 	}
 
 	public void assignActivityToWeek(int activity_id, int hours, int weekIndex) {
@@ -129,7 +130,7 @@ public class ProjectPlan {
 	}
 
 	public void removeActivity(int activity_id) {
-		getActivity(activity_id).remove();
+		removeActivity(getActivity(activity_id));
 	}
 
 	public void renameActivity(int activity_id, String newName){
@@ -140,7 +141,7 @@ public class ProjectPlan {
 		renameProject(getProject(project_id), newName);
 	}
 	
-	public void assignLeaderToProject(String leader_initials, int project_id,){
+	public void assignLeaderToProject(String leader_initials, int project_id){
 		assignLeaderToProject(getEmployee(leader_initials), getProject(project_id));
 	}
 	
@@ -162,8 +163,8 @@ public class ProjectPlan {
 		return activities.get(index);
 	}
 	
-	private Employee getEmlployee(String intitials) {
-		return emplouyees.get(initials);
+	private Employee getEmployee(String initials) {
+		return employees.get(initials);
 	}
 }
 
