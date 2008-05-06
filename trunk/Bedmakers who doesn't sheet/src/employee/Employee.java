@@ -27,7 +27,7 @@ public class Employee {
 		assignedProjectsLead = new ArrayList<Project>();
 	}
 
-	public String CreateInitialsFromName() throws Exception{
+	public static String generateInitialsFromName(name) throws Exception{
 		String firstInitial = name.substring(0,2);
 		int secondInitialIndex = name.lastIndexOf(" ") +1;
 		String secondInitial = name.substring(secondInitialIndex,secondInitialIndex+2);
@@ -35,6 +35,10 @@ public class Employee {
 		System.out.println(initials);
 		return initials;
 	}
+
+	//public String CreateInitialsFromName() throws Exception{
+	//	return CreateInitialsFromName(name);
+	//}
 
 	public String CreateInit() {
 		String nameSplitted[] = name.split(" ");
