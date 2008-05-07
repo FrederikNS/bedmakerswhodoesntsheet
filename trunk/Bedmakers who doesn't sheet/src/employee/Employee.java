@@ -1,8 +1,10 @@
 package employee;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import exceptions.EmployeeException;
+import exceptions.FrozenException;
 
 import activity.Activity;
 import activity.Project;
@@ -11,15 +13,18 @@ import activity.Project;
 
 public class Employee {
 
-	String name;
-	String initials;
-	ArrayList<Activity> assignedActivities;
-	ArrayList<Project> assignedProjects;
-	ArrayList<Project> assignedProjectsLead;
-	ArrayList<Activity> assistingActivity;
-	ArrayList<Project> assistingProject;
+	private String name;
+	private String initials;
+	private ArrayList<Activity> assignedActivities;
+	private ArrayList<Project> assignedProjects;
+	private ArrayList<Project> assignedProjectsLead;
+	private ArrayList<Activity> assistedActivities;
+	private HashMap<Activity,Float> progress;
+	private boolean frozen;
+	//ArrayList<Project> assistingProject;
 
 	public Employee(String name, String initials) {
+		frozen = false;
 		this.name = name;
 		this.initials = initials;
 		assignedActivities = new ArrayList<Activity>();
@@ -35,7 +40,21 @@ public class Employee {
 		//System.out.println(initials);
 		return initials;
 	}
+	
+	public void freeze() throws FrozenException {
+		checkFreeze();
+		frozen = true;
+	}
 
+	public void unfreeze() {
+		frozen = false;
+	}
+
+	private void checkFreeze() throws FrozenException {
+		if (frozen)
+			throw new FrozenException();
+	}	
+	
 	//public String CreateInitialsFromName() throws Exception{
 	//	return CreateInitialsFromName(name);
 	//}
@@ -54,7 +73,8 @@ public class Employee {
 		return initials;
 	}
 
-	public void assignProject(Project project) throws EmployeeException {
+	public void assignProject(Project project) throws EmployeeException, FrozenException {
+		checkFreeze();
 		if(assignedProjects.contains(project)){
 			throw new EmployeeException("Already assigned to project");
 		} else {
@@ -62,7 +82,8 @@ public class Employee {
 		}
 	}
 
-	public void assignProjectLead(Project project) throws EmployeeException {
+	public void assignProjectLead(Project project) throws EmployeeException, FrozenException {
+		checkFreeze();
 		if(assignedProjectsLead.contains(project)) {
 			throw new EmployeeException("Already assigned as project leader");
 		} else {
@@ -75,7 +96,8 @@ public class Employee {
 		}
 	}
 
-	public void assignActivity(Activity activity) throws EmployeeException {
+	public void assignToActivity(Activity activity) throws EmployeeException, FrozenException {
+		checkFreeze();
 		if(assignedActivities.contains(activity)){
 			throw new EmployeeException("Already assigned to activity");
 		} else {
@@ -83,31 +105,63 @@ public class Employee {
 		}
 	}
 
-	public void relieveFromActivity(Activity activity) throws EmployeeException {
+	public void relieveFromActivity(Activity activity) throws EmployeeException, FrozenException {
+		checkFreeze();
 		if(assignedProjects.contains(activity)){
+			activity.removeEmployee(this);
 			assignedActivities.remove(activity);
 		} else {
 			throw new EmployeeException("Not assigned to activity");
 		}
 	}
+	
+//	Ikke muligt, så vidt jeg ved - Jacob.
+//	public void assistProject(Project project) throws EmployeeException {
+//		if(assistingProject.contains(project)){
+//			throw new EmployeeException("Already assisting project");
+//		} else if(assignedProjects.contains(project)){
+//			throw new EmployeeException("Already assigned to project");
+//		} else {
+//			assistingProject.add(project);	
+//		}
+//	}
 
-	public void assistProject(Project project) throws EmployeeException {
-		if(assistingProject.contains(project)){
-			throw new EmployeeException("Already assisting project");
-		} else if(assignedProjects.contains(project)){
-			throw new EmployeeException("Already assigned to project");
-		} else {
-			assistingProject.add(project);	
-		}
-
-	}
-
-	public void assistingActivity(Activity activity) throws EmployeeException {
+	public void assistActivity(Activity activity) throws EmployeeException, FrozenException {
+		checkFreeze();
 		if(assignedProjects.contains(activity)){
 			throw new EmployeeException("Already assigned to project");
 		} else {
-			assistingActivity.add(activity);
+			assistedActivities.add(activity);
+			activity.assignEmployeeAsAssistant(this);
 		}
 	}
-}
 
+	public void relieveFromAssistance(Activity activity) throws EmployeeException, FrozenException {
+		checkFreeze();
+		if(assistedActivities.contains(activity)){
+			activity.removeAssistant(this);
+			assistedActivities.remove(activity);
+		} else {
+			throw new EmployeeException("Not assigned to activity");
+		}
+	}	
+	
+	public void registerProgressInActivity(float hours, Activity a) throws FrozenException {
+		checkFreeze();
+		if(progress.containsKey(a)) {
+			hours += progress.get(a);
+		}
+		progress.put(a, hours);
+		a.registerProgressFromEmployee(hours, this);
+	}
+	
+	public float getProgresInActivity(Activity a) {
+		return progress.get(a);
+	}
+	
+	public String toString() {
+		String out = initials + ", " + name;
+		if(frozen) out += " [FROZEN]";
+		return out;
+	}
+}
