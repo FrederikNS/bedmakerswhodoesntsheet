@@ -2,32 +2,32 @@ Projektleder - opdeler projektet i aktiviteter.
 
 worst case-
 
-  Projekt oprettes:
-  Aktiviteter og tidspunkt ukendte. Kun kendt i mindre omfang.
-  Projektleder ikke udpeget
-  Projektleder opdeler projektet i aktiviteter
+*  Projekt oprettes:
+*  Aktiviteter og tidspunkt ukendte. Kun kendt i mindre omfang.
+*  Projektleder ikke udpeget
+*  Projektleder opdeler projektet i aktiviteter
 
 ---Systemkrav---
 
-x Aktiviteter skal kunne planlægges inden arbejdet begynder, og skal kunne ændres hyppigt.
-x Antal arbejdstimer til løsning af opgaven skal kunne anføres for hvert projekt.
-  Start- og sluttidspunkt skal kunne anføres.
-x Mere end en medarbejder skal kunne deltage i en aktivitet.
-  Kollega assistance skal være mulig - og dette registreres også, selvom kollegaen ikke er direkte sat til denne aktivitet.
+*x Aktiviteter skal kunne planlægges inden arbejdet begynder, og skal kunne ændres hyppigt.
+*x Antal arbejdstimer til løsning af opgaven skal kunne anføres for hvert projekt.
+!  Start- og sluttidspunkt skal kunne anføres.
+*x Mere end en medarbejder skal kunne deltage i en aktivitet.
+*  Kollega assistance skal være mulig - og dette registreres også, selvom kollegaen ikke er direkte sat til denne aktivitet.
   Systemet skal hjælpe projektledere med at bemande projekter.
   Skal give overblik over hvilke medarbejdere der er ledige på det tidspunkt aktiviteten skal udføres.
 x Systemet skal tillade en medarbejder op til 20 aktiviteter over en uge.
   Der skal være faste aktiviteter til ferie, sygdom, kurser osv.
   Der skal kunne laves rapporter til brug ved ugentligt projektmøde.
 x Det skal være muligt at se det forventede restarbejde på projektet.
-x Projektet skal kunne have et navn.
+* Projektet skal kunne have et navn.
 
   En medarbejder tager typisk mindre end 10 aktiviteter ad gangen.
   Aktiviteter varer typisk 2-3 uger.
-  Opløsning foregår på ugenummer niveau.
+*  Opløsning foregår på ugenummer niveau.
   Projektnumre skal tildeles af systemet og have formen årstal og et løbenummer, f.eks. 030901.
 
-  Systemet er til internt brug, så det er ikke nødvendigt med adgangskontroller.
+*  Systemet er til internt brug, så det er ikke nødvendigt med adgangskontroller.
 
   (Hvad med hvor meget en medarbejder skal kunne gøre i forhold til en projektleder? Hvor stor tillid er der tale om?)
 

@@ -2,22 +2,28 @@ package schedule;
 
 import java.util.ArrayList;
 
+import exceptions.FrozenException;
+
 import activity.Activity;
 
 public class Week {
-	int index;
-	ArrayList<Activity> scheduledActivities;
+	private int index;
+	private ArrayList<Activity> scheduledActivities;
 	
 	public Week(int index) {
 		this.index = index;
 		this.scheduledActivities = new ArrayList<Activity>();
 	}
 	
+	public int getIndex() {
+		return index;
+	}
+	
 	public void addActivity(Activity activity) {
 		scheduledActivities.add(activity);
 	}
 	
-	public void removeActivity(Activity activity) {
+	public void removeActivity(Activity activity) throws FrozenException {
 		scheduledActivities.remove(activity);
 		activity.removeWeek(this);
 	}
@@ -28,5 +34,9 @@ public class Week {
 			hoursum += activity.getHoursForWeek(this);
 		}
 		return hoursum;
+	}
+	
+	public boolean isEmpty() {
+		return scheduledActivities.isEmpty();
 	}
 }
