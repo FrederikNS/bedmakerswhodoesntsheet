@@ -14,7 +14,7 @@ public class Activity {
 	private ArrayList<Employee> assistants;
 	//private float workload;
 	private HashMap<Employee, Float> progressbyemployee;
-	private final int id;
+	private final String id;
 	private boolean frozen;
 
 	// enum states{NOT_STARTED,IN_PROGRESS,COMPLETED};
@@ -23,7 +23,7 @@ public class Activity {
 	// int state;
 	// int completion;
 
-	public Activity(int id, String name) {
+	public Activity(String id, String name) {
 		this.id = id;
 		frozen = false;
 		this.name = name;
@@ -33,7 +33,7 @@ public class Activity {
 		assignedEmployees = new ArrayList<Employee>();
 	}
 
-	public Activity(int id, String name, Project parent) {
+	public Activity(String id, String name, Project parent) {
 		this.id = id;
 		frozen = false;
 		this.name = name;
@@ -68,7 +68,11 @@ public class Activity {
 			throw new FrozenException(this);
 	}	
 
-	public int getID() {
+	public boolean isFrozen() {
+		return frozen;
+	}
+	
+	public String getID() {
 		return id;
 	}
 

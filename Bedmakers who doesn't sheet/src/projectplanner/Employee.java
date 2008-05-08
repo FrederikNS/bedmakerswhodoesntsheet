@@ -27,14 +27,19 @@ public class Employee {
 	}
 
 	public static String generateInitialsFromName(String name) throws Exception{
-		String firstInitial = name.substring(0,2);
-		int secondInitialIndex = name.lastIndexOf(" ") +1;
-		String secondInitial = name.substring(secondInitialIndex,secondInitialIndex+2);
-		String initials = firstInitial+secondInitial;
-		//System.out.println(initials);
-		return initials;
+		String nameSplitted[] = name.split(" ");
+		String nameInits = null;
+
+		nameInits+=nameSplitted[0];
+		nameInits+=nameSplitted[nameSplitted.length-1];
+
+		return nameInits;
 	}
-	
+
+	public boolean isFrozen() {
+		return frozen;
+	}
+
 	public void freeze() throws FrozenException {
 		checkFreeze();
 		frozen = true;
@@ -49,20 +54,6 @@ public class Employee {
 			throw new FrozenException(this);
 	}	
 	
-	//public String CreateInitialsFromName() throws Exception{
-	//	return CreateInitialsFromName(name);
-	//}
-
-	public String CreateInit() {
-		String nameSplitted[] = name.split(" ");
-		String nameInits = null;
-
-		nameInits+=nameSplitted[0];
-		nameInits+=nameSplitted[nameSplitted.length-1];
-
-		return nameInits;
-	}
-
 	public String getInitials(){
 		return initials;
 	}

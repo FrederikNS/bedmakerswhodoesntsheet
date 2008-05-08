@@ -27,6 +27,10 @@ public class Project {
 		this.name = name;
 		this.leader = leader;
 	}
+	
+	public boolean isFrozen() {
+		return frozen;
+	}
 
 	public void freeze() throws FrozenException {
 		checkFreeze();
