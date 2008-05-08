@@ -62,32 +62,30 @@ public class Employee {
 		checkFreeze();
 		if(assignedProjects.contains(project)){
 			throw new EmployeeException("Already assigned to project");
-		} else {
-			assignedProjects.add(project);	
 		}
+		assignedProjects.add(project);	
 	}
 
 	public void assignProjectLead(Project project) throws EmployeeException, FrozenException {
 		checkFreeze();
 		if(assignedProjectsLead.contains(project)) {
 			throw new EmployeeException("Already assigned as project leader");
-		} else {
-			if(!assignedProjects.contains(project)) {
-				assignProject(project);
-			} else {
-
-			}
-			assignedProjectsLead.add(project);
 		}
+		if(!assignedProjects.contains(project)) {
+			assignProject(project);
+		}
+		assignedProjectsLead.add(project);
 	}
 
 	public void assignToActivity(Activity activity) throws EmployeeException, FrozenException {
 		checkFreeze();
 		if(assignedActivities.contains(activity)){
 			throw new EmployeeException("Already assigned to activity");
-		} else {
-			assignedActivities.add(activity);
 		}
+		if(!assignedProjects.contains(activity.getParentProject())) {
+			throw new EmployeeException("Not assigned to project");
+		}
+		assignedActivities.add(activity);
 	}
 
 	public void relieveFromActivity(Activity activity) throws EmployeeException, FrozenException {
@@ -115,10 +113,9 @@ public class Employee {
 		checkFreeze();
 		if(assignedProjects.contains(activity)){
 			throw new EmployeeException("Already assigned to project");
-		} else {
-			assistedActivities.add(activity);
-			activity.assignEmployeeAsAssistant(this);
 		}
+		assistedActivities.add(activity);
+		activity.assignEmployeeAsAssistant(this);
 	}
 
 	public void relieveFromAssistance(Activity activity) throws EmployeeException, FrozenException {

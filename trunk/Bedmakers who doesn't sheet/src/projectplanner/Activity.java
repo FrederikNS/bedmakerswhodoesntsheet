@@ -16,6 +16,7 @@ public class Activity {
 	private HashMap<Employee, Float> progressbyemployee;
 	private final String id;
 	private boolean frozen;
+	private boolean hasparent;
 
 	// enum states{NOT_STARTED,IN_PROGRESS,COMPLETED};
 	// int startWeek;
@@ -24,6 +25,7 @@ public class Activity {
 	// int completion;
 
 	public Activity(String id, String name) {
+		hasparent = false;
 		this.id = id;
 		frozen = false;
 		this.name = name;
@@ -34,6 +36,7 @@ public class Activity {
 	}
 
 	public Activity(String id, String name, Project parent) {
+		hasparent = true;
 		this.id = id;
 		frozen = false;
 		this.name = name;
@@ -46,6 +49,7 @@ public class Activity {
 
 	public void setParent(Project parentProject) throws FrozenException {
 		checkFreeze();
+		if(hasparent) { } //FIXME: Exception her 
 		this.parentProject = parentProject;
 	}
 
