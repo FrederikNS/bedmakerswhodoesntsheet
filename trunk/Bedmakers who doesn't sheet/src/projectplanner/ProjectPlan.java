@@ -1,11 +1,10 @@
 package projectplanner;
 
+import java.util.Calendar;
 import java.util.HashMap;
 
-import projectplanner.UnknownIDException.ID_EXCEPTION_TYPES;
-
 public class ProjectPlan {
-	private HashMap<Integer,Project> projects;
+	private HashMap<String,Project> projects;
 	private HashMap<Integer,Week> weeks;
 	private HashMap<String,Employee> employees;
 	private HashMap<Integer,Activity> activities;
@@ -17,7 +16,7 @@ public class ProjectPlan {
 		next_project_id = 0;
 		next_activity_id = 0;
 		weeks = new HashMap<Integer,Week>();
-		projects = new HashMap<Integer,Project>();
+		projects = new HashMap<String,Project>();
 		employees = new HashMap<String,Employee>();
 		activities = new HashMap<Integer,Activity>();
 	}
@@ -26,8 +25,16 @@ public class ProjectPlan {
 	 * ID funktioner
 	 */
 	
-	private int generateNewProjectID() {
-		return next_project_id++;
+	private String generateNewProjectID() {
+		next_project_id++;
+		String currentYear = String.valueOf((Calendar.getInstance().get(Calendar.YEAR))%100);
+		String numberPrefix = "";
+		for(int i = 4; i > String.valueOf(next_project_id).length(); i--){
+			numberPrefix += String.valueOf(0);
+		}
+		String issuedNumber = numberPrefix + String.valueOf(next_project_id);
+		String projectID = currentYear + issuedNumber;
+		return projectID;
 	}
 
 	private int generateNewActivityID() {
@@ -35,19 +42,19 @@ public class ProjectPlan {
 	}
 
 	/*
-	 * WRAPPER FUNKTIONER MED KLASSE-PARAMTRE 
+	 * WRAPPER FUNKTIONER MED KLASSE-PARAMETRE 
 	 */
 
 	private void addActivity(int id, String name) {
 		activities.put(id,new Activity(id,name));
 	}
 	
-	private void addProject(int id, String name) {
+	private void addProject(String id, String name) {
 		projects.put(id,new Project(name));
 	}
 	
-	private void addProject(int id, String name, Employee leader) {
-		projects.put(id,new Project(name, leader));
+	private void addProject(String id, String name, String leader_initials) {
+		projects.put(id,new Project(name, getEmployee(leader_initials)));
 	}
 
 	private void assignActivityToWeek(Activity activity, int hours, Week week) throws FrozenException {
@@ -105,8 +112,8 @@ public class ProjectPlan {
 		addProject(generateNewProjectID(), name);
 	}
 	
-	public void addProject(String name, String leader_initials) throws UnknownIDException {
-		addProject(generateNewProjectID(), name, getEmployee(leader_initials));
+	public void addProject(String name, String leader_initials) {
+		addProject(generateNewProjectID(), name, leader_initials);
 	}
 	
 	public void addEmployee(String name, String initials) {
@@ -118,35 +125,35 @@ public class ProjectPlan {
 		employees.put(initials, new Employee(name, initials));
 	}
 
-	public void assignActivityToWeek(int activity_id, int hours, int weekIndex) throws FrozenException, UnknownIDException {
+	public void assignActivityToWeek(int activity_id, int hours, int weekIndex) throws FrozenException {
 		assignActivityToWeek(getActivity(activity_id), hours, getWeek(weekIndex));
 	}
 
-	public void removeActivityFromWeek(int activity_id, int weekIndex) throws FrozenException, UnknownIDException {
+	public void removeActivityFromWeek(int activity_id, int weekIndex) throws FrozenException {
 		removeActivityFromWeek(getActivity(activity_id), getWeek(weekIndex));
 	}
-	
-	public void addActivityToProject(int activity_id, int project_id) throws FrozenException, UnknownIDException {
+
+	public void addActivityToProject(int activity_id, int project_id) throws FrozenException {
 		addActivityToProject(getActivity(activity_id),getProject(project_id));
 	}
 
-	public void removeActivityFromProject(int activity_id, int project_id) throws FrozenException, UnknownIDException {
+	public void removeActivityFromProject(int activity_id, int project_id) throws FrozenException {
 		removeActivityFromProject(getActivity(activity_id),getProject(project_id));
 	}
 
-	public void freezeActivity(int activity_id) throws FrozenException, UnknownIDException {
+	public void freezeActivity(int activity_id) throws FrozenException {
 		freezeActivity(getActivity(activity_id));
 	}
 
-	public void renameActivity(int activity_id, String newName) throws FrozenException, UnknownIDException {
+	public void renameActivity(int activity_id, String newName) throws FrozenException{
 		renameActivity(getActivity(activity_id), newName);
 	}
 	
-	public void renameProject(int project_id, String newName) throws FrozenException, UnknownIDException {
+	public void renameProject(int project_id, String newName) throws FrozenException{
 		renameProject(getProject(project_id), newName);
 	}
 	
-	public void assignLeaderToProject(String leader_initials, int project_id) throws FrozenException, UnknownIDException {
+	public void assignLeaderToProject(String leader_initials, int project_id) throws FrozenException{
 		assignLeaderToProject(getEmployee(leader_initials), getProject(project_id));
 	}
 
@@ -184,7 +191,9 @@ public class ProjectPlan {
 		return employees.get(initials);
 	}
 
-	public HashMap<Integer,Project> getProjects() {
+	//FIXME: Udefra-kommende klasser burde ikke have rettigheder til at ændre disse maps, og de ting som de peger på.
+	//Temp fix
+	public HashMap<String,Project> getProjects() {
 		return projects;
 	}
 
