@@ -2,6 +2,8 @@ package projectplanner;
 
 import java.util.HashMap;
 
+import projectplanner.UnknownIDException.ID_EXCEPTION_TYPES;
+
 public class ProjectPlan {
 	private HashMap<Integer,Project> projects;
 	private HashMap<Integer,Week> weeks;
@@ -44,8 +46,8 @@ public class ProjectPlan {
 		projects.put(id,new Project(name));
 	}
 	
-	private void addProject(int id, String name, String leader_initials) {
-		projects.put(id,new Project(name, getEmployee(leader_initials)));
+	private void addProject(int id, String name, Employee leader) {
+		projects.put(id,new Project(name, leader));
 	}
 
 	private void assignActivityToWeek(Activity activity, int hours, Week week) throws FrozenException {
@@ -103,8 +105,8 @@ public class ProjectPlan {
 		addProject(generateNewProjectID(), name);
 	}
 	
-	public void addProject(String name, String leader_initials) {
-		addProject(generateNewProjectID(), name, leader_initials);
+	public void addProject(String name, String leader_initials) throws UnknownIDException {
+		addProject(generateNewProjectID(), name, getEmployee(leader_initials));
 	}
 	
 	public void addEmployee(String name, String initials) {
@@ -116,43 +118,43 @@ public class ProjectPlan {
 		employees.put(initials, new Employee(name, initials));
 	}
 
-	public void assignActivityToWeek(int activity_id, int hours, int weekIndex) throws FrozenException {
+	public void assignActivityToWeek(int activity_id, int hours, int weekIndex) throws FrozenException, UnknownIDException {
 		assignActivityToWeek(getActivity(activity_id), hours, getWeek(weekIndex));
 	}
 
-	public void removeActivityFromWeek(int activity_id, int weekIndex) throws FrozenException {
+	public void removeActivityFromWeek(int activity_id, int weekIndex) throws FrozenException, UnknownIDException {
 		removeActivityFromWeek(getActivity(activity_id), getWeek(weekIndex));
 	}
 	
-	public void addActivityToProject(int activity_id, int project_id) throws FrozenException {
+	public void addActivityToProject(int activity_id, int project_id) throws FrozenException, UnknownIDException {
 		addActivityToProject(getActivity(activity_id),getProject(project_id));
 	}
 
-	public void removeActivityFromProject(int activity_id, int project_id) throws FrozenException {
+	public void removeActivityFromProject(int activity_id, int project_id) throws FrozenException, UnknownIDException {
 		removeActivityFromProject(getActivity(activity_id),getProject(project_id));
 	}
 
-	public void freezeActivity(int activity_id) throws FrozenException {
+	public void freezeActivity(int activity_id) throws FrozenException, UnknownIDException {
 		freezeActivity(getActivity(activity_id));
 	}
 
-	public void renameActivity(int activity_id, String newName) throws FrozenException{
+	public void renameActivity(int activity_id, String newName) throws FrozenException, UnknownIDException {
 		renameActivity(getActivity(activity_id), newName);
 	}
 	
-	public void renameProject(int project_id, String newName) throws FrozenException{
+	public void renameProject(int project_id, String newName) throws FrozenException, UnknownIDException {
 		renameProject(getProject(project_id), newName);
 	}
 	
-	public void assignLeaderToProject(String leader_initials, int project_id) throws FrozenException{
+	public void assignLeaderToProject(String leader_initials, int project_id) throws FrozenException, UnknownIDException {
 		assignLeaderToProject(getEmployee(leader_initials), getProject(project_id));
 	}
 
-	public void setProjectStartWeek(int project_id, int week) throws FrozenException {
+	public void setProjectStartWeek(int project_id, int week) throws FrozenException, UnknownIDException {
 		setProjectStartWeek(getProject(project_id), week);
 	}
 
-	public void setProjectEndWeek(int project_id, int week) throws FrozenException {
+	public void setProjectEndWeek(int project_id, int week) throws FrozenException, UnknownIDException {
 		setProjectEndWeek(getProject(project_id), week);
 	}
 	
@@ -167,23 +169,21 @@ public class ProjectPlan {
 		return weeks.get(index);
 	}
 
-	private Project getProject(int id) {
-		//FIXME: Exception/contains
-		return projects.get(id);
+	private Project getProject(int index) throws UnknownIDException {
+		if(!projects.containsKey(index)) throw new UnknownIDException(ID_EXCEPTION_TYPES.PROJECT, index);
+		return projects.get(index);
 	}
 	
-	private Activity getActivity(int index) {
-		//FIXME: Exception/contains
+	private Activity getActivity(int index) throws UnknownIDException {
+		if(!activities.containsKey(index)) throw new UnknownIDException(ID_EXCEPTION_TYPES.ACTIVITY, index);
 		return activities.get(index);
 	}
 	
-	private Employee getEmployee(String initials) {
-		//FIXME: Exception/contains
+	private Employee getEmployee(String initials) throws UnknownIDException {
+		if(!employees.containsKey(initials)) throw new UnknownIDException(ID_EXCEPTION_TYPES.EMPLOYEE, initials);
 		return employees.get(initials);
 	}
 
-	//FIXME: Udefra-kommende klasser burde ikke ha rettigheder til at ændre disse maps, og de ting som de peger på.
-	//Temp fix
 	public HashMap<Integer,Project> getProjects() {
 		return projects;
 	}
