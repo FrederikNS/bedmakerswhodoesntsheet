@@ -82,6 +82,14 @@ public class ProjectPlan {
 		project.assignLeader(projectLeader);
 	}
 
+	public void setProjectStartWeek(Project project, int week_index) throws FrozenException {
+		project.setStartWeek(week_index);
+	}
+
+	public void setProjectEndWeek(Project project, int week_index) throws FrozenException {
+		project.setStartWeek(week_index);
+	}
+
 	/*
 	 * WRAPPER FUNKTIONER MED ID VÆRDIER 
 	 * (Bliver typisk kaldt udefra)
@@ -115,7 +123,7 @@ public class ProjectPlan {
 	public void removeActivityFromWeek(int activity_id, int weekIndex) throws FrozenException {
 		removeActivityFromWeek(getActivity(activity_id), getWeek(weekIndex));
 	}
-
+	
 	public void addActivityToProject(int activity_id, int project_id) throws FrozenException {
 		addActivityToProject(getActivity(activity_id),getProject(project_id));
 	}
@@ -138,6 +146,14 @@ public class ProjectPlan {
 	
 	public void assignLeaderToProject(String leader_initials, int project_id) throws FrozenException{
 		assignLeaderToProject(getEmployee(leader_initials), getProject(project_id));
+	}
+
+	public void setProjectStartWeek(int project_id, int week) throws FrozenException {
+		setProjectStartWeek(getProject(project_id), week);
+	}
+
+	public void setProjectEndWeek(int project_id, int week) throws FrozenException {
+		setProjectEndWeek(getProject(project_id), week);
 	}
 	
 	/*

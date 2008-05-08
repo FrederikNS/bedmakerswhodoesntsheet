@@ -129,10 +129,17 @@ public class Activity {
 	}
 
 	public float getProgress() {
-		int progress = 0;
+		float progress = 0;
 		for (Employee e : progressbyemployee.keySet())
 			progress += e.getProgresInActivity(this);
 		return progress;
+	}
+	
+	public float getWorkload() {
+		float workload = 0;
+		for (Week w : weeks.keySet())
+			workload += getHoursForWeek(w);
+		return workload;
 	}
 
 	public void registerProgressFromEmployee(float hours, Employee employee)
