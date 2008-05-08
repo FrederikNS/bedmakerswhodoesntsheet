@@ -66,7 +66,7 @@ public class ProjectPlan {
 	}
 
 	private void removeActivityFromWeek(Activity activity, Week week) throws FrozenException {
-		//Week kalder activity.removeWeek()
+		activity.removeWeek(week);
 		week.removeActivity(activity);
 	}
 

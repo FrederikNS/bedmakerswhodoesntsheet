@@ -19,9 +19,9 @@ public class Week {
 		scheduledActivities.add(activity);
 	}
 	
-	public void removeActivity(Activity activity) throws FrozenException {
+	public void removeActivity(Activity activity) {
+		//activity.removeWeek(this);
 		scheduledActivities.remove(activity);
-		activity.removeWeek(this);
 	}
 	
 	public float getAssignedHours() {

@@ -77,14 +77,6 @@ public class Project {
 		activity.freeze();
 	}
 	
-//	public int getRemainingWork() {
-//		int load = 0;
-//		for(Activity activity : activities){
-//			//load += activity.workload-activity.progress;
-//		}
-//		return load;
-//	}
-	
 	public ArrayList<Employee> getEmployees() {
 		ArrayList<Employee> employees = new ArrayList<Employee>();
 		for(Activity a : activities) {
