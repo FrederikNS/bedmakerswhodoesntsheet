@@ -7,8 +7,12 @@ public class Project {
 	private ArrayList<Activity> activities;
 	private Employee leader;
 	boolean frozen;
+	int startweek;
+	int endweek;
 	
 	public Project(String name) {
+		startweek = 0;
+		endweek = Integer.MAX_VALUE;
 		frozen = false;
 		leader = null;
 		activities = new ArrayList<Activity>();
@@ -16,6 +20,8 @@ public class Project {
 	}
 
 	public Project(String name, Employee leader) {
+		startweek = 0;
+		endweek = Integer.MAX_VALUE;
 		frozen = false;
 		activities = new ArrayList<Activity>();
 		this.name = name;
@@ -39,6 +45,16 @@ public class Project {
 	public void setName(String name) throws FrozenException {
 		checkFreeze();
 		this.name = name;
+	}
+	
+	public void setStartWeek(int v) throws FrozenException {
+		checkFreeze();
+		startweek = v;
+	}
+	
+	public void setEndWeek(int v) throws FrozenException {
+		checkFreeze();
+		endweek = v;
 	}
 	
 	public void assignLeader(Employee projectLeader) throws FrozenException  {
@@ -77,6 +93,7 @@ public class Project {
 	
 	public String toString() {
 		String out = name;
+		out += ". Start week: " + startweek + ", end week: " + endweek + ".";
 		if(frozen) out += " [FROZEN]";
 		out += "\n* Leader: ";
 		if(leader==null) out += "none";
