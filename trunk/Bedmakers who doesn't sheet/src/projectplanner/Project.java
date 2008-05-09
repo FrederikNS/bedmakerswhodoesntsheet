@@ -54,6 +54,10 @@ public class Project {
 		this.name = name;
 	}
 	
+	public String getName() {
+		return name;
+	}
+	
 	public void setStartWeek(int v) throws FrozenException {
 		checkFreeze();
 		startweek = v;

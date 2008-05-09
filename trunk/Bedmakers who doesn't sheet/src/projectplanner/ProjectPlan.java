@@ -1,7 +1,9 @@
 package projectplanner;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 import projectplanner.UnknownIDException.ID_EXCEPTION_TYPES;
 
@@ -229,5 +231,42 @@ public class ProjectPlan {
 
 	public HashMap<String,Employee> getEmployees() {
 		return employees;
+	}
+	
+	/*
+	 * Search
+	 */
+	
+	public ArrayList<Activity> findActivity(String pattern) {
+		ArrayList<Activity> listout = new ArrayList<Activity>();
+		Pattern p = Pattern.compile(pattern);
+		for(Activity a : activities.values()) {
+			if(p.matcher(a.getName()).matches()) {
+				listout.add(a);
+			}
+		}
+		return listout;
+	}
+
+	public ArrayList<Employee> findEmployee(String pattern) {
+		ArrayList<Employee> listout = new ArrayList<Employee>();
+		Pattern p = Pattern.compile(pattern);
+		for(Employee employee : employees.values()) {
+			if(p.matcher(employee.getName()).matches()) {
+				listout.add(employee);
+			}
+		}
+		return listout;
+	}	
+	
+	public ArrayList<Project> findProject(String pattern) {
+		ArrayList<Project> listout = new ArrayList<Project>();
+		Pattern p = Pattern.compile(pattern);
+		for(Project project : projects.values()) {
+			if(p.matcher(project.getName()).matches()) {
+				listout.add(project);
+			}
+		}
+		return listout;
 	}
 }
