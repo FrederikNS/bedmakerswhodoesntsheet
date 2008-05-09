@@ -144,4 +144,8 @@ public class Employee {
 		if(frozen) out += " [FROZEN]";
 		return out;
 	}
+
+	public String getName() {
+		return name;
+	}
 }
