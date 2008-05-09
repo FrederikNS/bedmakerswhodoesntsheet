@@ -49,7 +49,7 @@ public class Employee {
 		frozen = false;
 	}
 
-	private void checkFreeze() throws FrozenException {
+	public void checkFreeze() throws FrozenException {
 		if (frozen)
 			throw new FrozenException(this);
 	}	
@@ -63,7 +63,7 @@ public class Employee {
 		if(assignedProjects.contains(project)){
 			throw new EmployeeException("Already assigned to project");
 		}
-		assignedProjects.add(project);	
+		assignedProjects.add(project);
 	}
 
 	public void assignProjectLead(Project project) throws EmployeeException, FrozenException {
@@ -90,12 +90,11 @@ public class Employee {
 
 	public void relieveFromActivity(Activity activity) throws EmployeeException, FrozenException {
 		checkFreeze();
-		if(assignedProjects.contains(activity)){
-			activity.removeEmployee(this);
-			assignedActivities.remove(activity);
-		} else {
+		if(!assignedProjects.contains(activity)){
 			throw new EmployeeException("Not assigned to activity");
 		}
+		activity.removeEmployee(this);
+		assignedActivities.remove(activity);
 	}
 	
 //	Ikke muligt, så vidt jeg ved - Jacob.
@@ -111,21 +110,20 @@ public class Employee {
 
 	public void assistActivity(Activity activity) throws EmployeeException, FrozenException {
 		checkFreeze();
+		activity.assignEmployeeAsAssistant(this);
 		if(assignedProjects.contains(activity)){
 			throw new EmployeeException("Already assigned to project");
 		}
 		assistedActivities.add(activity);
-		activity.assignEmployeeAsAssistant(this);
 	}
 
 	public void relieveFromAssistance(Activity activity) throws EmployeeException, FrozenException {
 		checkFreeze();
-		if(assistedActivities.contains(activity)){
-			activity.removeAssistant(this);
-			assistedActivities.remove(activity);
-		} else {
+		if(!assistedActivities.contains(activity)){
 			throw new EmployeeException("Not assigned to activity");
 		}
+		activity.removeAssistant(this);
+		assistedActivities.remove(activity);
 	}	
 	
 	public void registerProgressInActivity(float hours, Activity a) throws FrozenException {

@@ -67,7 +67,7 @@ public class Activity {
 		frozen = false;
 	}
 
-	private void checkFreeze() throws FrozenException {
+	public void checkFreeze() throws FrozenException {
 		if (frozen)
 			throw new FrozenException(this);
 	}	

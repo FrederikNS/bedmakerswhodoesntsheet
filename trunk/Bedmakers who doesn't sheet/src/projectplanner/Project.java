@@ -9,6 +9,7 @@ public class Project {
 	boolean frozen;
 	int startweek;
 	int endweek;
+	private ArrayList<Employee> assignedEmployees;
 	
 	public Project(String name) {
 		startweek = 0;
@@ -16,6 +17,7 @@ public class Project {
 		frozen = false;
 		leader = null;
 		activities = new ArrayList<Activity>();
+		assignedEmployees = new ArrayList<Employee>(); 
 		this.name = name;
 	}
 
@@ -24,6 +26,7 @@ public class Project {
 		endweek = Integer.MAX_VALUE;
 		frozen = false;
 		activities = new ArrayList<Activity>();
+		assignedEmployees = new ArrayList<Employee>();
 		this.name = name;
 		this.leader = leader;
 	}
@@ -78,14 +81,18 @@ public class Project {
 	}
 	
 	public ArrayList<Employee> getEmployees() {
-		ArrayList<Employee> employees = new ArrayList<Employee>();
-		for(Activity a : activities) {
-			for(Employee e : a.getAssignedEmployees()) {
-				employees.add(e);
-			}
-		}
-		return employees;
+		return assignedEmployees;
 	}
+	
+//	public ArrayList<Employee> getEmployees() {
+//		ArrayList<Employee> employees = new ArrayList<Employee>();
+//		for(Activity a : activities) {
+//			for(Employee e : a.getAssignedEmployees()) {
+//				employees.add(e);
+//			}
+//		}
+//		return employees;
+//	}
 	
 	public String toString() {
 		String out = name;

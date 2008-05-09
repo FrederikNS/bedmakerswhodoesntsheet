@@ -73,7 +73,8 @@ public class ProjectPlan {
 	private void addActivityToProject(Activity activity, Project project) throws FrozenException {
 		project.addActivity(activity);
 	}
-
+	
+	//Depreciate?
 	private void removeActivityFromProject(Activity activity, Project project) throws FrozenException {
 		project.freezeActivity(activity);
 	}
@@ -101,7 +102,31 @@ public class ProjectPlan {
 	public void setProjectEndWeek(Project project, int week_index) throws FrozenException {
 		project.setStartWeek(week_index);
 	}
+	
+	public void assignEmployeeToActivity(Employee e, Activity a) throws FrozenException, EmployeeException {
+		e.checkFreeze();
+		a.checkFreeze();
+		e.assignToActivity(a);
+	}
 
+	public void relieveEmployeeFromActivity(Employee e, Activity a) throws FrozenException, EmployeeException {
+		e.checkFreeze();
+		a.checkFreeze();
+		e.relieveFromActivity(a);
+	}
+
+	public void assignEmployeeToAssistActivity(Employee e, Activity a) throws FrozenException, EmployeeException {
+		e.checkFreeze();
+		a.checkFreeze();
+		e.assistActivity(a);
+	}
+
+	public void relieveEmployeeFromAssitingActivity(Employee e, Activity a) throws FrozenException, EmployeeException {
+		e.checkFreeze();
+		a.checkFreeze();
+		e.relieveFromAssistance(a);
+	}	
+	
 	/*
 	 * WRAPPER FUNKTIONER MED ID VÆRDIER 
 	 * (Bliver typisk kaldt udefra)
@@ -173,7 +198,7 @@ public class ProjectPlan {
 	 */
 	
 	private Week getWeek(int index) {
-		//Allokér uger dynamisk. Kan sagtens crashe porgrammet hvis der bliver bedt om underlige uger 
+		//Allokér uger dynamisk.
 		if(!weeks.containsKey(index))
 			weeks.put(index,new Week(index));
 		return weeks.get(index);
