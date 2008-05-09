@@ -28,10 +28,10 @@ public class Employee {
 
 	public static String generateInitialsFromName(String name) throws Exception{
 		String nameSplitted[] = name.split(" ");
-		String nameInits = null;
+		String nameInits = "";
 
-		nameInits+=nameSplitted[0];
-		nameInits+=nameSplitted[nameSplitted.length-1];
+		nameInits+=nameSplitted[0].substring(0, 2);
+		nameInits+=nameSplitted[nameSplitted.length-1].substring(0, 2);
 
 		return nameInits;
 	}

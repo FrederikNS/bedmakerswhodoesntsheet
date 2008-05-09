@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Project {
 	private String name;
+	private String id;
 	private ArrayList<Activity> activities;
 	private Employee leader;
 	boolean frozen;
@@ -11,7 +12,7 @@ public class Project {
 	int endweek;
 	private ArrayList<Employee> assignedEmployees;
 	
-	public Project(String name) {
+	public Project(String id, String name) {
 		startweek = 0;
 		endweek = Integer.MAX_VALUE;
 		frozen = false;
@@ -19,9 +20,10 @@ public class Project {
 		activities = new ArrayList<Activity>();
 		assignedEmployees = new ArrayList<Employee>(); 
 		this.name = name;
+		this.id = id;
 	}
 
-	public Project(String name, Employee leader) {
+	public Project(String id, String name, Employee leader) {
 		startweek = 0;
 		endweek = Integer.MAX_VALUE;
 		frozen = false;
@@ -29,6 +31,7 @@ public class Project {
 		assignedEmployees = new ArrayList<Employee>();
 		this.name = name;
 		this.leader = leader;
+		this.id = id;
 	}
 	
 	public boolean isFrozen() {
@@ -56,6 +59,14 @@ public class Project {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public String getId() {
+		return id;
+	}
+	
+	public Employee getLeader() {
+		return leader;
 	}
 	
 	public void setStartWeek(int v) throws FrozenException {

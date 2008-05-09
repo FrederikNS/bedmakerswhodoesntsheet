@@ -55,11 +55,11 @@ public class ProjectPlan {
 	}
 	
 	private void addProject(String id, String name) {
-		projects.put(id,new Project(name));
+		projects.put(id,new Project(id, name));
 	}
 	
 	private void addProjectWithLeader(String id, String name, String leader_initials) throws UnknownIDException {
-		projects.put(id,new Project(name, getEmployee(leader_initials)));
+		projects.put(id,new Project(id, name, getEmployee(leader_initials)));
 	}
 
 	private void assignActivityToWeek(Activity activity, int hours, Week week) throws FrozenException {
@@ -270,6 +270,17 @@ public class ProjectPlan {
 		return listout;
 	}	
 	
+	public String findEmployeeID(String pattern) {
+		Pattern p = Pattern.compile(pattern);
+		String id = "";
+		for(Employee employee : employees.values()) {
+			if(p.matcher(employee.getName()).matches()) {
+				id = employee.getInitials();
+			}
+		}
+		return id;
+	}	
+	
 	public ArrayList<Project> findProject(String pattern) {
 		ArrayList<Project> listout = new ArrayList<Project>();
 		Pattern p = Pattern.compile(pattern);
@@ -279,5 +290,15 @@ public class ProjectPlan {
 			}
 		}
 		return listout;
+	}
+	public String findProjectID(String pattern) {
+		Pattern p = Pattern.compile(pattern);
+		String id = "";
+		for(Project project : projects.values()) {
+			if(p.matcher(project.getName()).matches()) {
+				id = project.getId();
+			}
+		}
+		return id;
 	}
 }
