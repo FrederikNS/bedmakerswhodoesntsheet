@@ -247,6 +247,17 @@ public class ProjectPlan {
 		}
 		return listout;
 	}
+	
+	public String findActivityID(String pattern) {
+		Pattern p = Pattern.compile(pattern);
+		String id = "";
+		for(Activity a: activities.values()) {
+			if(p.matcher(a.getName()).matches()) {
+				id = a.getID();
+			}
+		}
+		return id;
+	}
 
 	public ArrayList<Employee> findEmployee(String pattern) {
 		ArrayList<Employee> listout = new ArrayList<Employee>();

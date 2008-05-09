@@ -13,7 +13,7 @@ public class Activity {
 	private ArrayList<Employee> assignedEmployees;
 	private ArrayList<Employee> assistants;
 	//private float workload;
-	private HashMap<Employee, Float> progressbyemployee;
+	private HashMap<Employee, Float> progressByEmployee;
 	private final String id;
 	private boolean frozen;
 	private boolean hasparent;
@@ -44,7 +44,7 @@ public class Activity {
 		weeks = new HashMap<Week, Float>();
 		assistants = new ArrayList<Employee>();
 		assignedEmployees = new ArrayList<Employee>();
-		progressbyemployee = new HashMap<Employee, Float>();
+		progressByEmployee = new HashMap<Employee, Float>();
 	}
 
 	public void setParent(Project parentProject) throws FrozenException {
@@ -138,7 +138,7 @@ public class Activity {
 
 	public float getProgress() {
 		float progress = 0;
-		for (Employee e : progressbyemployee.keySet())
+		for (Employee e : progressByEmployee.keySet())
 			progress += e.getProgresInActivity(this);
 		return progress;
 	}
@@ -153,10 +153,10 @@ public class Activity {
 	public void registerProgressFromEmployee(float hours, Employee employee)
 			throws FrozenException {
 		checkFreeze();
-		if (progressbyemployee.containsKey(employee)) {
-			hours += progressbyemployee.get(employee);
+		if (progressByEmployee.containsKey(employee)) {
+			hours += progressByEmployee.get(employee);
 		}
-		progressbyemployee.put(employee, hours);
+		progressByEmployee.put(employee, hours);
 	}
 
 	public String toString() {
