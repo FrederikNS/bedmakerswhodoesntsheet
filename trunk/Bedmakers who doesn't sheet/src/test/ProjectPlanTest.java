@@ -12,6 +12,11 @@ import projectplanner.UnknownIDException;
 
 public class ProjectPlanTest extends TestCase {
 
+	
+	/**
+	 * This code is currently unreadable. I'm currently cleaning it up, but until then:
+	 * Enjoy.
+	 */
 	private ProjectPlan projectPlan;
 	private Activity active;
 	private Project project;
@@ -236,8 +241,126 @@ public class ProjectPlanTest extends TestCase {
 	
 	/**
 	 * In this test, we try to add an existing activity to a project.
+	 * Afterwards, we try to remove it.
+	 * The exceptions are tested in previous tests.
 	 */
-	public void testAddActivityToProject() {
+	public void testAddRemoveActivityToProject() {
+//First, we add an activity and a project. We know this works.
+		String activityName = "TestActivity";
+		String projectName = "TestProject";
+		projectPlan.addActivity(activityName);
+		projectPlan.addProject(projectName);
+		try {
+			projectPlan.addActivityToProject(projectPlan.findActivityID(activityName), projectPlan.findProjectID(projectName));
+		} catch (FrozenException e) {
+			System.out.println("The activity or project is frozen");
+			fail();
+		} catch (UnknownIDException e) {
+			System.out.println("The activity or project ID could not be found");
+			fail();
+		}
+		projects = projectPlan.getProjects();
+		project = projects.get(projectPlan.findProjectID(projectName));
+//Knowing we only added the one activity, we check to see if the project contains it.
+		assertEquals(project.getActivities(), projectPlan.findActivity(activityName));
 		
+//We then try to remove it again.
+		try {
+			projectPlan.removeActivityFromProject(projectPlan.findActivityID(activityName), projectPlan.findProjectID(projectName));
+		} catch (FrozenException e) {
+			System.out.println("The activity or project is frozen");
+			fail();
+		} catch (UnknownIDException e) {
+			System.out.println("The activity or project ID could not be found");
+			fail();
+		}
+//We assert it should now not contain the activity.
+		assertNotSame(project.getActivities(), projectPlan.findActivity(activityName));
+		assertFalse(project.getActivities().contains(projectPlan.findActivity(activityName)));
 	}
+
+	/**
+	 * This test will attempt to rename an activity.
+	 * Exceptions tested in previous tests.
+	 */
+	public void testRenameActivity() {
+		String activityName = "TestActivity";
+		String newName = "NewName";
+		projectPlan.addActivity(activityName);
+		try {
+			projectPlan.renameActivity(projectPlan.findActivityID(activityName), newName);
+		} catch (FrozenException e) {
+			System.out.println("Activity is frozen");
+		} catch (UnknownIDException e) {
+			System.out.println("Activity not found from ID");
+		}
+		activities = projectPlan.getActivities();
+		active = activities.get((projectPlan.findActivityID(newName)));
+		assertTrue(active instanceof Activity);
+		assertTrue(projectPlan.findActivity(newName).contains(active));
+		assertFalse(projectPlan.findActivity(activityName).contains(active));
+	}
+	
+	/**
+	 * This test will test the following:
+	 * Renaming a project, assigning a leader to it and setting a start and end week for it.
+	 */
+	public void testProjectFeatures() {
+		String projectName = "TestProject";
+		String newName = "NewName";
+		projectPlan.addProject(projectName);
+		
+//First, we rename the project, and test if it's found in the project plan under that name
+//And not the other.
+		try {
+			projectPlan.renameProject(projectPlan.findProjectID(projectName), newName);
+		} catch (FrozenException e) {
+			System.out.println("Project is frozen.");
+			fail();
+		} catch (UnknownIDException e) {
+			System.out.println("Project ID doesn't correspond to a project");
+			fail();
+		}
+		projects = projectPlan.getProjects();
+		String project_id = projectPlan.findProjectID(newName);
+		project = projects.get(project_id);
+		assertTrue(projectPlan.findProject(newName).contains(project));
+		assertFalse(projectPlan.findProject(projectName).contains(project));
+		
+//We then Assign a leader to it, and test to see if he is assigned properly.
+		String employeeName = "TestEmployee";
+		String initials = "TE";
+		projectPlan.addEmployee(employeeName, initials);
+		employees = projectPlan.getEmployees();
+		employee = employees.get(initials);
+		try {
+			projectPlan.assignLeaderToProject(initials, project_id);
+		} catch (FrozenException e) {
+			System.out.println("Project frozen");
+			fail();
+		} catch (UnknownIDException e) {
+			System.out.println("ID unknown");
+			fail();
+		}
+		assertEquals(project.getLeader(), employee);
+		
+//Then the project is assigned to a start- and endweek.
+		int week_index = 4;
+		int week_end = 10;
+		try {
+			projectPlan.setProjectStartWeek(project, week_index);
+		} catch (FrozenException e) {
+			System.out.println("Project Frozen");
+			fail();
+		}
+		try {
+			projectPlan.setProjectEndWeek(project, week_end);
+		} catch (FrozenException e) {
+			System.out.println("Project Frozen");
+			fail();
+		}
+		assertTrue(week_index == project.getStartWeek());
+		assertTrue(week_end == project.getEndWeek());
+	}
+
 }

@@ -65,6 +65,14 @@ public class Project {
 		return id;
 	}
 	
+	public int getStartWeek() {
+		return startweek;
+	}
+	
+	public int getEndWeek() {
+		return endweek;
+	}
+	
 	public Employee getLeader() {
 		return leader;
 	}
@@ -97,6 +105,10 @@ public class Project {
 	
 	public ArrayList<Employee> getEmployees() {
 		return assignedEmployees;
+	}
+	
+	public ArrayList<Activity> getActivities() {
+		return activities;
 	}
 	
 //	public ArrayList<Employee> getEmployees() {
