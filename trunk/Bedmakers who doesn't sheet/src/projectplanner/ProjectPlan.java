@@ -205,6 +205,9 @@ public class ProjectPlan {
 			weeks.put(index,new Week(index));
 		return weeks.get(index);
 	}
+	public Week getWeekFromIndex(int index) {
+		return getWeek(index);
+	}
 
 	private Project getProject(String index) throws UnknownIDException {
 		if(!projects.containsKey(index)) throw new UnknownIDException(ID_EXCEPTION_TYPES.PROJECT, index);
