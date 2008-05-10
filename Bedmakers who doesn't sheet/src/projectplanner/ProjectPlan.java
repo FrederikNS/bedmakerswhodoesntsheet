@@ -102,7 +102,7 @@ public class ProjectPlan {
 	}
 
 	public void setProjectEndWeek(Project project, int week_index) throws FrozenException {
-		project.setStartWeek(week_index);
+		project.setEndWeek(week_index);
 	}
 	
 	public void assignEmployeeToActivity(Employee e, Activity a) throws FrozenException, EmployeeException {
