@@ -58,8 +58,12 @@ public class Employee {
 		return initials;
 	}
 
-	public void assignProject(Project project) throws EmployeeException, FrozenException {
+	public void assignToProject(Project project) throws EmployeeException, FrozenException {
 		checkFreeze();
+		//TODO: Check om den ansatte er assistent i nogle af projects activities og konverter.
+		//if(assistingProject.contains(project)){
+		//	throw new EmployeeException("Already assisting project");
+		//}
 		if(assignedProjects.contains(project)){
 			throw new EmployeeException("Already assigned to project");
 		}
@@ -72,7 +76,7 @@ public class Employee {
 			throw new EmployeeException("Already assigned as project leader");
 		}
 		if(!assignedProjects.contains(project)) {
-			assignProject(project);
+			assignToProject(project);
 		}
 		assignedProjectsLead.add(project);
 	}
@@ -93,7 +97,6 @@ public class Employee {
 		if(!assignedProjects.contains(activity)){
 			throw new EmployeeException("Not assigned to activity");
 		}
-		activity.removeEmployee(this);
 		assignedActivities.remove(activity);
 	}
 	
@@ -122,7 +125,6 @@ public class Employee {
 		if(!assistedActivities.contains(activity)){
 			throw new EmployeeException("Not assigned to activity");
 		}
-		activity.removeAssistant(this);
 		assistedActivities.remove(activity);
 	}	
 	
@@ -147,5 +149,12 @@ public class Employee {
 
 	public String getName() {
 		return name;
+	}
+
+	public void relieveFromProject(Project p) {
+		// TODO Auto-generated method stub
+		// Vælg, enten:
+		// Konverter til assistent på alle activities
+		// Fjern fra alle activities
 	}
 }
