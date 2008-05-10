@@ -47,7 +47,7 @@ public class Project {
 		frozen = false;
 	}
 
-	private void checkFreeze() throws FrozenException {
+	public void checkFreeze() throws FrozenException {
 		if (frozen)
 			throw new FrozenException(this);
 	}	
@@ -107,6 +107,16 @@ public class Project {
 		return assignedEmployees;
 	}
 	
+	public void addEmployee(Employee e) throws FrozenException {
+		checkFreeze();
+		assignedEmployees.add(e);
+	}
+
+	public void removeEmployee(Employee e) throws FrozenException {
+		checkFreeze();
+		assignedEmployees.remove(e);
+	}
+
 	public ArrayList<Activity> getActivities() {
 		return activities;
 	}

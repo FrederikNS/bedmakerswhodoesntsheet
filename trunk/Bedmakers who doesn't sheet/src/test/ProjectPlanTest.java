@@ -1,6 +1,7 @@
 package test;
 
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
 import projectplanner.Activity;
@@ -45,15 +46,51 @@ public class ProjectPlanTest extends TestCase {
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}
+
+
+	
+	public String findActivityID(String pattern) {
+		Pattern p = Pattern.compile(pattern);
+		String id = "";
+		for(Activity a: activities.values()) {
+			if(p.matcher(a.getName()).matches()) {
+				id = a.getID();
+			}
+		}
+		return id;
+	}
+	
+	public String findEmployeeID(String pattern) {
+		Pattern p = Pattern.compile(pattern);
+		String id = "";
+		for(Employee employee : employees.values()) {
+			if(p.matcher(employee.getName()).matches()) {
+				id = employee.getInitials();
+			}
+		}
+		return id;
+	}	
+	
+	
+	public String findProjectID(String pattern) {
+		Pattern p = Pattern.compile(pattern);
+		String id = "";
+		for(Project project : projects.values()) {
+			if(p.matcher(project.getName()).matches()) {
+				id = project.getId();
+			}
+		}
+		return id;
+	}
 	
 	private Activity findActivity(String activityName) {
 		activities = projectPlan.getActivities();
-		activity = activities.get((projectPlan.findActivityID(activityName)));
+		activity = activities.get((findActivityID(activityName)));
 		return activity;
 	}
 	private Project findProject(String projectName) {
 		projects = projectPlan.getProjects();
-		project = projects.get(projectPlan.findProjectID(projectName));
+		project = projects.get(findProjectID(projectName));
 		return project;
 	}
 	private Employee findEmployee(String employeeName){
@@ -114,7 +151,7 @@ public class ProjectPlanTest extends TestCase {
 			System.out.println("Initials could not be created from name.\nTest Passed.");
 		}
 		findEmployee(employeeName2);
-		String generatedInitials = projectPlan.findEmployeeID(employeeName2);
+		String generatedInitials = findEmployeeID(employeeName2);
 /* 
  * We first test if the employee object is added.
  * Then we see if it's in fact the correct employee, and finally, we check to see
@@ -258,7 +295,7 @@ public class ProjectPlanTest extends TestCase {
 		testAddActivity();
 		testAddProject();
 		try {
-			projectPlan.addActivityToProject(findActivity(activityName).getID(), projectPlan.findProjectID(projectName));
+			projectPlan.addActivityToProject(findActivity(activityName).getID(), findProjectID(projectName));
 		} catch (FrozenException e) {
 			System.out.println("The activity or project is frozen");
 			fail();
@@ -272,7 +309,7 @@ public class ProjectPlanTest extends TestCase {
 		
 //We then try to remove it again.
 		try {
-			projectPlan.removeActivityFromProject(findActivity(activityName).getID(), projectPlan.findProjectID(projectName));
+			projectPlan.removeActivityFromProject(findActivity(activityName).getID(), findProjectID(projectName));
 		} catch (FrozenException e) {
 			System.out.println("The activity or project is frozen");
 			fail();

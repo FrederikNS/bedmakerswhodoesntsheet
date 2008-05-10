@@ -77,9 +77,9 @@ public class ProjectPlan {
 	}
 	
 	//Depreciate?
-	private void removeActivityFromProject(Activity activity, Project project) throws FrozenException {
-		project.freezeActivity(activity);
-	}
+//	private void removeActivityFromProject(Activity activity, Project project) throws FrozenException {
+//		project.freezeActivity(activity);
+//	}
 
 	private void freezeActivity(Activity activity) throws FrozenException {
 		activity.freeze();
@@ -105,28 +105,46 @@ public class ProjectPlan {
 		project.setEndWeek(week_index);
 	}
 	
+	public void assignEmployeeToProject(Employee e, Project p) throws FrozenException, EmployeeException {
+		e.checkFreeze();
+		p.checkFreeze();
+		e.assignToProject(p);
+		p.addEmployee(e);
+	}
+
+	public void relieveEmployeeFromProject(Employee e, Project p) throws FrozenException, EmployeeException {
+		e.checkFreeze();
+		p.checkFreeze();
+		e.relieveFromProject(p);
+		p.removeEmployee(e);		
+	}
+	
 	public void assignEmployeeToActivity(Employee e, Activity a) throws FrozenException, EmployeeException {
 		e.checkFreeze();
 		a.checkFreeze();
 		e.assignToActivity(a);
+		a.assignEmployee(e);
 	}
 
 	public void relieveEmployeeFromActivity(Employee e, Activity a) throws FrozenException, EmployeeException {
 		e.checkFreeze();
 		a.checkFreeze();
 		e.relieveFromActivity(a);
+		a.removeEmployee(e);
 	}
 
 	public void assignEmployeeToAssistActivity(Employee e, Activity a) throws FrozenException, EmployeeException {
 		e.checkFreeze();
 		a.checkFreeze();
 		e.assistActivity(a);
+		a.assignEmployeeAsAssistant(e);
 	}
 
 	public void relieveEmployeeFromAssitingActivity(Employee e, Activity a) throws FrozenException, EmployeeException {
 		e.checkFreeze();
 		a.checkFreeze();
 		e.relieveFromAssistance(a);
+		a.removeAssistant(e);
 	}	
 	
 	/*
@@ -134,16 +152,22 @@ public class ProjectPlan {
 	 * (Bliver typisk kaldt udefra)
 	 */
 	
-	public void addActivity(String name) {
-		addActivity(generateNewActivityID(), name);
+	public String addActivity(String name) {
+		String id =  generateNewActivityID();
+		addActivity(id, name);
+		return id;
 	}
 	
-	public void addProject(String name) {
-		addProject(generateNewProjectID(), name);
+	public String addProject(String name) {
+		String id = generateNewProjectID();
+		addProject(id, name);
+		return id;
 	}
 	
-	public void addProjectWithLeader(String name, String leader_initials) throws UnknownIDException {
-		addProjectWithLeader(generateNewProjectID(), name, leader_initials);
+	public String addProjectWithLeader(String name, String leader_initials) throws UnknownIDException {
+		String id = generateNewProjectID();
+		addProjectWithLeader(id, name, leader_initials);
+		return id;
 	}
 	
 	public void addEmployee(String name, String initials) {
@@ -166,10 +190,10 @@ public class ProjectPlan {
 	public void addActivityToProject(String activity_id, String project_id) throws FrozenException, UnknownIDException {
 		addActivityToProject(getActivity(activity_id),getProject(project_id));
 	}
-
-	public void removeActivityFromProject(String activity_id, String project_id) throws FrozenException, UnknownIDException {
-		removeActivityFromProject(getActivity(activity_id),getProject(project_id));
-	}
+//	Depreciated - Jacob
+//	public void removeActivityFromProject(String activity_id, String project_id) throws FrozenException, UnknownIDException {
+//		removeActivityFromProject(getActivity(activity_id),getProject(project_id));
+//	}
 
 	public void freezeActivity(String activity_id) throws FrozenException, UnknownIDException {
 		freezeActivity(getActivity(activity_id));
@@ -251,17 +275,6 @@ public class ProjectPlan {
 		return listout;
 	}
 	
-	public String findActivityID(String pattern) {
-		Pattern p = Pattern.compile(pattern);
-		String id = "";
-		for(Activity a: activities.values()) {
-			if(p.matcher(a.getName()).matches()) {
-				id = a.getID();
-			}
-		}
-		return id;
-	}
-
 	public ArrayList<Employee> findEmployee(String pattern) {
 		ArrayList<Employee> listout = new ArrayList<Employee>();
 		Pattern p = Pattern.compile(pattern);
@@ -272,18 +285,7 @@ public class ProjectPlan {
 		}
 		return listout;
 	}	
-	
-	public String findEmployeeID(String pattern) {
-		Pattern p = Pattern.compile(pattern);
-		String id = "";
-		for(Employee employee : employees.values()) {
-			if(p.matcher(employee.getName()).matches()) {
-				id = employee.getInitials();
-			}
-		}
-		return id;
-	}	
-	
+
 	public ArrayList<Project> findProject(String pattern) {
 		ArrayList<Project> listout = new ArrayList<Project>();
 		Pattern p = Pattern.compile(pattern);
@@ -293,15 +295,5 @@ public class ProjectPlan {
 			}
 		}
 		return listout;
-	}
-	public String findProjectID(String pattern) {
-		Pattern p = Pattern.compile(pattern);
-		String id = "";
-		for(Project project : projects.values()) {
-			if(p.matcher(project.getName()).matches()) {
-				id = project.getId();
-			}
-		}
-		return id;
 	}
 }
