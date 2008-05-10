@@ -16,14 +16,24 @@ public class ProjectPlanTest extends TestCase {
 	/**
 	 * This code is currently unreadable. I'm currently cleaning it up, but until then:
 	 * Enjoy.
+	 * Edit: The code is slightly more readable, but I'm going to bed now..
 	 */
 	private ProjectPlan projectPlan;
-	private Activity active;
+	private Activity activity;
 	private Project project;
 	private Employee employee;
 	private HashMap<String,Activity> activities;
 	private HashMap<String,Project> projects;
 	private HashMap<String,Employee> employees;
+	String activityName = "TestActivity";
+	String projectName = "TestProject";
+	String employeeName = "TestEmployee";
+	String employeeName2 = "Test Employee";
+	String initials = "TeEm";
+	int weekIndex = 4;
+	int weekend = 10;
+	int hours = 15;
+	String newName = "NewName";
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -33,27 +43,39 @@ public class ProjectPlanTest extends TestCase {
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}
+	
+	private Activity findActivity(String activityName) {
+		activities = projectPlan.getActivities();
+		activity = activities.get((projectPlan.findActivityID(activityName)));
+		return activity;
+	}
+	private Project findProject(String projectName) {
+		projects = projectPlan.getProjects();
+		project = projects.get(projectPlan.findProjectID(projectName));
+		return project;
+	}
+	private Employee findEmployee(String employeeName){
+		employees = projectPlan.getEmployees();
+		employee = employees.get(initials);
+		return employee;
+	}
 
 	/**
 	 * In this simple test, we check if the activity is added correctly.
 	 */
-	public void testAddActivity(){
-		String activityName = "TestActivity";
+	public void testAddActivity(){		
 		projectPlan.addActivity(activityName);
-		activities = projectPlan.getActivities();
-		active = activities.get((projectPlan.findActivityID(activityName)));
-		assertTrue(active instanceof Activity);
-		assertTrue(projectPlan.findActivity(activityName).contains(active));
+		findActivity((activityName));
+		assertTrue(activity instanceof Activity);
+		assertTrue(projectPlan.findActivity(activityName).contains(activity));
 	}
 	
 	/**
 	 * In this simple test, we check if the project is added correctly.
 	 */
 	public void testAddProject() {
-		String projectName = "TestProject";
 		projectPlan.addProject(projectName);
-		projects = projectPlan.getProjects();
-		project = projects.get(projectPlan.findProjectID(projectName));
+		findProject(projectName);
 		assertTrue(project instanceof Project);
 		assertTrue(projectPlan.findProject(projectName).contains(project));
 	}
@@ -62,11 +84,8 @@ public class ProjectPlanTest extends TestCase {
 	 * In this simple test, we check if the employee is added correctly.
 	 */
 	public void testAddEmployee1() {
-		String employeeName = "TestEmployee";
-		String initials = "TE";
 		projectPlan.addEmployee(employeeName, initials);
-		employees = projectPlan.getEmployees();
-		employee = employees.get(initials);
+		findEmployee(employeeName);
 		assertTrue(employee instanceof Employee);
 		assertTrue(projectPlan.findEmployee(employeeName).contains(employee));
 	}
@@ -77,14 +96,13 @@ public class ProjectPlanTest extends TestCase {
 	 * Afterwards, we attempt to trigger the exception.
 	 */
 	public void testAddEmployee2() {
-		String employeeName = "Test Employee";
-		String initials = "TeEm"; //What the initials should be, if successful.
 		try {
-			projectPlan.addEmployee(employeeName);
+			projectPlan.addEmployee(employeeName2);
 		} catch (Exception e) {
 			System.out.println("Initials could not be created from name");
 			fail();
 		}
+		
 //Test to try and trigger the exception.
 		String failName = "T e"; //Should fail, since it doesn't contain two letters in each name.
 		try {
@@ -93,16 +111,15 @@ public class ProjectPlanTest extends TestCase {
 		} catch (Exception e) {
 			System.out.println("Initials could not be created from name.\nTest Passed.");
 		}
-		employees = projectPlan.getEmployees();
-		employee = employees.get(initials);
-		String generatedInitials = projectPlan.findEmployeeID(employeeName);
+		findEmployee(employeeName2);
+		String generatedInitials = projectPlan.findEmployeeID(employeeName2);
 /* 
  * We first test if the employee object is added.
  * Then we see if it's in fact the correct employee, and finally, we check to see
  * if the initials match the expected result.
  */
 		assertTrue(employee instanceof Employee);
-		assertTrue(projectPlan.findEmployee(employeeName).contains(employee));
+		assertTrue(projectPlan.findEmployee(employeeName2).contains(employee));
 		assertEquals(initials, generatedInitials);
 	}
 	
@@ -112,25 +129,20 @@ public class ProjectPlanTest extends TestCase {
 	 */
 	public void testAddProjectWithLeader() {
 //First, we try assigning a valid leader.
-		String projectName = "TestProject";
-		String employeeName = "TestEmployee";
-		String initials = "TE";
-		projectPlan.addEmployee(employeeName, initials);
-		String leaderInit = initials;
+		testAddEmployee1();
 		try {
-			projectPlan.addProjectWithLeader(projectName, leaderInit);
+			projectPlan.addProjectWithLeader(projectName, initials);
 		} catch (UnknownIDException e) {
 			System.out.println("The leader ID does not exist");
 			fail();
 		}
-		projects = projectPlan.getProjects();
-		project = projects.get(projectPlan.findProjectID(projectName));
+		findProject(projectName);
 		project.getLeader();
-		employees = projectPlan.getEmployees();
-		employee = employees.get(initials);
+		findEmployee(employeeName);
 		assertTrue(project instanceof Project);
 		assertTrue(projectPlan.findProject(projectName).contains(project));
 		assertEquals(project.getLeader(), employee);
+		
 //Invalid leader initials. Testing if the exception catches fire.
 		try {
 			projectPlan.addProjectWithLeader(projectName, "12Kc92Q4werad45");
@@ -147,14 +159,11 @@ public class ProjectPlanTest extends TestCase {
 	* the freeze function works.
 	**/
 	public void testAssignActivityToWeek() {
-		String activityName = "TestActivity";
-		int weekIndex = 4;
-		int hours = 15;
-		projectPlan.addActivity(activityName);
+		testAddActivity();
 		
 //First, a regular activity that should work out fine.
 		try {
-			projectPlan.assignActivityToWeek(projectPlan.findActivityID(activityName), hours, weekIndex);
+			projectPlan.assignActivityToWeek(findActivity(activityName).getID(), hours, weekIndex);
 		} catch (FrozenException e) {
 			System.out.println("Activity is frozen and unavailable");
 			fail();
@@ -183,7 +192,7 @@ public class ProjectPlanTest extends TestCase {
 //We then try freezing a valid activity and then test to see if we can 
 //assign it to a week. This serves to test both the freeze method and the freeze exception.
 		try {
-			projectPlan.freezeActivity(projectPlan.findActivityID(activityName));
+			projectPlan.freezeActivity(findActivity(activityName).getID());
 		} catch (FrozenException e) {
 			System.out.println("Activity is already frozen");
 			fail();
@@ -193,7 +202,7 @@ public class ProjectPlanTest extends TestCase {
 		}
 		//Adding the frozen activity.
 		try {
-			projectPlan.assignActivityToWeek(projectPlan.findActivityID(activityName), hours, weekIndex);
+			projectPlan.assignActivityToWeek(findActivity(activityName).getID(), hours, weekIndex);
 			fail();
 		} catch (FrozenException e) {
 			System.out.println("Activity is frozen and unavailable\nTest Passed.");
@@ -209,14 +218,11 @@ public class ProjectPlanTest extends TestCase {
 	 * since this is tested in the previous tests. We expect the same of the ID exception.
 	 */
 	public void testRemoveActivityFromWeek() {
-		String activityName = "TestActivity";
-		int weekIndex = 4;
-		int hours = 15;
-		projectPlan.addActivity(activityName);
+		testAddActivity();
 		
 //First, adding a regular activity that should work out fine.
 		try {
-			projectPlan.assignActivityToWeek(projectPlan.findActivityID(activityName), hours, weekIndex);
+			projectPlan.assignActivityToWeek(findActivity(activityName).getID(), hours, weekIndex);
 		} catch (FrozenException e) {
 			System.out.println("Activity is frozen and unavailable");
 			fail();
@@ -224,9 +230,10 @@ public class ProjectPlanTest extends TestCase {
 			System.out.println("Activity could not be found from ID");
 			fail();
 		}
+		
 //Then we remove it. Knowing from the last test that it adds correctly.
 		try {
-			projectPlan.removeActivityFromWeek(projectPlan.findActivityID(activityName), weekIndex);
+			projectPlan.removeActivityFromWeek(findActivity(activityName).getID(), weekIndex);
 		} catch (FrozenException e) {
 			System.out.println("The activity is frozen and cannot be removed");
 			fail();
@@ -246,12 +253,10 @@ public class ProjectPlanTest extends TestCase {
 	 */
 	public void testAddRemoveActivityToProject() {
 //First, we add an activity and a project. We know this works.
-		String activityName = "TestActivity";
-		String projectName = "TestProject";
-		projectPlan.addActivity(activityName);
-		projectPlan.addProject(projectName);
+		testAddActivity();
+		testAddProject();
 		try {
-			projectPlan.addActivityToProject(projectPlan.findActivityID(activityName), projectPlan.findProjectID(projectName));
+			projectPlan.addActivityToProject(findActivity(activityName).getID(), projectPlan.findProjectID(projectName));
 		} catch (FrozenException e) {
 			System.out.println("The activity or project is frozen");
 			fail();
@@ -259,14 +264,13 @@ public class ProjectPlanTest extends TestCase {
 			System.out.println("The activity or project ID could not be found");
 			fail();
 		}
-		projects = projectPlan.getProjects();
-		project = projects.get(projectPlan.findProjectID(projectName));
+		findProject(projectName);
 //Knowing we only added the one activity, we check to see if the project contains it.
 		assertEquals(project.getActivities(), projectPlan.findActivity(activityName));
 		
 //We then try to remove it again.
 		try {
-			projectPlan.removeActivityFromProject(projectPlan.findActivityID(activityName), projectPlan.findProjectID(projectName));
+			projectPlan.removeActivityFromProject(findActivity(activityName).getID(), projectPlan.findProjectID(projectName));
 		} catch (FrozenException e) {
 			System.out.println("The activity or project is frozen");
 			fail();
@@ -284,21 +288,19 @@ public class ProjectPlanTest extends TestCase {
 	 * Exceptions tested in previous tests.
 	 */
 	public void testRenameActivity() {
-		String activityName = "TestActivity";
-		String newName = "NewName";
-		projectPlan.addActivity(activityName);
+		testAddActivity();
 		try {
-			projectPlan.renameActivity(projectPlan.findActivityID(activityName), newName);
+			projectPlan.renameActivity(findActivity(activityName).getID(), newName);
 		} catch (FrozenException e) {
 			System.out.println("Activity is frozen");
 		} catch (UnknownIDException e) {
 			System.out.println("Activity not found from ID");
 		}
-		activities = projectPlan.getActivities();
-		active = activities.get((projectPlan.findActivityID(newName)));
-		assertTrue(active instanceof Activity);
-		assertTrue(projectPlan.findActivity(newName).contains(active));
-		assertFalse(projectPlan.findActivity(activityName).contains(active));
+		
+		findActivity(newName);
+		assertTrue(activity instanceof Activity);
+		assertTrue(projectPlan.findActivity(newName).contains(activity));
+		assertFalse(projectPlan.findActivity(activityName).contains(activity));
 	}
 	
 	/**
@@ -306,14 +308,12 @@ public class ProjectPlanTest extends TestCase {
 	 * Renaming a project, assigning a leader to it and setting a start and end week for it.
 	 */
 	public void testProjectFeatures() {
-		String projectName = "TestProject";
-		String newName = "NewName";
-		projectPlan.addProject(projectName);
+		testAddProject();
 		
 //First, we rename the project, and test if it's found in the project plan under that name
 //And not the other.
 		try {
-			projectPlan.renameProject(projectPlan.findProjectID(projectName), newName);
+			projectPlan.renameProject(findProject(projectName).getId(), newName);
 		} catch (FrozenException e) {
 			System.out.println("Project is frozen.");
 			fail();
@@ -321,18 +321,15 @@ public class ProjectPlanTest extends TestCase {
 			System.out.println("Project ID doesn't correspond to a project");
 			fail();
 		}
-		projects = projectPlan.getProjects();
-		String project_id = projectPlan.findProjectID(newName);
-		project = projects.get(project_id);
+		findProject(newName);
+		String project_id = findProject(newName).getId();
+		
 		assertTrue(projectPlan.findProject(newName).contains(project));
 		assertFalse(projectPlan.findProject(projectName).contains(project));
 		
 //We then Assign a leader to it, and test to see if he is assigned properly.
-		String employeeName = "TestEmployee";
-		String initials = "TE";
-		projectPlan.addEmployee(employeeName, initials);
-		employees = projectPlan.getEmployees();
-		employee = employees.get(initials);
+		testAddEmployee1();
+		findEmployee(employeeName);
 		try {
 			projectPlan.assignLeaderToProject(initials, project_id);
 		} catch (FrozenException e) {
@@ -345,22 +342,20 @@ public class ProjectPlanTest extends TestCase {
 		assertEquals(project.getLeader(), employee);
 		
 //Then the project is assigned to a start- and endweek.
-		int week_index = 4;
-		int week_end = 10;
 		try {
-			projectPlan.setProjectStartWeek(project, week_index);
+			projectPlan.setProjectStartWeek(project, weekIndex);
 		} catch (FrozenException e) {
 			System.out.println("Project Frozen");
 			fail();
 		}
 		try {
-			projectPlan.setProjectEndWeek(project, week_end);
+			projectPlan.setProjectEndWeek(project, weekend);
 		} catch (FrozenException e) {
 			System.out.println("Project Frozen");
 			fail();
 		}
-		assertTrue(week_index == project.getStartWeek());
-		assertTrue(week_end == project.getEndWeek());
+		assertTrue(weekIndex == project.getStartWeek());
+		assertTrue(weekend == project.getEndWeek());
 	}
 
 }
