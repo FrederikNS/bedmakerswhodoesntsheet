@@ -25,15 +25,17 @@ public class ProjectPlanTest extends TestCase {
 	private HashMap<String,Activity> activities;
 	private HashMap<String,Project> projects;
 	private HashMap<String,Employee> employees;
+
+	//Variables used in the tests, pretty chronological. Saves redeclaring them in each test.
 	String activityName = "TestActivity";
 	String projectName = "TestProject";
 	String employeeName = "TestEmployee";
 	String employeeName2 = "Test Employee";
 	String initials = "TeEm";
+	String newName = "NewName";
 	int weekIndex = 4;
 	int weekend = 10;
-	int hours = 15;
-	String newName = "NewName";
+	int hours = 15;	
 
 	protected void setUp() throws Exception {
 		super.setUp();
