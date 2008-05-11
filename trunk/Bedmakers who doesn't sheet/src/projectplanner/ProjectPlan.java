@@ -220,6 +220,14 @@ public class ProjectPlan {
 	private void freezeEmployee(Employee e) throws FrozenException {
 		e.freeze();
 	}
+	
+	private HashMap<Activity, Float> getWorkDoneByEmployee(Employee e) {
+		return e.getWorkDone();
+	}
+	
+	private float getAssignedHoursForWeek(Week week) {
+		return week.getAssignedHours();
+	}
 
 	/*
 	 * WRAPPER FUNKTIONER MED ID VÆRDIER 
@@ -388,7 +396,28 @@ public class ProjectPlan {
 	public void freezeEmployee(String emp_id) throws FrozenException, UnknownIDException {
 		freezeEmployee(getEmployee(emp_id));
 	}
-
+	
+	public HashMap<Activity,Float> getWorkDoneByEmployee(String emp_id) throws UnknownIDException {
+		return getWorkDoneByEmployee(getEmployee(emp_id));
+	}
+	//getAssignedHours
+	public ArrayList<Employee> getLazyEmployeesForWeek(int index) {
+		ArrayList<Employee> lazypeons = new ArrayList<Employee>(employees.values());
+		Week week = getWeek(index);
+		for(Activity activity : week.getScheduledActivities()) {
+			ArrayList<Employee> employees_in_activity = new ArrayList<Employee>();
+			employees_in_activity.addAll(activity.getAssignedEmployees());
+			employees_in_activity.addAll(activity.getAssistants());
+			for(Employee employee : employees_in_activity)
+				lazypeons.remove(employee);
+		}
+		return lazypeons;
+	}
+	
+	public float getAssignedHoursForWeek(int index) {
+		return getAssignedHoursForWeek(getWeek(index));
+	}
+	
 	/*
 	 * Container wrappers
 	 */
