@@ -246,13 +246,14 @@ public class ProjectPlan {
 		return id;
 	}
 	
-	public String addProjectWithLeader(String name, String leader_initials) throws UnknownIDException {
+	public String addProjectWithLeader(String name, String leader_initials) throws Exception, UnknownIDException {
 		String id = generateNewProjectID();
 		addProjectWithLeader(id, name, leader_initials);
 		return id;
 	}
 	
-	public void addEmployee(String name, String initials) {
+	public void addEmployee(String name, String initials) throws Exception {
+		if(employees.containsKey(initials)) throw new Exception("An employee with the initials " + initials + " already excists.");
 		employees.put(initials, new Employee(name, initials));
 	}
 
@@ -400,7 +401,15 @@ public class ProjectPlan {
 	public HashMap<Activity,Float> getWorkDoneByEmployee(String emp_id) throws UnknownIDException {
 		return getWorkDoneByEmployee(getEmployee(emp_id));
 	}
-	//getAssignedHours
+	
+	/*
+	 * lazypeons <- Liste over alle ansatte
+	 * For alle aktiviter i ugen
+	 *   Fjern alle ansatte i aktiviteten fra lazypeons
+	 * For alle ansatte i lazypeons
+	 *   Fjern alle uarbejdsdygtige (frosne) ansatte
+	 */
+	
 	public ArrayList<Employee> getLazyEmployeesForWeek(int index) {
 		ArrayList<Employee> lazypeons = new ArrayList<Employee>(employees.values());
 		Week week = getWeek(index);
@@ -411,6 +420,9 @@ public class ProjectPlan {
 			for(Employee employee : employees_in_activity)
 				lazypeons.remove(employee);
 		}
+		for(Employee e : lazypeons)
+			if(e.isFrozen())
+				lazypeons.remove(e);
 		return lazypeons;
 	}
 	
