@@ -108,7 +108,7 @@ public class Activity {
 	}
 
 	public float getHoursForWeek(Week week) {
-		 // FIXME: Hurtigt fix, burde throw exception
+		 // FIXME: Burde den throwe exception?
 		if(weeklyWorkload.containsKey(week)) return 0;
 		return weeklyWorkload.get(week);
 	}
