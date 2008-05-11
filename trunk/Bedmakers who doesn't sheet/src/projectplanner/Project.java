@@ -6,11 +6,11 @@ public class Project {
 	private String name;
 	private String id;
 	private ArrayList<Activity> activities;
+	private ArrayList<Employee> assignedEmployees;
 	private Employee leader;
 	boolean frozen;
 	int startweek;
 	int endweek;
-	private ArrayList<Employee> assignedEmployees;
 	
 	public Project(String id, String name) {
 		startweek = 0;

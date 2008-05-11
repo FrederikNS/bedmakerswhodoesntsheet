@@ -8,7 +8,7 @@ public class Activity {
 	private Project parentProject;
 	private HashMap<Week, Float> weeklyWorkload;
 	private ArrayList<Employee> assignedEmployees;
-	private ArrayList<Employee> assistants;
+	//private ArrayList<Employee> assistants;
 	private HashMap<Employee, Float> progressByEmployee;
 	private final String id;
 	private boolean frozen;
@@ -21,7 +21,7 @@ public class Activity {
 		this.name = name;
 		this.parentProject = null;
 		weeklyWorkload = new HashMap<Week, Float>();
-		assistants = new ArrayList<Employee>();
+		//assistants = new ArrayList<Employee>();
 		assignedEmployees = new ArrayList<Employee>();
 	}
 
@@ -32,7 +32,7 @@ public class Activity {
 		this.name = name;
 		this.parentProject = parent;
 		weeklyWorkload = new HashMap<Week, Float>();
-		assistants = new ArrayList<Employee>();
+		//assistants = new ArrayList<Employee>();
 		assignedEmployees = new ArrayList<Employee>();
 		progressByEmployee = new HashMap<Employee, Float>();
 	}
@@ -55,6 +55,23 @@ public class Activity {
 
 	public void unfreeze() {
 		frozen = false;
+		/*
+		for(Employee e : assignedEmployees) {
+			if(!e.isAssignedToProject(this.parentProject) && !e.isFrozen()) {
+				try {
+					removeEmployee(e);
+					assignEmployeeAsAssistant(e);
+				} catch (Exception err) { } // Sker aldrig
+			}
+		}
+		for(Employee e : assistants) {
+			if(e.isAssignedToProject(this.parentProject) && !e.isFrozen()) {
+				try {
+					removeAssistant(e);
+					assignEmployee(e);
+				} catch (Exception err) { } // Sker aldrig
+			}
+		}*/
 	}
 
 	public void checkFreeze() throws FrozenException {
@@ -85,21 +102,21 @@ public class Activity {
 		checkFreeze();
 		assignedEmployees.add(e);
 	}
-
+	/*
 	public void assignEmployeeAsAssistant(Employee e) throws FrozenException {
 		checkFreeze();
 		if (!assignedEmployees.contains(e))
 			assistants.add(e);
-	}
+	}*/
 
 	public ArrayList<Employee> getAssignedEmployees() {
 		return assignedEmployees;
 	}
-
+/*
 	public ArrayList<Employee> getAssistants() {
 		return assistants;
 	}
-
+*/
 	public void addWeek(Week week, float hours) throws FrozenException {
 		checkFreeze();
 		weeklyWorkload.put(week, hours);
@@ -115,12 +132,12 @@ public class Activity {
 		if(weeklyWorkload.containsKey(week)) return 0;
 		return weeklyWorkload.get(week);
 	}
-
+/*
 	public void removeAssistant(Employee employee) throws FrozenException {
 		checkFreeze();
 		assistants.remove(employee);
 	}
-
+*/
 	public void removeEmployee(Employee employee) throws FrozenException {
 		checkFreeze();
 		assignedEmployees.remove(employee);
