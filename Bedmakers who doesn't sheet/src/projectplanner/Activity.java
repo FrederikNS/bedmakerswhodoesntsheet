@@ -58,6 +58,9 @@ public class Activity {
 	}
 
 	public void checkFreeze() throws FrozenException {
+		if(hasparent) {
+			parentProject.checkFreeze();
+		}
 		if (frozen)
 			throw new FrozenException(this);
 	}	

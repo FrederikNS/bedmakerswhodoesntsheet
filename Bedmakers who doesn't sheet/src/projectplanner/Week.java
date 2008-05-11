@@ -24,6 +24,10 @@ public class Week {
 		scheduledActivities.remove(activity);
 	}
 	
+	public ArrayList<Activity> getScheduledActivities() {
+		return scheduledActivities;
+	}
+	
 	public float getAssignedHours() {
 		float hoursum = 0;
 		for(Activity activity : scheduledActivities) {

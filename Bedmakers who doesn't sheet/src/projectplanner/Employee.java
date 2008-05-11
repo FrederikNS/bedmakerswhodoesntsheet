@@ -178,4 +178,8 @@ public class Employee {
 	public ArrayList<Project> getProjectsBeingLead() {
 		return assignedProjectsLead;
 	}
+	
+	public HashMap<Activity, Float> getWorkDone() {
+		return progress;
+	}
 }
