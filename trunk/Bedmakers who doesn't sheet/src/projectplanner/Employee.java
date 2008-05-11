@@ -89,12 +89,15 @@ public class Employee {
 		if(!assignedProjects.contains(activity.getParentProject())) {
 			throw new EmployeeException("Not assigned to project");
 		}
+		if(assistedActivities.contains(activity)) {
+			throw new EmployeeException("Already assigned to activity as assistant");
+		}
 		assignedActivities.add(activity);
 	}
 
 	public void relieveFromActivity(Activity activity) throws EmployeeException, FrozenException {
 		checkFreeze();
-		if(!assignedProjects.contains(activity)){
+		if(!assignedActivities.contains(activity)){
 			throw new EmployeeException("Not assigned to activity");
 		}
 		assignedActivities.remove(activity);
@@ -113,9 +116,11 @@ public class Employee {
 
 	public void assistActivity(Activity activity) throws EmployeeException, FrozenException {
 		checkFreeze();
-		activity.assignEmployeeAsAssistant(this);
 		if(assignedProjects.contains(activity)){
 			throw new EmployeeException("Already assigned to project");
+		}
+		if(assistedActivities.contains(activity)) {
+			throw new EmployeeException("Already assisting project");
 		}
 		assistedActivities.add(activity);
 	}
@@ -123,18 +128,20 @@ public class Employee {
 	public void relieveFromAssistance(Activity activity) throws EmployeeException, FrozenException {
 		checkFreeze();
 		if(!assistedActivities.contains(activity)){
-			throw new EmployeeException("Not assigned to activity");
+			throw new EmployeeException("Not assigned to activity as assistant");
 		}
 		assistedActivities.remove(activity);
 	}	
 	
-	public void registerProgressInActivity(float hours, Activity a) throws FrozenException {
+	public void registerProgressInActivity(float hours, Activity a) throws FrozenException, EmployeeException {
 		checkFreeze();
+		if(!assignedProjects.contains(a) && !assistedActivities.contains(a)) {
+			throw new EmployeeException("Not assigned/assisting project");
+		}
 		if(progress.containsKey(a)) {
 			hours += progress.get(a);
 		}
 		progress.put(a, hours);
-		a.registerProgressFromEmployee(hours, this);
 	}
 	
 	public float getProgresInActivity(Activity a) {
@@ -151,10 +158,19 @@ public class Employee {
 		return name;
 	}
 
-	public void relieveFromProject(Project p) {
-		// TODO Auto-generated method stub
-		// Vælg, enten:
-		// Konverter til assistent på alle activities
-		// Fjern fra alle activities
+	public void relieveFromProject(Project project, boolean reassignasassistant) throws EmployeeException, FrozenException {
+		checkFreeze();
+		if(!assignedProjects.contains(project)) {
+			throw new EmployeeException("Not assigned to project");
+		}
+		assignedProjects.remove(project);
+		for(Activity activity : project.getActivities()) {
+			if(assignedActivities.contains(activity)) {
+				relieveFromActivity(activity);
+				if(reassignasassistant) {
+					assistActivity(activity);
+				}
+			}
+		}
 	}
 }

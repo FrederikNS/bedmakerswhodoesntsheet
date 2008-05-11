@@ -112,10 +112,10 @@ public class ProjectPlan {
 		p.addEmployee(e);
 	}
 
-	public void relieveEmployeeFromProject(Employee e, Project p) throws FrozenException, EmployeeException {
+	public void relieveEmployeeFromProject(Employee e, Project p, boolean reassignasassistant) throws FrozenException, EmployeeException {
 		e.checkFreeze();
 		p.checkFreeze();
-		e.relieveFromProject(p);
+		e.relieveFromProject(p, reassignasassistant);
 		p.removeEmployee(e);		
 	}
 	
@@ -146,6 +146,13 @@ public class ProjectPlan {
 		e.relieveFromAssistance(a);
 		a.removeAssistant(e);
 	}	
+	
+	public void registerEmployeeProgressInActivity(Employee e, float hours, Activity a) throws FrozenException, EmployeeException {
+		a.checkFreeze();
+		e.checkFreeze();
+		e.registerProgressInActivity(hours, a);
+		a.registerProgressFromEmployee(hours, e);		
+	}
 	
 	/*
 	 * WRAPPER FUNKTIONER MED ID VÆRDIER 
@@ -217,6 +224,34 @@ public class ProjectPlan {
 
 	public void setProjectEndWeek(String project_id, int week) throws FrozenException, UnknownIDException {
 		setProjectEndWeek(getProject(project_id), week);
+	}
+	
+	public void assignEmployeeToProject(String emp_id, String project_id) throws FrozenException, EmployeeException, UnknownIDException {
+		assignEmployeeToProject(getEmployee(emp_id), getProject(project_id));
+	}
+
+	public void relieveEmployeeFromProject(String emp_id, String project_id, boolean reassignasassistant) throws FrozenException, EmployeeException, UnknownIDException {
+		relieveEmployeeFromProject(getEmployee(emp_id), getProject(project_id), reassignasassistant);
+	}
+	
+	public void assignEmployeeToActivity(String emp_id, String act_id) throws FrozenException, EmployeeException, UnknownIDException {
+		assignEmployeeToActivity(getEmployee(emp_id), getActivity(act_id));
+	}
+
+	public void relieveEmployeeFromActivity(String emp_id, String act_id) throws FrozenException, EmployeeException, UnknownIDException {
+		relieveEmployeeFromActivity(getEmployee(emp_id), getActivity(act_id));
+	}
+
+	public void assignEmployeeToAssistActivity(String emp_id, String act_id) throws FrozenException, EmployeeException, UnknownIDException {
+		assignEmployeeToAssistActivity(getEmployee(emp_id), getActivity(act_id));
+	}
+
+	public void relieveEmployeeFromAssitingActivity(String emp_id, String act_id) throws FrozenException, EmployeeException, UnknownIDException {
+		relieveEmployeeFromAssitingActivity(getEmployee(emp_id), getActivity(act_id));
+	}	
+	
+	public void registerEmployeeProgressInActivity(String emp_id, float hours, String act_id) throws FrozenException, EmployeeException, UnknownIDException {
+		registerEmployeeProgressInActivity(getEmployee(emp_id), hours, getActivity(act_id));
 	}
 	
 	/*
