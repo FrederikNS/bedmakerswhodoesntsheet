@@ -345,15 +345,18 @@ public class CommandLineInterface {
 			break;
 		case WEEK:
 			if(id != null){
-				number = Integer.parseInt(id);
+				int number = Integer.parseInt(id);
+				System.out.println("Number of Projects: ");
+				System.out.println("Number of Activities: ");
 				System.out.println("Running Projects: ");
-				System.out.println("Running Activities:");
-				System.out.println("");
+				System.out.println("Running Activities: ");
+				System.out.println("Occupied Employees: ");
+				System.out.println("Employees With Spare Time: ");
 			}
 		}
 	}
 	public void helpFunc(){
-
+		System.out.println("");
 	}
 	public void assignFunc(){
 		switch(Commands.values()[commandInt[1]]){
