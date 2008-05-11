@@ -9,10 +9,10 @@ public class Employee {
 
 	private String name;
 	private String initials;
-	private ArrayList<Activity> assignedActivities;
+	private HashMap<Activity,Boolean> assignedActivities;
 	private ArrayList<Project> assignedProjects;
 	private ArrayList<Project> assignedProjectsLead;
-	private ArrayList<Activity> assistedActivities;
+	//private ArrayList<Activity> assistedActivities;
 	private HashMap<Activity,Float> progress;
 	private boolean frozen;
 	//ArrayList<Project> assistingProject;
@@ -21,9 +21,10 @@ public class Employee {
 		frozen = false;
 		this.name = name;
 		this.initials = initials;
-		assignedActivities = new ArrayList<Activity>();
+		assignedActivities = new HashMap<Activity,Boolean>();
 		assignedProjects = new ArrayList<Project>();
 		assignedProjectsLead = new ArrayList<Project>();
+		//assistedActivities = new ArrayList<Activity>();
 	}
 
 	public static String generateInitialsFromName(String name) throws Exception{
@@ -60,71 +61,95 @@ public class Employee {
 
 	public void assignToProject(Project project) throws EmployeeException, FrozenException {
 		checkFreeze();
-		//TODO: Check om den ansatte er assistent i nogle af projects activities og konverter.
-		//if(assistingProject.contains(project)){
-		//	throw new EmployeeException("Already assisting project");
-		//}
 		if(assignedProjects.contains(project)){
 			throw new EmployeeException("Already assigned to project");
 		}
 		assignedProjects.add(project);
+		for(Activity a : assignedActivities.keySet()) {
+			if(a.getParentProject()==project) {
+				relieveFromAssistance(a);
+				assignToActivity(a);
+			}
+		}
+	}
+	
+	public boolean isLeaderOfProject(Project p) {
+		return assignedProjectsLead.contains(p);
+	}
+	
+	public boolean isAssignedToProject(Project p) {
+		return assignedProjects.contains(p);
+	}
+	
+	public boolean isAssignedToActivity(Activity a) {
+		return assignedActivities.keySet().contains(a);
+	}
+
+	public boolean isAssignedToActivityAsEmployee(Activity a) {
+		if(!isAssignedToActivity(a)) return false;
+		return !assignedActivities.get(a);
+	}
+
+	public boolean isAssignedToActivityAsAssistant(Activity a) {
+		if(!isAssignedToActivity(a)) return false;
+		return assignedActivities.get(a);
 	}
 
 	public void assignProjectLead(Project project) throws EmployeeException, FrozenException {
 		checkFreeze();
-		if(assignedProjectsLead.contains(project)) {
+		if(isLeaderOfProject(project))
 			throw new EmployeeException("Already assigned as project leader");
-		}
-		if(!assignedProjects.contains(project)) {
+
+		if(!isAssignedToProject(project)) 
 			assignToProject(project);
-		}
+		
 		assignedProjectsLead.add(project);
 	}
 
 	public void assignToActivity(Activity activity) throws EmployeeException, FrozenException {
 		checkFreeze();
-		if(assignedActivities.contains(activity)){
+		if(isAssignedToActivityAsEmployee(activity))
 			throw new EmployeeException("Already assigned to activity");
-		}
-		if(!assignedProjects.contains(activity.getParentProject())) {
-			throw new EmployeeException("Not assigned to project");
-		}
-		if(assistedActivities.contains(activity)) {
+
+		if(isAssignedToActivityAsAssistant(activity))
 			throw new EmployeeException("Already assigned to activity as assistant");
-		}
-		assignedActivities.add(activity);
+
+		if(!isAssignedToProject(activity.getParentProject()))
+			throw new EmployeeException("Not assigned to project");
+
+		assignedActivities.put(activity, false);
 	}
 
 	public void relieveFromActivity(Activity activity) throws EmployeeException, FrozenException {
 		checkFreeze();
-		if(!assignedActivities.contains(activity)){
+		if(!isAssignedToActivity(activity))
 			throw new EmployeeException("Not assigned to activity");
-		}
+
 		assignedActivities.remove(activity);
 	}
 	
 	public void assistActivity(Activity activity) throws EmployeeException, FrozenException {
 		checkFreeze();
-		if(assignedProjects.contains(activity)){
-			throw new EmployeeException("Already assigned to project");
+		if(isAssignedToActivityAsEmployee(activity)){
+			throw new EmployeeException("Already assigned to activity as employee");
 		}
-		if(assistedActivities.contains(activity)) {
+		if(isAssignedToActivityAsAssistant(activity)) {
 			throw new EmployeeException("Already assisting project");
 		}
-		assistedActivities.add(activity);
+		assignedActivities.put(activity,true);
 	}
 
 	public void relieveFromAssistance(Activity activity) throws EmployeeException, FrozenException {
 		checkFreeze();
-		if(!assistedActivities.contains(activity)){
+		if(!isAssignedToActivityAsAssistant(activity)){
 			throw new EmployeeException("Not assigned to activity as assistant");
 		}
-		assistedActivities.remove(activity);
+		assignedActivities.remove(activity);
 	}	
 	
 	public void registerProgressInActivity(float hours, Activity a) throws FrozenException, EmployeeException {
 		checkFreeze();
-		if(!assignedProjects.contains(a) && !assistedActivities.contains(a)) {
+		if(!isAssignedToActivity(a)) {
 			throw new EmployeeException("Not assigned/assisting project");
 		}
 		if(progress.containsKey(a)) {
@@ -154,7 +179,7 @@ public class Employee {
 		}
 		assignedProjects.remove(project);
 		for(Activity activity : project.getActivities()) {
-			if(assignedActivities.contains(activity)) {
+			if(isAssignedToActivity(activity)) {
 				relieveFromActivity(activity);
 				if(reassignasassistant) {
 					assistActivity(activity);
@@ -164,12 +189,13 @@ public class Employee {
 	}
 	
 	public ArrayList<Activity> getAssignedActivities() {
-		return assignedActivities;
+		//Late hack, works fine but is unoptimal
+		return new ArrayList<Activity>(assignedActivities.keySet());
 	}
-
+	/*
 	public ArrayList<Activity> getAssistedActivities() {
 		return assistedActivities;
-	}
+	}*/
 	
 	public ArrayList<Project> getAssignedProjects() {
 		return assignedProjects;

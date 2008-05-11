@@ -132,14 +132,14 @@ public class ProjectPlan {
 		e.checkFreeze();
 		a.checkFreeze();
 		e.assistActivity(a);
-		a.assignEmployeeAsAssistant(e);
+		a.assignEmployee(e);
 	}
 
 	private void relieveEmployeeFromAssitingActivity(Employee e, Activity a) throws FrozenException, EmployeeException {
 		e.checkFreeze();
 		a.checkFreeze();
 		e.relieveFromAssistance(a);
-		a.removeAssistant(e);
+		a.removeEmployee(e);
 	}	
 	
 	private void registerEmployeeProgressInActivity(Employee e, float hours, Activity a) throws FrozenException, EmployeeException {
@@ -165,9 +165,9 @@ public class ProjectPlan {
 		return a.getAssignedEmployees();
 	}
 
-	private ArrayList<Employee> getAssistantsToActivity(Activity a) {
+	/*private ArrayList<Employee> getAssistantsToActivity(Activity a) {
 		return a.getAssistants();
-	}
+	}*/
 	
 	private Project getParentProjectToActivity(Activity a) {
 		return a.getParentProject();
@@ -201,9 +201,9 @@ public class ProjectPlan {
 		return e.getAssignedActivities();
 	}
 
-	private ArrayList<Activity> getActivitiesAssistedByEmployee(Employee e) {
-		return e.getAssistedActivities();
-	}
+	//private ArrayList<Activity> getActivitiesAssistedByEmployee(Employee e) {
+	//	return e.getAssistedActivities();
+	//}
 	
 	private ArrayList<Project> getProjectsAssignedToEmployee(Employee e) {
 		return e.getAssignedProjects();
@@ -342,9 +342,9 @@ public class ProjectPlan {
 		return getEmployeesAssignedToActivity(getActivity(act_id));
 	}
 
-	public ArrayList<Employee> getAssistantsToActivity(String act_id) throws UnknownIDException {
+	/*public ArrayList<Employee> getAssistantsToActivity(String act_id) throws UnknownIDException {
 		return getAssistantsToActivity(getActivity(act_id));
-	}
+	}*/
 	
 	public Project getParentProjectToActivity(String act_id) throws UnknownIDException {
 		return getParentProjectToActivity(getActivity(act_id));
@@ -378,9 +378,9 @@ public class ProjectPlan {
 		return getActivitiesAssignedToEmployee(getEmployee(emp_id));
 	}
 
-	public ArrayList<Activity> getActivitiesAssistedByEmployee(String emp_id) throws UnknownIDException {
+	/*public ArrayList<Activity> getActivitiesAssistedByEmployee(String emp_id) throws UnknownIDException {
 		return getActivitiesAssistedByEmployee(getEmployee(emp_id));
-	}
+	}*/
 	
 	public ArrayList<Project> getProjectsAssignedToEmployee(String emp_id) throws UnknownIDException {
 		return getProjectsAssignedToEmployee(getEmployee(emp_id));
@@ -414,10 +414,10 @@ public class ProjectPlan {
 		ArrayList<Employee> lazypeons = new ArrayList<Employee>(employees.values());
 		Week week = getWeek(index);
 		for(Activity activity : week.getScheduledActivities()) {
-			ArrayList<Employee> employees_in_activity = new ArrayList<Employee>();
-			employees_in_activity.addAll(activity.getAssignedEmployees());
-			employees_in_activity.addAll(activity.getAssistants());
-			for(Employee employee : employees_in_activity)
+			//ArrayList<Employee> employees_in_activity = new ArrayList<Employee>();
+			//employees_in_activity.addAll(activity.getAssignedEmployees());
+			//employees_in_activity.addAll(activity.getAssistants());
+			for(Employee employee : activity.getAssignedEmployees())
 				lazypeons.remove(employee);
 		}
 		for(Employee e : lazypeons)
