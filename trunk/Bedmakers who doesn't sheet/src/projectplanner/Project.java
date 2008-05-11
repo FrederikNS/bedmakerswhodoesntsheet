@@ -121,16 +121,6 @@ public class Project {
 		return activities;
 	}
 	
-//	public ArrayList<Employee> getEmployees() {
-//		ArrayList<Employee> employees = new ArrayList<Employee>();
-//		for(Activity a : activities) {
-//			for(Employee e : a.getAssignedEmployees()) {
-//				employees.add(e);
-//			}
-//		}
-//		return employees;
-//	}
-	
 	public String toString() {
 		String out = name;
 		out += ". Start week: " + startweek + ", end week: " + endweek + ".";

@@ -103,17 +103,6 @@ public class Employee {
 		assignedActivities.remove(activity);
 	}
 	
-//	Ikke muligt, så vidt jeg ved - Jacob.
-//	public void assistProject(Project project) throws EmployeeException {
-//		if(assistingProject.contains(project)){
-//			throw new EmployeeException("Already assisting project");
-//		} else if(assignedProjects.contains(project)){
-//			throw new EmployeeException("Already assigned to project");
-//		} else {
-//			assistingProject.add(project);	
-//		}
-//	}
-
 	public void assistActivity(Activity activity) throws EmployeeException, FrozenException {
 		checkFreeze();
 		if(assignedProjects.contains(activity)){
@@ -172,5 +161,21 @@ public class Employee {
 				}
 			}
 		}
+	}
+	
+	public ArrayList<Activity> getAssignedActivities() {
+		return assignedActivities;
+	}
+
+	public ArrayList<Activity> getAssistedActivities() {
+		return assistedActivities;
+	}
+	
+	public ArrayList<Project> getAssignedProjects() {
+		return assignedProjects;
+	}
+	
+	public ArrayList<Project> getProjectsBeingLead() {
+		return assignedProjectsLead;
 	}
 }

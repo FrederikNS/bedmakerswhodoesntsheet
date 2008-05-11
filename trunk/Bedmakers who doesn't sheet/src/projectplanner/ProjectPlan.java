@@ -160,7 +160,67 @@ public class ProjectPlan {
 	private HashMap<Employee,Float> getActivityProgressByEmployee(Activity a) {
 		return a.getProgressByEmployee();
 	}
+
+	private ArrayList<Employee> getEmployeesAssignedToActivity(Activity a) {
+		return a.getAssignedEmployees();
+	}
+
+	private ArrayList<Employee> getAssistantsToActivity(Activity a) {
+		return a.getAssistants();
+	}
 	
+	private Project getParentProjectToActivity(Activity a) {
+		return a.getParentProject();
+	}
+	
+	private boolean isActivityFrozen(Activity a) {
+		return a.isFrozen();
+	}
+
+	private boolean isProjectFrozen(Project p) {
+		return p.isFrozen();
+	}
+
+	private boolean isEmployeeFrozen(Employee e) {
+		return e.isFrozen();
+	}
+	
+	private ArrayList<Activity> getActivitiesInProject(Project p) {
+		return p.getActivities();
+	}
+	
+	private ArrayList<Employee> getEmployeesAssignedToProject(Project p) {
+		return p.getEmployees();
+	}
+	
+	private Employee getProjectLeader(Project p) {
+		return p.getLeader();
+	}
+	
+	private ArrayList<Activity> getActivitiesAssignedToEmployee(Employee e) {
+		return e.getAssignedActivities();
+	}
+
+	private ArrayList<Activity> getActivitiesAssistedByEmployee(Employee e) {
+		return e.getAssistedActivities();
+	}
+	
+	private ArrayList<Project> getProjectsAssignedToEmployee(Employee e) {
+		return e.getAssignedProjects();
+	}
+	
+	private ArrayList<Project> getProjectsBeingLeadByEmployee(Employee e) {
+		return e.getProjectsBeingLead();
+	}
+	
+	private void freezeProject(Project p) throws FrozenException {
+		p.freeze();
+	}
+
+	private void freezeEmployee(Employee e) throws FrozenException {
+		e.freeze();
+	}
+
 	/*
 	 * WRAPPER FUNKTIONER MED ID VÆRDIER 
 	 * (Bliver typisk kaldt udefra)
@@ -269,6 +329,66 @@ public class ProjectPlan {
 		return getActivityProgressByEmployee(getActivity(act_id));
 	}
 	
+	public ArrayList<Employee> getEmployeesAssignedToActivity(String act_id) throws UnknownIDException {
+		return getEmployeesAssignedToActivity(getActivity(act_id));
+	}
+
+	public ArrayList<Employee> getAssistantsToActivity(String act_id) throws UnknownIDException {
+		return getAssistantsToActivity(getActivity(act_id));
+	}
+	
+	public Project getParentProjectToActivity(String act_id) throws UnknownIDException {
+		return getParentProjectToActivity(getActivity(act_id));
+	}
+	
+	public boolean isActivityFrozen(String act_id) throws UnknownIDException {
+		return isActivityFrozen(getActivity(act_id));
+	}
+
+	public boolean isProjectFrozen(String project_id) throws UnknownIDException {
+		return isProjectFrozen(getProject(project_id));
+	}
+
+	public boolean isEmployeeFrozen(String emp_id) throws UnknownIDException {
+		return isEmployeeFrozen(getEmployee(emp_id));
+	}
+	
+	public ArrayList<Activity> getActivitiesInProject(String project_id) throws UnknownIDException {
+		return getActivitiesInProject(getProject(project_id));
+	}
+	
+	public ArrayList<Employee> getEmployeesAssignedToProjcet(String project_id) throws UnknownIDException {
+		return getEmployeesAssignedToProject(getProject(project_id));
+	}
+	
+	public Employee getProjectLeader(String project_id) throws UnknownIDException {
+		return getProjectLeader(getProject(project_id));
+	}
+	
+	public ArrayList<Activity> getActivitiesAssignedToEmployee(String emp_id) throws UnknownIDException {
+		return getActivitiesAssignedToEmployee(getEmployee(emp_id));
+	}
+
+	public ArrayList<Activity> getActivitiesAssistedByEmployee(String emp_id) throws UnknownIDException {
+		return getActivitiesAssistedByEmployee(getEmployee(emp_id));
+	}
+	
+	public ArrayList<Project> getProjectsAssignedToEmployee(String emp_id) throws UnknownIDException {
+		return getProjectsAssignedToEmployee(getEmployee(emp_id));
+	}
+	
+	public ArrayList<Project> getProjectsBeingLeadByEmployee(String emp_id) throws UnknownIDException {
+		return getProjectsBeingLeadByEmployee(getEmployee(emp_id));
+	}
+	
+	public void freezeProject(String project_id) throws FrozenException, UnknownIDException {
+		freezeProject(getProject(project_id));
+	}
+
+	public void freezeEmployee(String emp_id) throws FrozenException, UnknownIDException {
+		freezeEmployee(getEmployee(emp_id));
+	}
+
 	/*
 	 * Container wrappers
 	 */
