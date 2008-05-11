@@ -414,9 +414,6 @@ public class ProjectPlan {
 		ArrayList<Employee> lazypeons = new ArrayList<Employee>(employees.values());
 		Week week = getWeek(index);
 		for(Activity activity : week.getScheduledActivities()) {
-			//ArrayList<Employee> employees_in_activity = new ArrayList<Employee>();
-			//employees_in_activity.addAll(activity.getAssignedEmployees());
-			//employees_in_activity.addAll(activity.getAssistants());
 			for(Employee employee : activity.getAssignedEmployees())
 				lazypeons.remove(employee);
 		}
