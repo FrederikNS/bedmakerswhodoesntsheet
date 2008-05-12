@@ -156,9 +156,6 @@ public class CommandLineInterface {
 		case HELP:
 			helpFunc();
 			break;
-		case LIST:
-			listFunc();
-			break;
 		case ASSIGN:
 			assignFunc();
 			break;
