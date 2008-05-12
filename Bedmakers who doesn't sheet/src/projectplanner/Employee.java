@@ -29,14 +29,18 @@ public class Employee extends Freezeable{
 		progress = new HashMap<Activity,Float>();
 	}
 
-	public static String generateInitialsFromName(String name) throws Exception{
-		String nameSplitted[] = name.split(" ");
-		String nameInits = "";
-
-		nameInits+=nameSplitted[0].substring(0, 2);
-		nameInits+=nameSplitted[nameSplitted.length-1].substring(0, 2);
-
-		return nameInits;
+	public static String generateInitialsFromName(String name) throws EmployeeException{
+		try {
+			String nameSplitted[] = name.split(" ");
+			String nameInits = "";
+	
+			nameInits+=nameSplitted[0].substring(0, 2);
+			nameInits+=nameSplitted[nameSplitted.length-1].substring(0, 2);
+	
+			return nameInits;
+		} catch (Exception e) {
+			throw new EmployeeException("Error creating initials from name: " + name + ".");
+		}
 	}
 
 	public String getInitials(){
