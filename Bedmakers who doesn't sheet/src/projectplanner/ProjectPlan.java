@@ -365,7 +365,7 @@ public class ProjectPlan {
 		assignEmployeeToAssistActivity(getEmployee(emp_id), getActivity(act_id));
 	}
 
-	public void relieveEmployeeFromAssitingActivity(String emp_id, String act_id) throws FrozenException, EmployeeException, UnknownIDException, ActivityException {
+	public void relieveEmployeeFromAssistingActivity(String emp_id, String act_id) throws FrozenException, EmployeeException, UnknownIDException, ActivityException {
 		relieveEmployeeFromAssitingActivity(getEmployee(emp_id), getActivity(act_id));
 	}	
 	
