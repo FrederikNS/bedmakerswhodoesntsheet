@@ -7,7 +7,6 @@ public class Activity extends Freezeable{
 	private String name;
 	private Project parentProject;
 	private HashMap<Week, Float> weeklyWorkload;
-	private float totalWorkload;
 	private HashMap<Employee, Float> progressByEmployee;
 	private ArrayList<Employee> assignedEmployees;
 	private final String id;
@@ -166,5 +165,17 @@ public class Activity extends Freezeable{
 		checkFreeze();
 		if(!containsEmployee(e))
 			throw new ActivityException("Does not contain employee.");
+	}
+
+	public int getStartWeek() {
+		int startweek = Integer.MAX_VALUE;
+		for(Week week : weeklyWorkload.keySet()) startweek = Math.min(startweek, week.getIndex());
+		return startweek;
+	}
+
+	public int getEndWeek() {
+		int endweek = Integer.MIN_VALUE;
+		for(Week week : weeklyWorkload.keySet()) endweek = Math.max(endweek, week.getIndex());
+		return endweek;
 	}
 }

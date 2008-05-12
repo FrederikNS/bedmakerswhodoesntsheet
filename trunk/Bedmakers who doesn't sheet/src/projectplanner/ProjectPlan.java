@@ -193,7 +193,7 @@ public class ProjectPlan {
 		return p.getLeader();
 	}
 	
-	private ArrayList<Activity> getActivitiesAssignedToEmployee(Employee e) {
+	private HashMap<Activity, Boolean> getActivitiesAssignedToEmployee(Employee e) {
 		return e.getAssignedActivities();
 	}
 
@@ -217,10 +217,46 @@ public class ProjectPlan {
 		return e.getWorkDone();
 	}
 	
-	private float getAssignedHoursForWeek(Week week) throws ActivityException {
+	private float getWorkloadForWeek(Week week) throws ActivityException {
 		return week.getAssignedHours();
 	}
+	
+	private String getProjectName(Project project) {
+		return project.getName();
+	}
+	
+	private int getProjectStartWeek(Project project) {
+		return project.getStartWeek();
+	}
+	
+	private int getProjectEndWeek(Project project) {
+		return project.getEndWeek();
+	}
+	
+	private float getProjectWorkload(Project project) {
+		return project.getWorkload();
+	}
+	
+	private float getProjectProgress(Project project) {
+		return project.getProgress();
+	}
+	
+	private String getActivityName(Activity activity) {
+		return activity.getName();	
+	}
+	
+	private int getActivityStartWeek(Activity activity) {
+		return activity.getStartWeek();
+	}
 
+	private int getActivityEndWeek(Activity activity) {
+		return activity.getEndWeek();
+	}
+	
+	private String getEmployeeName(Employee employee) {
+		return employee.getName();
+	}
+	
 	/*
 	 * WRAPPER FUNKTIONER MED ID VAERDIER 
 	 * (Bliver typisk kaldt udefra)
@@ -366,7 +402,7 @@ public class ProjectPlan {
 		return getProjectLeader(getProject(project_id));
 	}
 	
-	public ArrayList<Activity> getActivitiesAssignedToEmployee(String emp_id) throws UnknownIDException {
+	public HashMap<Activity,Boolean> getActivitiesAssignedToEmployee(String emp_id) throws UnknownIDException {
 		return getActivitiesAssignedToEmployee(getEmployee(emp_id));
 	}
 
@@ -390,6 +426,47 @@ public class ProjectPlan {
 		return getWorkDoneByEmployee(getEmployee(emp_id));
 	}
 	
+	public float getWorkloadForWeek(int index) throws ActivityException {
+		return getWorkloadForWeek(getWeek(index));
+	}
+
+	public String getProjectName(String project_id) throws UnknownIDException {
+		return getProjectName(getProject(project_id));
+	}
+	
+	public int getProjectStartWeek(String project_id) throws UnknownIDException {
+		return getProjectStartWeek(getProject(project_id));
+	}
+	
+	public int getProjectEndWeek(String project_id) throws UnknownIDException {
+		return getProjectEndWeek(getProject(project_id));
+	}
+	
+	public float getProjectWorkload(String project_id) throws UnknownIDException {
+		return getProjectWorkload(getProject(project_id));
+	}
+	
+	public float getProjectProgress(String project_id) throws UnknownIDException {
+		return getProjectProgress(getProject(project_id));
+	}
+	
+	public String getActivityName(String activity_id) throws UnknownIDException {
+		return getActivityName(getActivity(activity_id));	
+	}
+	
+	public int getActivityStartWeek(String activity_id) throws UnknownIDException {
+		return getActivityStartWeek(getActivity(activity_id));
+	}
+
+	public int getActivityEndWeek(String activity_id) throws UnknownIDException {
+		return getActivityEndWeek(getActivity(activity_id));
+	}
+	
+	public String getEmployeeName(String employee_initials) throws UnknownIDException {
+		return getEmployeeName(getEmployee(employee_initials));
+	}
+	
+	
 	/*
 	 * lazypeons <- Liste over alle ansatte
 	 * For alle aktiviter i ugen
@@ -410,11 +487,7 @@ public class ProjectPlan {
 				lazypeons.remove(e);
 		return lazypeons;
 	}
-	
-	public float getAssignedHoursForWeek(int index) throws ActivityException {
-		return getAssignedHoursForWeek(getWeek(index));
-	}
-	
+		
 	public HashMap<Employee, Float> getWorkloadByEmployeeForWeek(Week week) {
 		HashMap<Employee,Float> workloadByEmployee = new HashMap<Employee,Float>();
 		
