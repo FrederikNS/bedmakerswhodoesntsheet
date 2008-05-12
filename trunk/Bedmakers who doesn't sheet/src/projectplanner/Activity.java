@@ -65,7 +65,7 @@ public class Activity extends Freezeable{
 		return parentProject;
 	}
 
-	public void assignEmployee(Employee e) throws FrozenException {
+	public void assignEmployee(Employee e) throws FrozenException, ActivityException {
 		checkFreeze();
 		assignedEmployees.add(e);
 	}
@@ -84,14 +84,14 @@ public class Activity extends Freezeable{
 		weeklyWorkload.remove(week);
 	}
 
-	public float getHoursForWeek(Week week) {
-		 // FIXME: Burde den throwe exception?
-		if(weeklyWorkload.containsKey(week)) return 0;
+	public float getHoursForWeek(Week week) throws ActivityException {
+		if(!weeklyWorkload.containsKey(week))
+			throw new ActivityException("No hours assigned in this week");
 		return weeklyWorkload.get(week);
 	}
 
-	public void removeEmployee(Employee employee) throws FrozenException {
-		checkFreeze();
+	public void removeEmployee(Employee employee) throws FrozenException, ActivityException {
+		checkRemoveEmployee(employee);
 		assignedEmployees.remove(employee);
 	}
 
@@ -127,5 +127,29 @@ public class Activity extends Freezeable{
 		String out = name;
 		if(isFrozen()) out+=" [FROZEN]";
 		return out;
+	}
+	
+	public boolean containsEmployee(Employee e) {
+		return assignedEmployees.contains(e);
+	}
+
+	public void checkAssignEmployee(Employee e) throws ActivityException, FrozenException {
+		checkFreeze();
+		if(containsEmployee(e))
+			if(e.isAssignedToActivityAsEmployee(this))
+				throw new ActivityException("Already contains this employee");
+	}
+
+	public void checkAssignEmployeeAsAssistant(Employee e) throws FrozenException, ActivityException {
+		checkFreeze();
+		if(containsEmployee(e))
+			if(e.isAssignedToActivityAsAssistant(this))
+				throw new ActivityException("Already contains this employee");
+	}
+
+	public void checkRemoveEmployee(Employee e) throws FrozenException, ActivityException {
+		checkFreeze();
+		if(!containsEmployee(e))
+			throw new ActivityException("Does not contain employee.");
 	}
 }

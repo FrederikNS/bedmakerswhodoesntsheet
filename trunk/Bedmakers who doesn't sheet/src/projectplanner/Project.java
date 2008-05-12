@@ -146,4 +146,14 @@ public class Project extends Freezeable {
 		}
 		return out;
 	}
+
+	public void checkAssignEmployee(Employee e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void checkRemoveEmployee(Employee e) {
+		// TODO Auto-generated method stub
+		
+	}
 }
