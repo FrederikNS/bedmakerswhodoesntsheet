@@ -8,22 +8,28 @@ import projectplanner.*;
 
 public class CommandLineInterface {
 	private BufferedReader keyboard;
-	ProjectPlan projectPlan = new ProjectPlan();
-	String command[] = null;
-	int commandInt[] = null;
-	String name;
-	String leader;
-	String initials;
-	String id;
-	int start;
-	int end;
-	boolean startSet = false;
-	boolean endSet = false;
-	String employee;
-	String project;
-	String activity;
+	private ProjectPlan projectPlan = new ProjectPlan();
+	private String command[] = null;
+	private int commandInt[] = null;
+	private String name;
+	private String leader;
+	private String initials;
+	private String id;
+	private int start;
+	private int end;
+	private boolean startSet = false;
+	private boolean endSet = false;
+	private String employee;
+	private String project;
+	private String activity;
+	private int week;
+	private boolean weekSet;
+	private float workload;
+	private boolean workloadSet;
+	private float progress;
+	private boolean progressSet;
 
-	public CommandLineInterface() throws Exception{
+	public CommandLineInterface(){
 		keyboard = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println(
 				"+---------------------------------------+\n" +
@@ -32,59 +38,68 @@ public class CommandLineInterface {
 				"\n" +
 		"Type help for a list of commands");
 		while(true){
-			command = splitCommand(getInput());
-			commandInt = new int[command.length];
-			for(int i = 0;i<command.length;i++){
-				String comm = command[i];
-				commandInt[i] = converter(i);
-				if(i>1){
-					switch(Arguments.values()[commandInt[i]]){
-					case NAME:
-						name = command[i].substring(5);
-						break;
-					case LEADER:
-						leader = command[i].substring(7);
-						break;
-					case INITIALS:
-						initials = command[i].substring(9);
-						break;
-					case ID:
-						id = command[i].substring(3);
-						break;
-					case START:
-						start = Integer.parseInt(command [i].substring(6));
-						startSet = true;
-						break;
-					case END:
-						end = Integer.parseInt(command[i].substring(6));
-						endSet = true;
-						break;
-					case WORKLOAD:
-
-						break;
-					case EMPLOYEEARG:
-						employee = command[i].substring(9);
-						break;
-					case PROJECTARG:
-						project = command[i].substring(8);
-						break;
-					case ACTIVITYARG:
-						activity = command[i].substring(9);
-						break;
+			try{
+				command = splitCommand(getInput());
+				commandInt = new int[command.length];
+				for(int i = 0;i<command.length;i++){
+					String comm = command[i];
+					commandInt[i] = converter(i);
+					if(i>1){
+						switch(Arguments.values()[commandInt[i]]){
+						case NAME:
+							name = command[i].substring(5);
+							break;
+						case LEADER:
+							leader = command[i].substring(7);
+							break;
+						case INITIALS:
+							initials = command[i].substring(9);
+							break;
+						case ID:
+							id = command[i].substring(3);
+							break;
+						case START:
+							start = Integer.parseInt(command [i].substring(6));
+							startSet = true;
+							break;
+						case END:
+							end = Integer.parseInt(command[i].substring(6));
+							endSet = true;
+							break;
+						case WEEK:
+							week = Integer.parseInt(command[i].substring(5));
+							weekSet = true;
+						case WORKLOAD:
+							workload = Float.parseFloat(command[i].substring(9));
+							workloadSet = true;
+							break;
+						case EMPLOYEEARG:
+							employee = command[i].substring(9);
+							break;
+						case PROJECTARG:
+							project = command[i].substring(8);
+							break;
+						case ACTIVITYARG:
+							activity = command[i].substring(9);
+							break;
+						}
 					}
 				}
+				if(commandInt[0]==Commands.QUIT.ordinal()){
+					System.out.println("Bye!");
+					return;
+				}
+				functionChooser();
+				name = null;
+				leader = null;
+				initials = null;
+				id = null;
+				workloadSet = false;
+				startSet = false;
+				endSet = false;
+			}catch (Exception e){
+
 			}
-			if(commandInt[0]==Commands.QUIT.ordinal()){
-				System.out.println("Bye!");
-				return;
-			}
-			functionChooser();
-			name = null;
-			leader = null;
-			initials = null;
-			id = null;
-			startSet = false;
-			endSet = false;
 		}
 	}
 
@@ -172,6 +187,9 @@ public class CommandLineInterface {
 			break;
 		case RENAME:
 			renameFunc();
+			break;
+		case PROGRESS:
+			progressFunc();
 			break;
 		}
 	}
@@ -301,6 +319,7 @@ public class CommandLineInterface {
 		case EMPLOYEE:
 			if(initials!=null){
 				System.out.println("Employee Name: "+projectPlan.getEmployeeName(id));
+				System.out.println("Work Done: "+projectPlan.getWorkDoneByEmployee(id));
 				System.out.println("Assigned Projects: "+projectPlan.getActivitiesAssignedToEmployee(id));
 				System.out.println("Leading Projects: "+projectPlan.getProjectsBeingLeadByEmployee(id));
 				System.out.println("Assigned Activities: "+projectPlan.getProjectsAssignedToEmployee(id));
@@ -368,58 +387,49 @@ public class CommandLineInterface {
 		}
 	}
 
-	public void unassignFunc(){
+	public void unassignFunc() throws FrozenException, EmployeeException, UnknownIDException, ProjectException{
 		switch(Arguments.values()[commandInt[1]]){
 		case PROJECTARG:
 			switch(Arguments.values()[commandInt[2]]){
 			case PROJECTARG:
-
+				System.out.println("Can not unassign project from project");
 				break;
-			case ACTIVITYARG:
-
-				break;
+				/*case ACTIVITYARG:
+				projectPlan.
+				break;*/
 			case EMPLOYEEARG:
-
+				projectPlan.relieveEmployeeFromProject(employee, project, true);
 				break;
 			}
 			break;
 		case ACTIVITYARG:
 			switch(Arguments.values()[commandInt[2]]){
-			case PROJECTARG:
+			/*case PROJECTARG:
 
-				break;
+				break;*/
 			case ACTIVITYARG:
-
+				System.out.println("Can not unassign activity from activity");
 				break;
 			case EMPLOYEEARG:
-
+				projectPlan.relieveEmployeeFromActivity(employee, activity);
+				break;
+			case WEEK:
+				projectPlan.removeActivityFromWeek(activity, week);
 				break;
 			}
 			break;
 		case EMPLOYEEARG:
 			switch(Arguments.values()[commandInt[2]]){
 			case PROJECTARG:
-
+				projectPlan.relieveEmployeeFromProject(employee, project, true);
 				break;
 			case ACTIVITYARG:
-
+				projectPlan.relieveEmployeeFromActivity(employee, activity);
 				break;
 			case EMPLOYEEARG:
-
+				System.out.println("Can not unassign employee from employee");
 				break;
 			}
-			break;
-		}
-
-		switch(Commands.values()[commandInt[2]]){
-		case PROJECT:
-
-			break;
-		case ACTIVITY:
-
-			break;
-		case EMPLOYEE:
-
 			break;
 		}
 	}
@@ -440,6 +450,16 @@ public class CommandLineInterface {
 				}
 			}
 			break;
+		}
+	}
+
+	public void progressFunc() throws FrozenException, EmployeeException, UnknownIDException {
+		if(progressSet == true){
+			if(employee != null){
+				if(activity != null){
+					projectPlan.registerEmployeeProgressInActivity(employee, progress, activity);
+				}
+			}
 		}
 	}
 }
