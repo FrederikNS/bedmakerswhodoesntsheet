@@ -415,6 +415,28 @@ public class ProjectPlan {
 		return getAssignedHoursForWeek(getWeek(index));
 	}
 	
+	public HashMap<Employee, Float> getWorkloadByEmployeeForWeek(Week week) {
+		HashMap<Employee,Float> workloadByEmployee = new HashMap<Employee,Float>();
+		
+		for(Activity activity : week.getScheduledActivities()) {
+			float workload_per_employee = 0;
+			try {
+				workload_per_employee = activity.getWorkloadPerEmployeeForWeek(week);
+			} catch (ActivityException e) {
+				System.out.println("Program Sync Error between week and activity");
+			}
+			for(Employee employee : activity.getAssignedEmployees()) {
+				float total_employee_workload = 0;
+				if(workloadByEmployee.containsKey(employee))
+					total_employee_workload = workloadByEmployee.get(employee);
+				total_employee_workload += workload_per_employee;
+				workloadByEmployee.put(employee, total_employee_workload);
+			}
+		}
+		
+		return workloadByEmployee;
+	}
+	
 	/*
 	 * Container wrappers
 	 */
