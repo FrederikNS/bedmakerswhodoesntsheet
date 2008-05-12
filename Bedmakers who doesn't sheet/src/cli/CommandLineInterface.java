@@ -19,8 +19,11 @@ public class CommandLineInterface {
 	int end;
 	boolean startSet = false;
 	boolean endSet = false;
+	String employee;
+	String project;
+	String activity;
 
-	public CommandLineInterface(){
+	public CommandLineInterface() throws Exception{
 		keyboard = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println(
 				"+---------------------------------------+\n" +
@@ -29,7 +32,7 @@ public class CommandLineInterface {
 				"\n" +
 		"Type help for a list of commands");
 		while(true){
-			getInput();
+			command = splitCommand(getInput());
 			commandInt = new int[command.length];
 			for(int i = 0;i<command.length;i++){
 				String comm = command[i];
@@ -56,6 +59,15 @@ public class CommandLineInterface {
 						end = Integer.parseInt(command[i].substring(6));
 						endSet = true;
 						break;
+					case EMPLOYEEARG:
+						employee = command[i].substring(9);
+						break;
+					case PROJECTARG:
+						project = command[i].substring(8);
+						break;
+					case ACTIVITYARG:
+						activity = command[i].substring(9);
+						break;
 					}
 				}
 			}
@@ -68,7 +80,15 @@ public class CommandLineInterface {
 			leader = null;
 			initials = null;
 			id = null;
+			startSet = false;
+			endSet = false;
 		}
+	}
+
+	public String getInput() throws IOException{
+		System.out.println(
+		"Please choose a function:\n");
+		return keyboard.readLine();
 	}
 
 	public static String[] splitCommand(String cmd) {
@@ -108,6 +128,7 @@ public class CommandLineInterface {
 		for(String s : split) {
 			s.replace('_', ' ');
 		}
+		return split;
 	}
 
 	public int converter(int i){
@@ -120,18 +141,7 @@ public class CommandLineInterface {
 		return Commands.NULL.ordinal();
 	}
 
-	public void getInput(){
-		System.out.println(
-				"Please choose a function:\n");
-		try {
-			command = keyboard.readLine().split(" ");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public void functionChooser(){
+	public void functionChooser() throws Exception{
 		switch(Commands.values()[commandInt[0]]){
 		case CREATE:
 			createFunc();
@@ -163,7 +173,7 @@ public class CommandLineInterface {
 		}
 	}
 
-	public void createFunc(){
+	public void createFunc() throws Exception{
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
 			if(name != null){
@@ -192,11 +202,8 @@ public class CommandLineInterface {
 				if(initials != null) {
 					projectPlan.addEmployee(name,initials);
 				} else {
-					try{
-						projectPlan.addEmployee(name);
-					} catch(Exception e) {
-						//TODO make exception handling
-					}
+					//FIXME WTH?
+//					projectPlan.addEmployee(name);
 				}
 			} else {
 				System.out.println("You must specify a name for the employee");
@@ -204,97 +211,50 @@ public class CommandLineInterface {
 			break;
 		}
 	}
-	public void deleteFunc(){
+
+	public void deleteFunc() throws FrozenException, UnknownIDException{
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
-			/*if(name != null){
-
-			} else */if(id != null){
-				try{
-					projectPlan.freezeProject(id);
-				} catch(Exception e) {
-
-				}
+			if(id != null){
+				projectPlan.freezeProject(id);
 			}
 			break;
 		case ACTIVITY:
 			if(id != null){
-				try{
-					projectPlan.freezeActivity(id);
-				} catch(Exception e) {
-					//TODO make exception handling
-				}
+				projectPlan.freezeActivity(id);
 			}
 			break;
 		case EMPLOYEE:
-			/*if(name != null){
-
-			} else*/ if(initials != null){
-				try{
-					projectPlan.freezeEmployee(initials);
-				} catch(Exception e) {
-
-				}
+			if(initials != null){
+				projectPlan.freezeEmployee(initials);
 			}
-			System.out.println("Employee cannot be removed at the moment");
-			//FIXME Make employees freezeable
 			break;
 		}
 	}
-	public void editFunc(){
+
+	public void editFunc() throws FrozenException, UnknownIDException{
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
 			if(name != null){
 				if(id != null){
-					try {
-						projectPlan.renameProject(id, name);
-					} catch (FrozenException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (UnknownIDException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					projectPlan.renameProject(id, name);
 				}
 			} if(startSet ==true){
-				try {
-					projectPlan.setProjectStartWeek(id, start);
-				} catch (FrozenException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (UnknownIDException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				projectPlan.setProjectStartWeek(id, start);
 			} if(endSet ==true){
-				try {
-					projectPlan.setProjectEndWeek(id, end);
-				} catch (FrozenException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (UnknownIDException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				projectPlan.setProjectEndWeek(id, end);
 			}
 			break;
 		case ACTIVITY:
 			if(name != null){
 				if(id != null){
-					try {
-						projectPlan.renameActivity(id, name);
-					} catch (FrozenException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (UnknownIDException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					projectPlan.renameActivity(id, name);
 				}
 			}
 			break;
 		}
 	}
+
 	public void findFunc(){
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
@@ -311,6 +271,7 @@ public class CommandLineInterface {
 			break;
 		}
 	}
+
 	public void viewFunc(){
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
@@ -355,44 +316,95 @@ public class CommandLineInterface {
 			}
 		}
 	}
+
 	public void helpFunc(){
 		System.out.println("");
 	}
-	public void assignFunc(){
-		switch(Commands.values()[commandInt[1]]){
-		case PROJECT:
 
+	public void assignFunc() throws FrozenException, UnknownIDException, ProjectException, EmployeeException{
+		switch(Arguments.values()[commandInt[1]]){
+		case PROJECTARG:
+			switch(Arguments.values()[commandInt[2]]){
+			case PROJECTARG:
+				System.out.println("Can not assign project to project");
+				break;
+			case ACTIVITYARG:
+				projectPlan.addActivityToProject(activity, project);
+				break;
+			case EMPLOYEEARG:
+				projectPlan.assignEmployeeToProject(employee, project);
+				break;
+			}
 			break;
-		case ACTIVITY:
-
+		case ACTIVITYARG:
+			switch(Arguments.values()[commandInt[2]]){
+			case PROJECTARG:
+				projectPlan.addActivityToProject(activity, project);
+				break;
+			case ACTIVITYARG:
+				System.out.println("Can not assign activity to activity");
+				break;
+			case EMPLOYEEARG:
+				projectPlan.assignEmployeeToActivity(employee, activity);
+				break;
+			}
 			break;
-		case EMPLOYEE:
-
-			break;
-		}
-
-		switch(Commands.values()[commandInt[2]]){
-		case PROJECT:
-
-			break;
-		case ACTIVITY:
-
-			break;
-		case EMPLOYEE:
-
+		case EMPLOYEEARG:
+			switch(Arguments.values()[commandInt[2]]){
+			case PROJECTARG:
+				projectPlan.assignEmployeeToProject(employee, project);
+				break;
+			case ACTIVITYARG:
+				projectPlan.assignEmployeeToActivity(employee, activity);
+				break;
+			case EMPLOYEEARG:
+				System.out.println("Can not assign employee to employee");
+				break;
+			}
 			break;
 		}
 	}
+
 	public void unassignFunc(){
-		switch(Commands.values()[commandInt[1]]){
-		case PROJECT:
+		switch(Arguments.values()[commandInt[1]]){
+		case PROJECTARG:
+			switch(Arguments.values()[commandInt[1]]){
+			case PROJECTARG:
 
+				break;
+			case ACTIVITYARG:
+
+				break;
+			case EMPLOYEEARG:
+
+				break;
+			}
 			break;
-		case ACTIVITY:
+		case ACTIVITYARG:
+			switch(Arguments.values()[commandInt[1]]){
+			case PROJECTARG:
 
+				break;
+			case ACTIVITYARG:
+
+				break;
+			case EMPLOYEEARG:
+
+				break;
+			}
 			break;
-		case EMPLOYEE:
+		case EMPLOYEEARG:
+			switch(Arguments.values()[commandInt[1]]){
+			case PROJECTARG:
 
+				break;
+			case ACTIVITYARG:
+
+				break;
+			case EMPLOYEEARG:
+
+				break;
+			}
 			break;
 		}
 
@@ -408,16 +420,25 @@ public class CommandLineInterface {
 			break;
 		}
 	}
-	public void renameFunc(){
+
+	public void renameFunc() throws FrozenException, UnknownIDException{
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
-
+			if(name!=null){
+				if(id!=null){
+					projectPlan.renameProject(id, name);
+				}
+			}
 			break;
 		case ACTIVITY:
-
+			if(name!=null){
+				if(id!=null){
+					projectPlan.renameProject(id, name);
+				}
+			}
 			break;
 		case EMPLOYEE:
-
+			System.out.println("Employees can not be renamed");
 			break;
 		}
 	}

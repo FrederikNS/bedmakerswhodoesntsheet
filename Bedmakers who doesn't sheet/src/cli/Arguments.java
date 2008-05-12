@@ -1,7 +1,7 @@
 package cli;
 
 public enum Arguments {
-	NAME("name="), LEADER("leader="), INITIALS("initials="), ID("id="), START("start="), END("end=");
+	NAME("name="), LEADER("leader="), INITIALS("initials="), ID("id="), START("start="), END("end="), EMPLOYEEARG("employee="), PROJECTARG("project="), ACTIVITYARG("activity=");
 	
 	final String human;
 	
