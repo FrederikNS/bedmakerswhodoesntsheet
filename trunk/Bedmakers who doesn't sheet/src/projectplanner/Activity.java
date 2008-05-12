@@ -7,6 +7,7 @@ public class Activity extends Freezeable{
 	private String name;
 	private Project parentProject;
 	private HashMap<Week, Float> weeklyWorkload;
+	private float totalWorkload;
 	private HashMap<Employee, Float> progressByEmployee;
 	private ArrayList<Employee> assignedEmployees;
 	private final String id;

@@ -267,10 +267,13 @@ public class CommandLineInterface {
 			}
 			break;
 		case ACTIVITY:
-			if(name != null){
-				if(id != null){
+			if(id != null){
+				if(name != null){
 					projectPlan.renameActivity(id, name);
 				}
+				/*if(workloadSet ==true){
+					projectPlan.
+				}*/
 			}
 			break;
 		}
@@ -312,6 +315,7 @@ public class CommandLineInterface {
 				System.out.println("Parent Project: "+projectPlan.getActivityParentProject(id));
 				System.out.println("Start Week: "+projectPlan.getActivityStartWeek(id));
 				System.out.println("End Week: "+projectPlan.getActivityEndWeek(id));
+				System.out.println("Assigned Employees: "+projectPlan.getEmployeesAssignedToActivity(id));
 				System.out.println("Workload: "+projectPlan.getActivityWorkload(id));
 				System.out.println("Progress: "+projectPlan.getActivityProgress(id));
 			}
@@ -329,12 +333,12 @@ public class CommandLineInterface {
 		case WEEK:
 			if(id != null){
 				int number = Integer.parseInt(id);
-				System.out.println("Number of Projects: ");
-				System.out.println("Number of Activities: ");
-				System.out.println("Running Projects: ");
-				System.out.println("Running Activities: ");
-				System.out.println("Occupied Employees: ");
-				System.out.println("Employees With Spare Time: ");
+				System.out.println("Number of Projects: "+projectPlan.getNumberOfProjects());
+				System.out.println("Number of Activities: "+projectPlan.getNumberOfActivities());
+				System.out.println("Running Projects: "+projectPlan.getProjects());
+				System.out.println("Running Activities: "+projectPlan.getActivities());
+				System.out.println("Occupied Employees: "+projectPlan.getOccupiedEmployees());
+				System.out.println("Employees With Spare Time: "+projectPlan.getEmployeesWithSpareTime());
 			}
 		}
 	}
