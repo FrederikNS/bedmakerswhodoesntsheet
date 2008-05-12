@@ -79,9 +79,9 @@ public class ProjectPlanTest extends TestCase {
 	 * In this simple test, we check if the activity is added correctly.
 	 */
 	public void testAddActivity(){		
-		String activity_ID = projectPlan.addActivity(activityName);
+		addActivity();
 		//TODO: MARK
-		activity = projectPlan.getActivities().get(activity_ID);
+		I want activityExists(activity_id);
 		assertTrue(activity instanceof Activity);
 		assertTrue(projectPlan.findActivity(activityName).contains(activity));
 	}
@@ -90,9 +90,9 @@ public class ProjectPlanTest extends TestCase {
 	 * In this simple test, we check if the project is added correctly.
 	 */
 	public void testAddProject() {
-		String project_ID = projectPlan.addProject(projectName);
+		addProject();
 		//TODO: MARK
-		project = projectPlan.getProjects().get(project_ID);
+		I want projectExists(project_id);
 		assertTrue(project instanceof Project);
 		assertTrue(projectPlan.findProject(projectName).contains(project));
 	}
@@ -103,9 +103,9 @@ public class ProjectPlanTest extends TestCase {
 	 */
 	public void testAddEmployee() {
 		try {
-			projectPlan.addEmployee(employeeName, initials);
+			addEmployee();
 			//TODO: MARK
-			employee = projectPlan.getEmployees().get(initials);
+			I want emloyeeExists(employee_init);
 			assertTrue(employee instanceof Employee);
 			assertTrue(projectPlan.findEmployee(employeeName).contains(employee));
 			
@@ -134,10 +134,10 @@ public class ProjectPlanTest extends TestCase {
 			project = projectPlan.getProjects().get(project_ID);
 			
 			//TODO: MARK
+			I want isAssignedLeaderTo(employee_init, project_id);
 			project.getLeader();
 			assertTrue(project instanceof Project);
 			assertTrue(projectPlan.findProject(projectName).contains(project));
-			assertEquals(project.getLeader(), employee);
 			
 			//Invalid leader initials. Testing if the exception catches fire.
 			try {
@@ -172,6 +172,7 @@ public class ProjectPlanTest extends TestCase {
 			weekHours = (int)((projectPlan.getWeekFromIndex(weekIndex)).getAssignedHours());
 			
 			//We assert that the week returned should contain the hours specified.
+			I want getActivityHours(activity_ID) and getWeekHours(Week_id);
 			assertEquals(hours, weekHours);
 			assertEquals(weekHours, actHours);
 			
@@ -221,6 +222,7 @@ public class ProjectPlanTest extends TestCase {
 //We then assert the week is empty after removing the activity, knowing we only added the one.
 //This will assure us the activity was removed.
 			//TODO: MARK
+			I want weekIsEmpty(week_id);
 			assertTrue((projectPlan.getWeekFromIndex(weekIndex)).isEmpty());
 		} catch (FrozenException e) {
 			print("Activity is frozen and unavailable");
@@ -242,6 +244,7 @@ public class ProjectPlanTest extends TestCase {
 		try {
 			projectPlan.addActivityToProject(activity_ID, project_ID);
 			//TODO: MARK
+			I want activityIsPartOfProject(activity_id, project_id);
 			assertTrue(project.containsActivity(activity));
 			
 			//Baiting the exception:
@@ -277,11 +280,13 @@ public class ProjectPlanTest extends TestCase {
 		try {
 			projectPlan.assignLeaderToProject(initials, project_ID);
 			//TODO: MARK
+			I want isProjectLeader(employee_id, project_id);
 			assertEquals(project.getLeader(), employee);
 			
 			projectPlan.setProjectStartWeek(project_ID, weekIndex);				
 			projectPlan.setProjectEndWeek(project_ID, weekend);
 			//TODO: MARK
+			I want getProjectWeeStart(project_id) and getProjectWeekEnd(project_id);
 			assertTrue(weekIndex == project.getStartWeek());
 			assertTrue(weekend == project.getEndWeek());
 		} catch (UnknownIDException e) {
@@ -304,6 +309,7 @@ public class ProjectPlanTest extends TestCase {
 		try {
 			projectPlan.assignEmployeeToProject(initials, project_ID);
 			//TODO: MARK
+			I want projectContainsEmployee(employee_id, project_id);
 			assertTrue(project.containsEmployee(employee));
 			projectPlan.relieveEmployeeFromProject(initials, project_ID, false);
 			//TODO: MARK
@@ -336,6 +342,8 @@ public class ProjectPlanTest extends TestCase {
 			projectPlan.assignEmployeeToProject(initials, project_ID);
 			projectPlan.addActivityToProject(activity_ID, project_ID);
 			projectPlan.assignEmployeeToActivity(initials, activity_ID);
+			
+			assertTrue(projectPlan.isEmployeeAssignedToActivity(initials, activity_ID));
 		} catch (FrozenException e1) {
 			e1.printStackTrace();
 		} catch (EmployeeException e1) {
@@ -348,9 +356,6 @@ public class ProjectPlanTest extends TestCase {
 			print("lol");
 		}
 		
-		//TODO: MARK
-		assertTrue(employee instanceof Employee);
-		assertTrue(employee.isAssignedToActivity(activity));
 		
 // Relieving the employee
 		try {
@@ -365,6 +370,7 @@ public class ProjectPlanTest extends TestCase {
 			e.printStackTrace();
 		}
 		//TODO: MARK
+		I want isAssignedToActivity(employee_id, activity_id);
 		assertFalse(employee.isAssignedToActivity(activity));
 	}
 	
@@ -378,6 +384,7 @@ public class ProjectPlanTest extends TestCase {
 		
 		try {
 			projectPlan.assignEmployeeToAssistActivity(initials, activity_ID);
+			assertTrue(projectPlan.isEmployeeAssignedToActivityAsAssistant(initials, activity_ID));
 		} catch (FrozenException e) {
 			e.printStackTrace();
 		} catch (EmployeeException e) {
