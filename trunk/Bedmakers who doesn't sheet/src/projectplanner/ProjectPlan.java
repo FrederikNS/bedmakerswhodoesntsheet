@@ -298,10 +298,10 @@ public class ProjectPlan {
 		employees.put(initials, new Employee(name, initials));
 	}
 
-	/*public void addEmployee(String name) throws GayException {
+	public void addEmployee(String name) throws Exception {
 		String initials = Employee.generateInitialsFromName(name);
 		employees.put(initials, new Employee(name, initials));
-	}*/
+	}
 
 	public void assignActivityToWeek(String activity_id, int hours, int weekIndex) throws FrozenException, UnknownIDException {
 		assignActivityToWeek(getActivity(activity_id), hours, getWeek(weekIndex));
