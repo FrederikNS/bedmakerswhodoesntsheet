@@ -136,7 +136,6 @@ public class CommandLineInterface {
 				in[i] = '_';
 			}
 		}
-		System.out.println(in);
 
 		//Fjern alle citationstegn
 		// create project name="create_project_name=hej" leader="Hund"
@@ -148,7 +147,6 @@ public class CommandLineInterface {
 		for(int i = 0; i < charstosplit.length; i++) {
 			if(in[i]!='\"') charstosplit[pos++] = in[i];
 		}
-		System.out.println(charstosplit);
 
 		//Split op!
 		String[] split = new String(charstosplit).split("\\s");
@@ -298,15 +296,21 @@ public class CommandLineInterface {
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
 			if(name != null)
-				projectPlan.findProject(name);
+				for(Project proj:projectPlan.findProject(name)) {
+					System.out.println(proj.getName()+", "+proj.getId());
+				}
 			break;
 		case ACTIVITY:
 			if(name != null)
-				projectPlan.findActivity(name);
+				for(Activity act:projectPlan.findActivity(name)) {
+					System.out.println(act.getName()+", "+act.getID());
+				}
 			break;
 		case EMPLOYEE:
 			if(name != null)
-				projectPlan.findEmployee(name);
+				for(Employee emp:projectPlan.findEmployee(name)) {
+					System.out.println("*"+emp.getName()+", "+emp.getInitials());
+				}
 			break;
 		}
 	}
