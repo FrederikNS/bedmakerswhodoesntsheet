@@ -121,40 +121,8 @@ public class CommandLineInterface {
 	}
 
 	private static String[] splitCommand(String cmd) {
-		char[] in = cmd.trim().toCharArray();
-		int num_cits = 0;
-
-		//Konverter alle mellemrum i citationstegn til underscores
-		// create project name="create project name=hej" leader="Hund"
-		// ->
-		// create project name="create_project_name=hej" leader="Hund"
-
-		for(int i = 0; i < in.length; i++) {
-			if(in[i]=='\"') {
-				num_cits++;
-			} else if(in[i]==' ' && num_cits % 2 == 1) {
-				in[i] = '_';
-			}
-		}
-
-		//Fjern alle citationstegn
-		// create project name="create_project_name=hej" leader="Hund"
-		// ->
-		// create project name=create_project_name=hej leader=Hund
-
-		char[] charstosplit = new char[in.length];
-		int pos = 0;
-		for(int i = 0; i < charstosplit.length; i++) {
-			if(in[i]!='\"') charstosplit[pos++] = in[i];
-		}
-
-		//Split op!
-		String[] split = new String(charstosplit).split("\\s");
-
-		//Lav alle _ til mellemrum:
-		for(String s : split) {
-			s.replace('_', ' ');
-		}
+		String[] split = cmd.trim().split("\\s");
+		for(String s : split) s.replace('_', ' ');
 		return split;
 	}
 
