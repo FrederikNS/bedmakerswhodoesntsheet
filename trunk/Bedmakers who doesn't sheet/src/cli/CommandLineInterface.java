@@ -43,6 +43,7 @@ public class CommandLineInterface {
 				"\n" +
 		"Type help for a list of commands");
 		while(true){
+			System.out.println("Please choose a function:");
 			try {
 				command = splitCommand(getInput());
 			} catch (IOException e) {
@@ -115,8 +116,7 @@ public class CommandLineInterface {
 	}
 
 	private String getInput() throws IOException{
-		System.out.println(
-		"Please choose a function:\n");
+		System.out.print(">");
 		return keyboard.readLine();
 	}
 
@@ -290,13 +290,16 @@ public class CommandLineInterface {
 	private void listFunc(){
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
-			System.out.println(projectPlan.getProjects());
+			for(Project proj:projectPlan.getProjects().values())
+			System.out.println(proj.getId()+", "+proj.getName());
 			break;
 		case ACTIVITY:
-			System.out.println(projectPlan.getActivities());
+			for(Activity act:projectPlan.getActivities().values())
+				System.out.println(act.getID()+", "+act.getName());
 			break;
 		case EMPLOYEE:
-			System.out.println(projectPlan.getEmployees());
+			for(Employee emp:projectPlan.getEmployees().values())
+				System.out.println(emp.getInitials()+", "+emp.getName());
 			break;
 		}
 	}
