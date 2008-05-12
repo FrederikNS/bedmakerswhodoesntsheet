@@ -284,24 +284,6 @@ public class CommandLineInterface {
 			break;
 		}
 	}
-
-	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
-	private void listFunc(){
-		switch(Commands.values()[commandInt[1]]){
-		case PROJECT:
-			for(Project proj:projectPlan.getProjects().values())
-			System.out.println(proj.getId()+", "+proj.getName());
-			break;
-		case ACTIVITY:
-			for(Activity act:projectPlan.getActivities().values())
-				System.out.println(act.getID()+", "+act.getName());
-			break;
-		case EMPLOYEE:
-			for(Employee emp:projectPlan.getEmployees().values())
-				System.out.println(emp.getInitials()+", "+emp.getName());
-			break;
-		}
-	}
 	
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	private void viewFunc() throws UnknownIDException{
@@ -315,7 +297,9 @@ public class CommandLineInterface {
 				System.out.println("Workload: "+projectPlan.getProjectWorkload(id));
 				System.out.println("Progress: "+projectPlan.getProjectProgress(id));
 				System.out.println("Activities: "+projectPlan.getActivitiesInProject(id));
-			}
+			} else
+				for(Project proj:projectPlan.getProjects().values())
+					System.out.println(proj.getId()+", "+proj.getName());
 			break;
 		case ACTIVITY:
 			if(id!=null){
@@ -326,7 +310,9 @@ public class CommandLineInterface {
 				System.out.println("Assigned Employees: "+projectPlan.getEmployeesAssignedToActivity(id));
 				System.out.println("Workload: "+projectPlan.getActivityWorkload(id));
 				System.out.println("Progress: "+projectPlan.getActivityProgress(id));
-			}
+			} else
+				for(Activity act:projectPlan.getActivities().values())
+					System.out.println(act.getID()+", "+act.getName());
 			break;
 		case EMPLOYEE:
 			if(initials!=null){
@@ -335,7 +321,9 @@ public class CommandLineInterface {
 				System.out.println("Assigned Projects: "+projectPlan.getActivitiesAssignedToEmployee(initials));
 				System.out.println("Leading Projects: "+projectPlan.getProjectsBeingLeadByEmployee(initials));
 				System.out.println("Assigned Activities: "+projectPlan.getProjectsAssignedToEmployee(initials));
-			}
+			} else
+				for(Employee emp:projectPlan.getEmployees().values())
+					System.out.println(emp.getInitials()+", "+emp.getName());
 			break;
 		case WEEK:
 			if(weekSet ==true){
