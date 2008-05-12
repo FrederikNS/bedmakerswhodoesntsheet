@@ -6,6 +6,10 @@ import java.io.InputStreamReader;
 
 import projectplanner.*;
 
+/**
+ * @author Frederik Nordahl Sabroe
+ *
+ */
 public class CommandLineInterface {
 	private BufferedReader keyboard;
 	private ProjectPlan projectPlan = new ProjectPlan();
@@ -24,11 +28,12 @@ public class CommandLineInterface {
 	private String activity;
 	private int week;
 	private boolean weekSet;
-	private float workload;
-	private boolean workloadSet;
 	private float progress;
 	private boolean progressSet;
 
+	/**
+	 * The constructor for the command line interface,  
+	 */
 	public CommandLineInterface(){
 		keyboard = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println(
@@ -42,7 +47,6 @@ public class CommandLineInterface {
 				command = splitCommand(getInput());
 				commandInt = new int[command.length];
 				for(int i = 0;i<command.length;i++){
-					String comm = command[i];
 					commandInt[i] = converter(i);
 					if(i>1){
 						switch(Arguments.values()[commandInt[i]]){
@@ -69,10 +73,6 @@ public class CommandLineInterface {
 						case WEEK:
 							week = Integer.parseInt(command[i].substring(5));
 							weekSet = true;
-						case WORKLOAD:
-							workload = Float.parseFloat(command[i].substring(9));
-							workloadSet = true;
-							break;
 						case EMPLOYEEARG:
 							employee = command[i].substring(9);
 							break;
@@ -94,7 +94,6 @@ public class CommandLineInterface {
 				leader = null;
 				initials = null;
 				id = null;
-				workloadSet = false;
 				startSet = false;
 				endSet = false;
 			}catch (Exception e){
@@ -103,13 +102,13 @@ public class CommandLineInterface {
 		}
 	}
 
-	public String getInput() throws IOException{
+	private String getInput() throws IOException{
 		System.out.println(
 		"Please choose a function:\n");
 		return keyboard.readLine();
 	}
 
-	public static String[] splitCommand(String cmd) {
+	private static String[] splitCommand(String cmd) {
 		char[] in = cmd.trim().toCharArray();
 		int num_cits = 0;
 
@@ -149,7 +148,7 @@ public class CommandLineInterface {
 		return split;
 	}
 
-	public int converter(int i){
+	private int converter(int i){
 		for(Commands comm:Commands.values())
 			if(command[i].equals(comm.toString()))
 				return comm.ordinal();
@@ -159,7 +158,7 @@ public class CommandLineInterface {
 		return Commands.NULL.ordinal();
 	}
 
-	public void functionChooser() throws Exception{
+	private void functionChooser() throws Exception{
 		switch(Commands.values()[commandInt[0]]){
 		case CREATE:
 			createFunc();
@@ -194,7 +193,7 @@ public class CommandLineInterface {
 		}
 	}
 
-	public void createFunc() throws Exception{
+	private void createFunc() throws Exception{
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
 			if(name != null){
@@ -233,7 +232,7 @@ public class CommandLineInterface {
 		}
 	}
 
-	public void deleteFunc() throws FrozenException, UnknownIDException{
+	private void deleteFunc() throws FrozenException, UnknownIDException{
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
 			if(id != null){
@@ -253,7 +252,7 @@ public class CommandLineInterface {
 		}
 	}
 
-	public void editFunc() throws FrozenException, UnknownIDException{
+	private void editFunc() throws FrozenException, UnknownIDException{
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
 			if(name != null){
@@ -279,7 +278,7 @@ public class CommandLineInterface {
 		}
 	}
 
-	public void findFunc(){
+	private void findFunc(){
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
 			if(name != null)
@@ -296,7 +295,7 @@ public class CommandLineInterface {
 		}
 	}
 
-	public void viewFunc(){
+	private void viewFunc(){
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
 			if(id != null){
@@ -331,7 +330,7 @@ public class CommandLineInterface {
 			}
 			break;
 		case WEEK:
-			if(id != null){
+			if(weekSet ==true){
 				int number = Integer.parseInt(id);
 				System.out.println("Number of Projects: "+projectPlan.getNumberOfProjects());
 				System.out.println("Number of Activities: "+projectPlan.getNumberOfActivities());
@@ -343,11 +342,11 @@ public class CommandLineInterface {
 		}
 	}
 
-	public void helpFunc(){
+	private void helpFunc(){
 		System.out.println("");
 	}
 
-	public void assignFunc() throws FrozenException, UnknownIDException, ProjectException, EmployeeException, ActivityException{
+	private void assignFunc() throws FrozenException, UnknownIDException, ProjectException, EmployeeException, ActivityException{
 		switch(Arguments.values()[commandInt[1]]){
 		case PROJECTARG:
 			switch(Arguments.values()[commandInt[2]]){
@@ -391,7 +390,7 @@ public class CommandLineInterface {
 		}
 	}
 
-	public void unassignFunc() throws FrozenException, EmployeeException, UnknownIDException, ProjectException, ActivityException{
+	private void unassignFunc() throws FrozenException, EmployeeException, UnknownIDException, ProjectException, ActivityException{
 		switch(Arguments.values()[commandInt[1]]){
 		case PROJECTARG:
 			switch(Arguments.values()[commandInt[2]]){
@@ -438,7 +437,7 @@ public class CommandLineInterface {
 		}
 	}
 
-	public void renameFunc() throws FrozenException, UnknownIDException{
+	private void renameFunc() throws FrozenException, UnknownIDException{
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
 			if(name!=null){
@@ -457,7 +456,7 @@ public class CommandLineInterface {
 		}
 	}
 
-	public void progressFunc() throws FrozenException, EmployeeException, UnknownIDException {
+	private void progressFunc() throws FrozenException, EmployeeException, UnknownIDException {
 		if(progressSet == true){
 			if(employee != null){
 				if(activity != null){

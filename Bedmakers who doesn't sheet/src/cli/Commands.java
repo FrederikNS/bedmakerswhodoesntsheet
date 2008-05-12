@@ -1,7 +1,75 @@
 package cli;
 
+/**
+ * Contains the different user commands
+ * @author frederikns
+ *
+ */
 public enum Commands {
-	ADDACTIVITY("addactivity"), NULL(""), CREATE("create"), DELETE("delete"), VIEW("view"), HELP("help"), EMPLOYEE("employee"), PROJECT("project"), ACTIVITY("activity"), EDIT("edit"), FIND("find"), ASSIGN("assign"), UNASSIGN("unassign"), RENAME("rename"), QUIT("quit"), WEEK("week"), PROGRESS("progress");
+	/**
+	 * When no input is detected
+	 */
+	NULL(""),
+	/**
+	 * When command is create
+	 */
+	CREATE("create"),
+	/**
+	 * When command is delete
+	 */
+	DELETE("delete"),
+	/**
+	 * When command is view
+	 */
+	VIEW("view"),
+	/**
+	 * When command is help
+	 */
+	HELP("help"),
+	/**
+	 * When command is employee
+	 */
+	EMPLOYEE("employee"),
+	/**
+	 * When command is project
+	 */
+	PROJECT("project"),
+	/**
+	 * When command is activity
+	 */
+	ACTIVITY("activity"),
+	/**
+	 * When command is edit
+	 */
+	EDIT("edit"),
+	/**
+	 * When command is find
+	 */
+	FIND("find"),
+	/**
+	 * When command is assign
+	 */
+	ASSIGN("assign"),
+	/**
+	 * When command is unassign
+	 */
+	UNASSIGN("unassign"),
+	/**
+	 * When command is rename
+	 */
+	RENAME("rename"),
+	/**
+	 * When command is quit
+	 */
+	QUIT("quit"),
+	/**
+	 * When command is week
+	 */
+	WEEK("week"),
+	/**
+	 * When command is progress
+	 */
+	PROGRESS("progress");
 	
 	final String humanmessage;
 	
