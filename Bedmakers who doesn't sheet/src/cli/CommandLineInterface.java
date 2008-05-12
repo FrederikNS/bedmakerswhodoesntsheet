@@ -43,7 +43,6 @@ public class CommandLineInterface {
 				"\n" +
 		"Type help for a list of commands");
 		while(true){
-			System.out.println("Please choose a function:");
 			try {
 				command = splitCommand(getInput());
 			} catch (IOException e) {
