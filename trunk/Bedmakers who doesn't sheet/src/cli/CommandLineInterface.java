@@ -7,8 +7,8 @@ import java.io.InputStreamReader;
 import projectplanner.*;
 
 /**
+ * The command line interface for using the program
  * @author Frederik Nordahl Sabroe
- *
  */
 public class CommandLineInterface {
 	private BufferedReader keyboard;
@@ -34,6 +34,7 @@ public class CommandLineInterface {
 	/**
 	 * The constructor for the command line interface,  
 	 */
+	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	public CommandLineInterface() {
 		keyboard = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println(
@@ -52,7 +53,7 @@ public class CommandLineInterface {
 			for(int i = 0;i<command.length;i++){
 				commandInt[i] = converter(i);
 				if(i>1){
-					switch(Arguments.values()[commandInt[i]]){
+					switch(Commands.values()[commandInt[i]]){
 					case NAME:
 						name = command[i].substring(5);
 						break;
@@ -73,9 +74,10 @@ public class CommandLineInterface {
 						end = Integer.parseInt(command[i].substring(4));
 						endSet = true;
 						break;
-					case WEEK:
+					case WEEK2:
 						week = Integer.parseInt(command[i].substring(5));
 						weekSet = true;
+						break;
 					case EMPLOYEEARG:
 						employee = command[i].substring(9);
 						break;
@@ -127,11 +129,8 @@ public class CommandLineInterface {
 
 	private int converter(int i){
 		for(Commands comm:Commands.values())
-			if(command[i].equals(comm.toString()))
+			if(command[i].equals(comm.toString()) || command[i].startsWith(comm.toString()))
 				return comm.ordinal();
-		for(Arguments args:Arguments.values())
-			if(command[i].startsWith(args.toString()))
-				return args.ordinal();
 		return Commands.NULL.ordinal();
 	}
 
@@ -281,7 +280,7 @@ public class CommandLineInterface {
 			break;
 		}
 	}
-	
+
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	private void viewFunc() throws UnknownIDException{
 		switch(Commands.values()[commandInt[1]]){
@@ -338,9 +337,9 @@ public class CommandLineInterface {
 
 	@SuppressWarnings("incomplete-switch") //Switches intentionally left incomplete
 	private void assignFunc() throws FrozenException, UnknownIDException, ProjectException, EmployeeException, ActivityException{
-		switch(Arguments.values()[commandInt[1]]){
+		switch(Commands.values()[commandInt[1]]){
 		case PROJECTARG:
-			switch(Arguments.values()[commandInt[2]]){
+			switch(Commands.values()[commandInt[2]]){
 			case PROJECTARG:
 				System.out.println("Can not assign project to project");
 				break;
@@ -353,7 +352,7 @@ public class CommandLineInterface {
 			}
 			break;
 		case ACTIVITYARG:
-			switch(Arguments.values()[commandInt[2]]){
+			switch(Commands.values()[commandInt[2]]){
 			case PROJECTARG:
 				projectPlan.addActivityToProject(activity, project);
 				break;
@@ -366,7 +365,7 @@ public class CommandLineInterface {
 			}
 			break;
 		case EMPLOYEEARG:
-			switch(Arguments.values()[commandInt[2]]){
+			switch(Commands.values()[commandInt[2]]){
 			case PROJECTARG:
 				projectPlan.assignEmployeeToProject(employee, project);
 				break;
@@ -383,9 +382,9 @@ public class CommandLineInterface {
 
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	private void unassignFunc() throws FrozenException, EmployeeException, UnknownIDException, ProjectException, ActivityException{
-		switch(Arguments.values()[commandInt[1]]){
+		switch(Commands.values()[commandInt[1]]){
 		case PROJECTARG:
-			switch(Arguments.values()[commandInt[2]]){
+			switch(Commands.values()[commandInt[2]]){
 			case PROJECTARG:
 				System.out.println("Can not unassign project from project");
 				break;
@@ -398,7 +397,7 @@ public class CommandLineInterface {
 			}
 			break;
 		case ACTIVITYARG:
-			switch(Arguments.values()[commandInt[2]]){
+			switch(Commands.values()[commandInt[2]]){
 			/*case PROJECTARG:
 
 				break;*/
@@ -408,13 +407,13 @@ public class CommandLineInterface {
 			case EMPLOYEEARG:
 				projectPlan.relieveEmployeeFromActivity(employee, activity);
 				break;
-			case WEEK:
+			case WEEK2:
 				projectPlan.removeActivityFromWeek(activity, week);
 				break;
 			}
 			break;
 		case EMPLOYEEARG:
-			switch(Arguments.values()[commandInt[2]]){
+			switch(Commands.values()[commandInt[2]]){
 			case PROJECTARG:
 				projectPlan.relieveEmployeeFromProject(employee, project, true);
 				break;
