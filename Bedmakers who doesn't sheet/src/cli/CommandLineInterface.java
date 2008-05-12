@@ -121,7 +121,7 @@ public class CommandLineInterface {
 
 	private static String[] splitCommand(String cmd) {
 		String[] split = cmd.trim().split("\\s");
-		for(String s : split) s.replace('_', ' ');
+		for(int i = 0; i < split.length; i++)  split[i].replace('_', ' ');
 		return split;
 	}
 
@@ -330,11 +330,11 @@ public class CommandLineInterface {
 			break;
 		case EMPLOYEE:
 			if(initials!=null){
-				System.out.println("Employee Name: "+projectPlan.getEmployeeName(id));
-				System.out.println("Work Done: "+projectPlan.getWorkDoneByEmployee(id));
-				System.out.println("Assigned Projects: "+projectPlan.getActivitiesAssignedToEmployee(id));
-				System.out.println("Leading Projects: "+projectPlan.getProjectsBeingLeadByEmployee(id));
-				System.out.println("Assigned Activities: "+projectPlan.getProjectsAssignedToEmployee(id));
+				System.out.println("Employee Name: "+projectPlan.getEmployeeName(initials));
+				System.out.println("Work Done: "+projectPlan.getWorkDoneByEmployee(initials));
+				System.out.println("Assigned Projects: "+projectPlan.getActivitiesAssignedToEmployee(initials));
+				System.out.println("Leading Projects: "+projectPlan.getProjectsBeingLeadByEmployee(initials));
+				System.out.println("Assigned Activities: "+projectPlan.getProjectsAssignedToEmployee(initials));
 			}
 			break;
 		case WEEK:
