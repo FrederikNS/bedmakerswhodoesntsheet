@@ -59,6 +59,9 @@ public class CommandLineInterface {
 						end = Integer.parseInt(command[i].substring(6));
 						endSet = true;
 						break;
+					case WORKLOAD:
+
+						break;
 					case EMPLOYEEARG:
 						employee = command[i].substring(9);
 						break;
@@ -288,7 +291,7 @@ public class CommandLineInterface {
 		case ACTIVITY:
 			if(id!=null){
 				System.out.println("Activity Name: "+projectPlan.getActivityName(id));
-				System.out.println("Parent Project: "+projectPlan.getParentProjectToActivity(id));
+				System.out.println("Parent Project: "+projectPlan.getActivityParentProject(id));
 				System.out.println("Start Week: "+projectPlan.getActivityStartWeek(id));
 				System.out.println("End Week: "+projectPlan.getActivityEndWeek(id));
 				System.out.println("Workload: "+projectPlan.getActivityWorkload(id));
@@ -368,7 +371,7 @@ public class CommandLineInterface {
 	public void unassignFunc(){
 		switch(Arguments.values()[commandInt[1]]){
 		case PROJECTARG:
-			switch(Arguments.values()[commandInt[1]]){
+			switch(Arguments.values()[commandInt[2]]){
 			case PROJECTARG:
 
 				break;
@@ -381,7 +384,7 @@ public class CommandLineInterface {
 			}
 			break;
 		case ACTIVITYARG:
-			switch(Arguments.values()[commandInt[1]]){
+			switch(Arguments.values()[commandInt[2]]){
 			case PROJECTARG:
 
 				break;
@@ -394,7 +397,7 @@ public class CommandLineInterface {
 			}
 			break;
 		case EMPLOYEEARG:
-			switch(Arguments.values()[commandInt[1]]){
+			switch(Arguments.values()[commandInt[2]]){
 			case PROJECTARG:
 
 				break;
@@ -436,9 +439,6 @@ public class CommandLineInterface {
 					projectPlan.renameProject(id, name);
 				}
 			}
-			break;
-		case EMPLOYEE:
-			System.out.println("Employees can not be renamed");
 			break;
 		}
 	}
