@@ -326,7 +326,6 @@ public class CommandLineInterface {
 				System.out.println("Assigned Projects: "+projectPlan.getActivitiesAssignedToEmployee(id));
 				System.out.println("Leading Projects: "+projectPlan.getProjectsBeingLeadByEmployee(id));
 				System.out.println("Assigned Activities: "+projectPlan.getProjectsAssignedToEmployee(id));
-				System.out.println("Assisting Activities: "+projectPlan.getActivitiesAssistedByEmployee(id));
 			}
 			break;
 		case WEEK:
@@ -334,10 +333,10 @@ public class CommandLineInterface {
 				int number = Integer.parseInt(id);
 				System.out.println("Number of Projects: "+projectPlan.getNumberOfProjects());
 				System.out.println("Number of Activities: "+projectPlan.getNumberOfActivities());
-				System.out.println("Running Projects: "+projectPlan.getProjects());
-				System.out.println("Running Activities: "+projectPlan.getActivities());
-				System.out.println("Occupied Employees: "+projectPlan.getOccupiedEmployees());
-				System.out.println("Employees With Spare Time: "+projectPlan.getEmployeesWithSpareTime());
+				System.out.println("Running Projects: "+projectPlan.getProjects(week));
+				System.out.println("Running Activities: "+projectPlan.getActivities(week));
+				System.out.println("Occupied Employees: "+projectPlan.getOccupiedEmployees(week));
+				System.out.println("Employees With Spare Time: "+projectPlan.getWorkloadByEmployeeForWeek(week));
 			}
 		}
 	}
