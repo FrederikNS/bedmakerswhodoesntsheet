@@ -46,7 +46,6 @@ public class CommandLineInterface {
 			try {
 				command = splitCommand(getInput());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			commandInt = new int[command.length];
@@ -96,19 +95,15 @@ public class CommandLineInterface {
 			try {
 				functionChooser();
 			} catch (FrozenException e) {
-				System.out.println("Frozen Error: ");
+				System.out.println("Frozen Error: "+e);
 			} catch (UnknownIDException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Unknown ID Error: "+e);
 			} catch (ProjectException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Project Error: "+e);
 			} catch (EmployeeException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Employee Error: "+e);
 			} catch (ActivityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Activity Error: "+e);
 			}
 			name = null;
 			leader = null;
