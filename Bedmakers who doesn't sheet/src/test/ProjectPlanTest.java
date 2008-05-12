@@ -59,11 +59,13 @@ public class ProjectPlanTest extends TestCase {
 	
 	public void addActivity() {
 		activity_ID = projectPlan.addActivity(activityName);
+		//TODO: MARK
 		activity = projectPlan.getActivities().get(activity_ID);
 	}
 	
 	public void addProject() {
 		project_ID = projectPlan.addProject(projectName);
+		//TODO: MARK
 		project = projectPlan.getProjects().get(project_ID);
 	}
 	
@@ -74,6 +76,7 @@ public class ProjectPlanTest extends TestCase {
 			print("FAIL");
 			fail();
 		}
+		//TODO: MARK
 		employee = projectPlan.getEmployees().get(initials);
 	}
 
@@ -82,6 +85,7 @@ public class ProjectPlanTest extends TestCase {
 	 */
 	public void testAddActivity(){		
 		String activity_ID = projectPlan.addActivity(activityName);
+		//TODO: MARK
 		activity = projectPlan.getActivities().get(activity_ID);
 		assertTrue(activity instanceof Activity);
 		assertTrue(projectPlan.findActivity(activityName).contains(activity));
@@ -92,6 +96,7 @@ public class ProjectPlanTest extends TestCase {
 	 */
 	public void testAddProject() {
 		String project_ID = projectPlan.addProject(projectName);
+		//TODO: MARK
 		project = projectPlan.getProjects().get(project_ID);
 		assertTrue(project instanceof Project);
 		assertTrue(projectPlan.findProject(projectName).contains(project));
@@ -108,6 +113,7 @@ public class ProjectPlanTest extends TestCase {
 			print("FAIL");
 			fail();
 		}
+		//TODO: MARK
 		employee = projectPlan.getEmployees().get(initials);
 		assertTrue(employee instanceof Employee);
 		assertTrue(projectPlan.findEmployee(employeeName).contains(employee));
@@ -128,11 +134,13 @@ public class ProjectPlanTest extends TestCase {
 		testAddEmployee();
 		try {
 			String project_ID = projectPlan.addProjectWithLeader(projectName, initials);
+			//TODO: MARK
 			project = projectPlan.getProjects().get(project_ID);
 		} catch (UnknownIDException e) {
 			print("The leader ID does not exist");
 			fail();
 		}		
+		//TODO: MARK
 		project.getLeader();
 		assertTrue(project instanceof Project);
 		assertTrue(projectPlan.findProject(projectName).contains(project));
@@ -172,14 +180,13 @@ public class ProjectPlanTest extends TestCase {
 		try {
 			actHours = (int)activity.getHoursForWeek(projectPlan.getWeekFromIndex(weekIndex));
 		} catch (ActivityException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 		int weekHours = 0;
 		try {
+			//TODO: MARK
 			weekHours = (int)((projectPlan.getWeekFromIndex(weekIndex)).getAssignedHours());
 		} catch (ActivityException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		//We assert that the week returned should contain the hours specified.
@@ -252,6 +259,7 @@ public class ProjectPlanTest extends TestCase {
 		}
 //We then assert the week is empty after removing the activity, knowing we only added the one.
 //This will assure us the activity was removed.
+		//TODO: MARK
 		assertTrue((projectPlan.getWeekFromIndex(weekIndex)).isEmpty());
 	}
 
@@ -274,8 +282,7 @@ public class ProjectPlanTest extends TestCase {
 			print("Project already contains activity");
 			fail();
 		}
-		activity = projectPlan.getActivities().get(activity_ID);
-		project = projectPlan.getProjects().get(project_ID);
+		//TODO: MARK
 		assertTrue(project.containsActivity(activity));
 		
 //Baiting the exception:
@@ -312,6 +319,7 @@ public class ProjectPlanTest extends TestCase {
 			print("ID unknown");
 			fail();
 		}
+		//TODO: MARK
 		assertEquals(project.getLeader(), employee);
 		
 //Then the project is assigned to a start- and endweek.
@@ -333,6 +341,7 @@ public class ProjectPlanTest extends TestCase {
 			print("ID unknown");
 			fail();
 		}
+		//TODO: MARK
 		assertTrue(weekIndex == project.getStartWeek());
 		assertTrue(weekend == project.getEndWeek());
 	}
@@ -360,9 +369,7 @@ public class ProjectPlanTest extends TestCase {
 			print("FAIL");
 			fail();
 		}
-		
-		employee = projectPlan.getEmployees().get(initials);
-		project = projectPlan.getProjects().get(project_ID);
+		//TODO: MARK
 		assertTrue(project.containsEmployee(employee));
 		
 //We then try to relieve the employee from the project:
@@ -381,6 +388,7 @@ public class ProjectPlanTest extends TestCase {
 			print("FAIL");
 			fail();
 		}
+		//MARK: TODO
 		assertFalse(project.containsEmployee(employee));
 	}
 	
@@ -417,7 +425,7 @@ public class ProjectPlanTest extends TestCase {
 		} catch (ActivityException e) {
 			print("lol");
 		}
-		employee = projectPlan.getEmployees().get(initials);
+		//TODO: MARK
 		assertTrue(employee instanceof Employee);
 		assertTrue(employee.isAssignedToActivity(activity));
 		
@@ -433,6 +441,7 @@ public class ProjectPlanTest extends TestCase {
 		} catch (ActivityException e) {
 			e.printStackTrace();
 		}
+		//TODO: MARK
 		assertFalse(employee.isAssignedToActivity(activity));
 	}
 	
@@ -440,4 +449,7 @@ public class ProjectPlanTest extends TestCase {
 	 * In this test, we will test running a test, testing assigning and employee to assist an activity.
 	 */
 	
+	public void testAssignEmployeeToAssistActivity() {
+		
+	}
 }
