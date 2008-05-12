@@ -97,43 +97,43 @@ public class ProjectPlan {
 	}
 	
 	private void assignEmployeeToProject(Employee e, Project p) throws FrozenException, EmployeeException, ProjectException {
-		e.checkFreeze();
-		p.checkFreeze();
+		e.checkAssignToProject(p);
+		p.checkAssignEmployee(e);
 		p.addEmployee(e);
 		e.assignToProject(p);
 	}
 
 	private void relieveEmployeeFromProject(Employee e, Project p, boolean reassignasassistant) throws FrozenException, EmployeeException, ProjectException {
-		e.checkFreeze();
-		p.checkFreeze();
+		e.checkRelieveFromProject(p);
+		p.checkRemoveEmployee(e);
 		e.relieveFromProject(p, reassignasassistant);
 		p.removeEmployee(e);		
 	}
 	
-	private void assignEmployeeToActivity(Employee e, Activity a) throws FrozenException, EmployeeException {
-		e.checkFreeze();
-		a.checkFreeze();
+	private void assignEmployeeToActivity(Employee e, Activity a) throws FrozenException, EmployeeException, ActivityException {
+		e.checkAssignToActivity(a);
+		a.checkAssignEmployee(e);
 		e.assignToActivity(a);
 		a.assignEmployee(e);
 	}
 
-	private void relieveEmployeeFromActivity(Employee e, Activity a) throws FrozenException, EmployeeException {
-		e.checkFreeze();
-		a.checkFreeze();
+	private void relieveEmployeeFromActivity(Employee e, Activity a) throws FrozenException, EmployeeException, ActivityException {
+		e.checkRelieveFromActivity(a);
+		a.checkRemoveEmployee(e);
 		e.relieveFromActivity(a);
 		a.removeEmployee(e);
 	}
 
-	private void assignEmployeeToAssistActivity(Employee e, Activity a) throws FrozenException, EmployeeException {
-		e.checkFreeze();
-		a.checkFreeze();
+	private void assignEmployeeToAssistActivity(Employee e, Activity a) throws FrozenException, EmployeeException, ActivityException {
+		e.checkAssistActivity(a);
+		a.checkAssignEmployeeAsAssistant(e);
 		e.assistActivity(a);
 		a.assignEmployee(e);
 	}
 
-	private void relieveEmployeeFromAssitingActivity(Employee e, Activity a) throws FrozenException, EmployeeException {
-		e.checkFreeze();
-		a.checkFreeze();
+	private void relieveEmployeeFromAssitingActivity(Employee e, Activity a) throws FrozenException, EmployeeException, ActivityException {
+		e.checkRelieveFromAssistance(a);
+		a.checkRemoveEmployee(e);
 		e.relieveFromAssistance(a);
 		a.removeEmployee(e);
 	}	
@@ -217,7 +217,7 @@ public class ProjectPlan {
 		return e.getWorkDone();
 	}
 	
-	private float getAssignedHoursForWeek(Week week) {
+	private float getAssignedHoursForWeek(Week week) throws ActivityException {
 		return week.getAssignedHours();
 	}
 
@@ -298,19 +298,19 @@ public class ProjectPlan {
 		relieveEmployeeFromProject(getEmployee(emp_id), getProject(project_id), reassignasassistant);
 	}
 	
-	public void assignEmployeeToActivity(String emp_id, String act_id) throws FrozenException, EmployeeException, UnknownIDException {
+	public void assignEmployeeToActivity(String emp_id, String act_id) throws FrozenException, EmployeeException, UnknownIDException, ActivityException {
 		assignEmployeeToActivity(getEmployee(emp_id), getActivity(act_id));
 	}
 
-	public void relieveEmployeeFromActivity(String emp_id, String act_id) throws FrozenException, EmployeeException, UnknownIDException {
+	public void relieveEmployeeFromActivity(String emp_id, String act_id) throws FrozenException, EmployeeException, UnknownIDException, ActivityException {
 		relieveEmployeeFromActivity(getEmployee(emp_id), getActivity(act_id));
 	}
 
-	public void assignEmployeeToAssistActivity(String emp_id, String act_id) throws FrozenException, EmployeeException, UnknownIDException {
+	public void assignEmployeeToAssistActivity(String emp_id, String act_id) throws FrozenException, EmployeeException, UnknownIDException, ActivityException {
 		assignEmployeeToAssistActivity(getEmployee(emp_id), getActivity(act_id));
 	}
 
-	public void relieveEmployeeFromAssitingActivity(String emp_id, String act_id) throws FrozenException, EmployeeException, UnknownIDException {
+	public void relieveEmployeeFromAssitingActivity(String emp_id, String act_id) throws FrozenException, EmployeeException, UnknownIDException, ActivityException {
 		relieveEmployeeFromAssitingActivity(getEmployee(emp_id), getActivity(act_id));
 	}	
 	
@@ -411,7 +411,7 @@ public class ProjectPlan {
 		return lazypeons;
 	}
 	
-	public float getAssignedHoursForWeek(int index) {
+	public float getAssignedHoursForWeek(int index) throws ActivityException {
 		return getAssignedHoursForWeek(getWeek(index));
 	}
 	

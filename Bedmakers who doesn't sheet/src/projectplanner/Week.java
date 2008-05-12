@@ -20,7 +20,6 @@ public class Week {
 	}
 	
 	public void removeActivity(Activity activity) {
-		//activity.removeWeek(this);
 		scheduledActivities.remove(activity);
 	}
 	
@@ -28,7 +27,7 @@ public class Week {
 		return scheduledActivities;
 	}
 	
-	public float getAssignedHours() {
+	public float getAssignedHours() throws ActivityException {
 		float hoursum = 0;
 		for(Activity activity : scheduledActivities) {
 			hoursum += activity.getHoursForWeek(this);
