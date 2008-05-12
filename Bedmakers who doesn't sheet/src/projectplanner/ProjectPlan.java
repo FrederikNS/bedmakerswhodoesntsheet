@@ -257,6 +257,19 @@ public class ProjectPlan {
 		return employee.getName();
 	}
 	
+	private boolean isEmployeeAssignedToActivity(Employee employee, Activity activity) {
+		return employee.isAssignedToActivity(activity);
+	}
+
+	private boolean isEmployeeAssignedToActivityAsEmployee(Employee employee, Activity activity) {
+		return employee.isAssignedToActivityAsEmployee(activity);
+	}
+
+	private boolean isEmployeeAssignedToActivityAsAssistant(Employee employee, Activity activity) {
+		return employee.isAssignedToActivityAsAssistant(activity);
+	}
+
+	
 	/*
 	 * WRAPPER FUNKTIONER MED ID VAERDIER 
 	 * (Bliver typisk kaldt udefra)
@@ -465,7 +478,19 @@ public class ProjectPlan {
 	public String getEmployeeName(String employee_initials) throws UnknownIDException {
 		return getEmployeeName(getEmployee(employee_initials));
 	}
-	
+
+	public boolean isEmployeeAssignedToActivity(String employee_initials, String activity_id) throws UnknownIDException {
+		return isEmployeeAssignedToActivity(getEmployee(employee_initials),getActivity(activity_id));
+	}
+
+	public boolean isEmployeeAssignedToActivityAsEmployee(String employee_initials, String activity_id) throws UnknownIDException {
+		return isEmployeeAssignedToActivityAsEmployee(getEmployee(employee_initials),getActivity(activity_id));
+	}
+
+	public boolean isEmployeeAssignedToActivityAsAssistant(String employee_initials, String activity_id) throws UnknownIDException {
+		return isEmployeeAssignedToActivityAsAssistant(getEmployee(employee_initials),getActivity(activity_id));
+	}
+
 	
 	/*
 	 * lazypeons <- Liste over alle ansatte
