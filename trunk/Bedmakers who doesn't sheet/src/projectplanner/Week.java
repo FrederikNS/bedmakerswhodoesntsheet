@@ -38,4 +38,8 @@ public class Week {
 	public boolean isEmpty() {
 		return scheduledActivities.isEmpty();
 	}
+
+	public int getNumberOfScheduledActivities() {
+		return getScheduledActivities().size();
+	}
 }

@@ -269,7 +269,14 @@ public class ProjectPlan {
 		return employee.isAssignedToActivityAsAssistant(activity);
 	}
 
+	private ArrayList<Activity> getActivitiesInWeek(Week week) {
+		return week.getScheduledActivities();
+	}
 	
+	private int getNumberOfActivitiesInWeek(Week week) {
+		return week.getNumberOfScheduledActivities();
+	}
+
 	/*
 	 * WRAPPER FUNKTIONER MED ID VAERDIER 
 	 * (Bliver typisk kaldt udefra)
@@ -298,8 +305,9 @@ public class ProjectPlan {
 		employees.put(initials, new Employee(name, initials));
 	}
 
-	public void addEmployee(String name) throws Exception {
+	public void addEmployee(String name) throws EmployeeException {
 		String initials = Employee.generateInitialsFromName(name);
+		if(employees.containsKey(initials)) throw new EmployeeException("An employee with the initials " + initials + " already exists.");
 		employees.put(initials, new Employee(name, initials));
 	}
 
@@ -490,6 +498,15 @@ public class ProjectPlan {
 	public boolean isEmployeeAssignedToActivityAsAssistant(String employee_initials, String activity_id) throws UnknownIDException {
 		return isEmployeeAssignedToActivityAsAssistant(getEmployee(employee_initials),getActivity(activity_id));
 	}
+		
+	public ArrayList<Activity> getActivitiesInWeek(int week_index) {
+		return getActivitiesInWeek(getWeek(week_index));
+	}
+	
+	public int getNumberOfActivitiesInWeek(int week_index) {
+		return getNumberOfActivitiesInWeek(getWeek(week_index));
+	}
+
 
 	
 	/*
@@ -499,7 +516,7 @@ public class ProjectPlan {
 	 * For alle ansatte i lazypeons
 	 *   Fjern alle uarbejdsdygtige (frosne) ansatte
 	 */
-	
+	/*
 	public ArrayList<Employee> getLazyEmployeesForWeek(int index) {
 		ArrayList<Employee> lazypeons = new ArrayList<Employee>(employees.values());
 		Week week = getWeek(index);
@@ -511,10 +528,15 @@ public class ProjectPlan {
 			if(e.isFrozen())
 				lazypeons.remove(e);
 		return lazypeons;
-	}
+	}*/
 		
-	public HashMap<Employee, Float> getWorkloadByEmployeeForWeek(Week week) {
+	public HashMap<Employee, Float> getWorkloadByEmployeeForWeek(int index) {
 		HashMap<Employee,Float> workloadByEmployee = new HashMap<Employee,Float>();
+		Week week = getWeek(index);
+		
+		for(Employee e : employees.values()) {
+			workloadByEmployee.put(e,0.0f);
+		}
 		
 		for(Activity activity : week.getScheduledActivities()) {
 			float workload_per_employee = 0;
@@ -525,8 +547,8 @@ public class ProjectPlan {
 			}
 			for(Employee employee : activity.getAssignedEmployees()) {
 				float total_employee_workload = 0;
-				if(workloadByEmployee.containsKey(employee))
-					total_employee_workload = workloadByEmployee.get(employee);
+				//if(workloadByEmployee.containsKey(employee))
+				total_employee_workload = workloadByEmployee.get(employee);
 				total_employee_workload += workload_per_employee;
 				workloadByEmployee.put(employee, total_employee_workload);
 			}
