@@ -347,7 +347,7 @@ public class CommandLineInterface {
 		System.out.println("");
 	}
 
-	public void assignFunc() throws FrozenException, UnknownIDException, ProjectException, EmployeeException{
+	public void assignFunc() throws FrozenException, UnknownIDException, ProjectException, EmployeeException, ActivityException{
 		switch(Arguments.values()[commandInt[1]]){
 		case PROJECTARG:
 			switch(Arguments.values()[commandInt[2]]){
@@ -391,7 +391,7 @@ public class CommandLineInterface {
 		}
 	}
 
-	public void unassignFunc() throws FrozenException, EmployeeException, UnknownIDException, ProjectException{
+	public void unassignFunc() throws FrozenException, EmployeeException, UnknownIDException, ProjectException, ActivityException{
 		switch(Arguments.values()[commandInt[1]]){
 		case PROJECTARG:
 			switch(Arguments.values()[commandInt[2]]){
