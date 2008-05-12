@@ -572,17 +572,17 @@ public class ProjectPlan {
 	}
 
 	private Project getProject(String index) throws UnknownIDException {
-		if(!projects.containsKey(index)) throw new UnknownIDException(ID_EXCEPTION_TYPES.PROJECT, index);
+		if(!projects.containsKey(index)) throw new UnknownIDException("Unknown project index:"+ index);
 		return projects.get(index);
 	}
 	
 	private Activity getActivity(String index) throws UnknownIDException {
-		if(!activities.containsKey(index)) throw new UnknownIDException(ID_EXCEPTION_TYPES.ACTIVITY, index);
+		if(!activities.containsKey(index)) throw new UnknownIDException("Unknown activity index:" + index);
 		return activities.get(index);
 	}
 	
 	private Employee getEmployee(String initials) throws UnknownIDException {
-		if(!employees.containsKey(initials)) throw new UnknownIDException(ID_EXCEPTION_TYPES.EMPLOYEE, initials);
+		if(!employees.containsKey(initials)) throw new UnknownIDException("Unknown initials:" + initials);
 		return employees.get(initials);
 	}
 
