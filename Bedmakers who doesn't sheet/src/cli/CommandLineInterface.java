@@ -34,7 +34,7 @@ public class CommandLineInterface {
 	/**
 	 * The constructor for the command line interface,  
 	 */
-	public CommandLineInterface(){
+	public CommandLineInterface() {
 		keyboard = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println(
 				"+---------------------------------------+\n" +
@@ -43,62 +43,79 @@ public class CommandLineInterface {
 				"\n" +
 		"Type help for a list of commands");
 		while(true){
-			try{
+			try {
 				command = splitCommand(getInput());
-				commandInt = new int[command.length];
-				for(int i = 0;i<command.length;i++){
-					commandInt[i] = converter(i);
-					if(i>1){
-						switch(Arguments.values()[commandInt[i]]){
-						case NAME:
-							name = command[i].substring(5);
-							break;
-						case LEADER:
-							leader = command[i].substring(7);
-							break;
-						case INITIALS:
-							initials = command[i].substring(9);
-							break;
-						case ID:
-							id = command[i].substring(3);
-							break;
-						case START:
-							start = Integer.parseInt(command [i].substring(6));
-							startSet = true;
-							break;
-						case END:
-							end = Integer.parseInt(command[i].substring(6));
-							endSet = true;
-							break;
-						case WEEK:
-							week = Integer.parseInt(command[i].substring(5));
-							weekSet = true;
-						case EMPLOYEEARG:
-							employee = command[i].substring(9);
-							break;
-						case PROJECTARG:
-							project = command[i].substring(8);
-							break;
-						case ACTIVITYARG:
-							activity = command[i].substring(9);
-							break;
-						}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			commandInt = new int[command.length];
+			for(int i = 0;i<command.length;i++){
+				commandInt[i] = converter(i);
+				if(i>1){
+					switch(Arguments.values()[commandInt[i]]){
+					case NAME:
+						name = command[i].substring(5);
+						break;
+					case LEADER:
+						leader = command[i].substring(7);
+						break;
+					case INITIALS:
+						initials = command[i].substring(9);
+						break;
+					case ID:
+						id = command[i].substring(3);
+						break;
+					case START:
+						start = Integer.parseInt(command [i].substring(6));
+						startSet = true;
+						break;
+					case END:
+						end = Integer.parseInt(command[i].substring(6));
+						endSet = true;
+						break;
+					case WEEK:
+						week = Integer.parseInt(command[i].substring(5));
+						weekSet = true;
+					case EMPLOYEEARG:
+						employee = command[i].substring(9);
+						break;
+					case PROJECTARG:
+						project = command[i].substring(8);
+						break;
+					case ACTIVITYARG:
+						activity = command[i].substring(9);
+						break;
 					}
 				}
-				if(commandInt[0]==Commands.QUIT.ordinal()){
-					System.out.println("Bye!");
-					return;
-				}
-				functionChooser();
-				name = null;
-				leader = null;
-				initials = null;
-				id = null;
-				startSet = false;
-				endSet = false;
-			}catch (Exception e){
-
 			}
+			if(commandInt[0]==Commands.QUIT.ordinal()){
+				System.out.println("Bye!");
+				return;
+			}
+			try {
+				functionChooser();
+			} catch (FrozenException e) {
+				System.out.println("Frozen Error: ");
+			} catch (UnknownIDException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ProjectException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (EmployeeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ActivityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			name = null;
+			leader = null;
+			initials = null;
+			id = null;
+			startSet = false;
+			endSet = false;
 		}
 	}
 
@@ -159,7 +176,7 @@ public class CommandLineInterface {
 	}
 
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
-	private void functionChooser() throws Exception{
+	private void functionChooser() throws FrozenException, UnknownIDException, ProjectException, EmployeeException, ActivityException{
 		switch(Commands.values()[commandInt[0]]){
 		case CREATE:
 			createFunc();
@@ -195,7 +212,7 @@ public class CommandLineInterface {
 	}
 
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
-	private void createFunc() throws Exception{
+	private void createFunc() throws EmployeeException{
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
 			if(name != null){
@@ -253,7 +270,7 @@ public class CommandLineInterface {
 			break;
 		}
 	}
-	
+
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	private void editFunc() throws FrozenException, UnknownIDException{
 		switch(Commands.values()[commandInt[1]]){
@@ -300,7 +317,7 @@ public class CommandLineInterface {
 	}
 
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
-	private void viewFunc(){
+	private void viewFunc() throws UnknownIDException{
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
 			if(id != null){
