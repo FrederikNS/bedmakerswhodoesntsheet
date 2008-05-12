@@ -1,14 +1,16 @@
 import cli.CommandLineInterface;
 
+/**
+ * @author Spawner
+ *
+ */
 public class Spawner {
 
 	/**
-	 * @param args
-	 * @throws Exception 
+	 * The main method which starts the program
+	 * @param args Command-line arguments (not used)
 	 */
 	public static void main(String[] args) {
-		/*String test = "name";
-		System.out.println(Command.get(test));*/
 		new CommandLineInterface();
 	}
 }
