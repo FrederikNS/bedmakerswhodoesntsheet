@@ -330,12 +330,9 @@ public class CommandLineInterface {
 			break;
 		case WEEK:
 			if(weekSet ==true){
-				int number = Integer.parseInt(id);
-				System.out.println("Number of Projects: "+projectPlan.getNumberOfProjects());
-				System.out.println("Number of Activities: "+projectPlan.getNumberOfActivities());
-				System.out.println("Running Projects: "+projectPlan.getProjects(week));
-				System.out.println("Running Activities: "+projectPlan.getActivities(week));
-				System.out.println("Occupied Employees: "+projectPlan.getOccupiedEmployees(week));
+				System.out.println("Number of Activities: "+projectPlan.getNumberOfActivitiesInWeek(week));
+				System.out.println("Running Activities: "+projectPlan.getActivitiesInWeek(week));
+				System.out.println("Occupied Employees: "+projectPlan.getWorkloadByEmployeeForWeek(week));
 				System.out.println("Employees With Spare Time: "+projectPlan.getWorkloadByEmployeeForWeek(week));
 			}
 		}
