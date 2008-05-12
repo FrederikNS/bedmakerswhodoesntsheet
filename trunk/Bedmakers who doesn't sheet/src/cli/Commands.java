@@ -1,7 +1,7 @@
 package cli;
 
 public enum Commands {
-	ADDACTIVITY("addactivity"), NULL(""), CREATE("create"), DELETE("delete"), VIEW("view"), HELP("help"), EMPLOYEE("employee"), PROJECT("project"), ACTIVITY("activity"), EDIT("edit"), FIND("find"), ASSIGN("assign"), UNASSIGN("unassign"), RENAME("rename"), QUIT("quit"), WEEK("week");
+	ADDACTIVITY("addactivity"), NULL(""), CREATE("create"), DELETE("delete"), VIEW("view"), HELP("help"), EMPLOYEE("employee"), PROJECT("project"), ACTIVITY("activity"), EDIT("edit"), FIND("find"), ASSIGN("assign"), UNASSIGN("unassign"), RENAME("rename"), QUIT("quit"), WEEK("week"), PROGRESS("progress");
 	
 	final String humanmessage;
 	
