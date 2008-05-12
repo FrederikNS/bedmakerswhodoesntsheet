@@ -58,8 +58,24 @@ public class ProjectPlanTest extends TestCase {
 	
 	public void addActivity() {
 		activity_ID = projectPlan.addActivity(activityName);
+		activity = projectPlan.getActivities().get(activity_ID);
 	}
 	
+	public void addProject() {
+		project_ID = projectPlan.addProject(projectName);
+		project = projectPlan.getProjects().get(project_ID);
+	}
+	
+	public void addEmployee() {
+		try {
+			projectPlan.addEmployee(employeeName, initials);
+		} catch (EmployeeException e) {
+			print("FAIL");
+			fail();
+		}
+		employee = projectPlan.getEmployees().get(initials);
+	}
+		
 	public String findActivityID(String pattern) {
 		Pattern p = Pattern.compile(pattern);
 		String id = "";
@@ -246,7 +262,7 @@ public class ProjectPlanTest extends TestCase {
 	 * since this is tested in the previous tests. We expect the same of the ID exception.
 	 */
 	public void testRemoveActivityFromWeek() {
-		testAddActivity();
+		addActivity();
 		
 //First, adding a regular activity that should work out fine.
 		try {
@@ -279,8 +295,8 @@ public class ProjectPlanTest extends TestCase {
 	 * Then we try to bait the project exception by adding the same activity twice.
 	 */
 	public void testAddActivityToProject(){
-		testAddActivity();
-		testAddProject();
+		addActivity();
+		addProject();
 		try {
 			projectPlan.addActivityToProject(activity_ID, project_ID);
 		} catch (FrozenException e) {
@@ -317,8 +333,8 @@ public class ProjectPlanTest extends TestCase {
 	 * Assigning a leader to it and setting a start and end week for it.
 	 */
 	public void testProjectFeatures() {
-		testAddProject();
-		testAddEmployee();
+		addProject();
+		addEmployee();
 		
 //We then Assign a leader to it, and test to see if he is assigned properly.
 		
@@ -360,8 +376,8 @@ public class ProjectPlanTest extends TestCase {
 	 * This test will assign an employee to a project.
 	 */
 	public void testAssignEmployeeToProject() {
-		testAddEmployee();
-		testAddProject();
+		addEmployee();
+		addProject();
 		
 		try {
 			projectPlan.assignEmployeeToProject(initials, project_ID);
