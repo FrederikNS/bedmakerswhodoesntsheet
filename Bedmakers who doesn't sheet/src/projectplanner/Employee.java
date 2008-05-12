@@ -153,10 +153,14 @@ public class Employee extends Freezeable{
 		return name;
 	}
 	
-	public ArrayList<Activity> getAssignedActivities() {
-		return new ArrayList<Activity>(assignedActivities.keySet());
+	//public ArrayList<Activity> getAssignedActivities() {
+	//	return new ArrayList<Activity>(assignedActivities.keySet());
+	//}
+
+	public HashMap<Activity,Boolean> getAssignedActivities() {
+		return assignedActivities;
 	}
-	
+
 	public ArrayList<Project> getAssignedProjects() {
 		return assignedProjects;
 	}
