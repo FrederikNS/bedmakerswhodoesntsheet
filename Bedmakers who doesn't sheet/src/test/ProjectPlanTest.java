@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
 import projectplanner.Activity;
+import projectplanner.ActivityException;
 import projectplanner.Employee;
 import projectplanner.EmployeeException;
 import projectplanner.FrozenException;
@@ -74,56 +75,6 @@ public class ProjectPlanTest extends TestCase {
 			fail();
 		}
 		employee = projectPlan.getEmployees().get(initials);
-	}
-		
-	public String findActivityID(String pattern) {
-		Pattern p = Pattern.compile(pattern);
-		String id = "";
-		for(Activity a: activities.values()) {
-			if(p.matcher(a.getName()).matches()) {
-				id = a.getID();
-			}
-		}
-		return id;
-	}
-	
-	public String findEmployeeID(String pattern) {
-		Pattern p = Pattern.compile(pattern);
-		String id = "";
-		for(Employee employee : employees.values()) {
-			if(p.matcher(employee.getName()).matches()) {
-				id = employee.getInitials();
-			}
-		}
-		return id;
-	}	
-	
-	
-	public String findProjectID(String pattern) {
-		Pattern p = Pattern.compile(pattern);
-		String id = "";
-		for(Project project : projects.values()) {
-			if(p.matcher(project.getName()).matches()) {
-				id = project.getId();
-			}
-		}
-		return id;
-	}
-	
-	private Activity findActivity(String activityName) {
-		activities = projectPlan.getActivities();
-		activity = activities.get((findActivityID(activityName)));
-		return activity;
-	}
-	private Project findProject(String projectName) {
-		projects = projectPlan.getProjects();
-		project = projects.get(findProjectID(projectName));
-		return project;
-	}
-	private Employee findEmployee(String employeeName){
-		employees = projectPlan.getEmployees();
-		employee = employees.get(initials);
-		return employee;
 	}
 
 	/**
@@ -217,9 +168,23 @@ public class ProjectPlanTest extends TestCase {
 		}
 //TODO: Not sure if this getWeekFromIndex I'm using is a good idea.. 
 // I made it myself to get the week, but we might want to do it differently.
-		int temp = (int)((projectPlan.getWeekFromIndex(weekIndex)).getAssignedHours());
+		int actHours = 0;
+		try {
+			actHours = (int)activity.getHoursForWeek(projectPlan.getWeekFromIndex(weekIndex));
+		} catch (ActivityException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		int weekHours = 0;
+		try {
+			weekHours = (int)((projectPlan.getWeekFromIndex(weekIndex)).getAssignedHours());
+		} catch (ActivityException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		//We assert that the week returned should contain the hours specified.
-		assertEquals(hours, temp);
+		assertEquals(hours, weekHours);
+		assertEquals(weekHours, actHours);
 		
 //We then try to add an activity with an unknown ID
 		try {
@@ -324,7 +289,7 @@ public class ProjectPlanTest extends TestCase {
 			print("Activity or project ID unknown");
 			fail();
 		} catch (ProjectException e) {
-			print("Project already contains activity");
+			print("Project already contains activity\nTest Passed.");
 		}
 	}	
 	
@@ -374,6 +339,7 @@ public class ProjectPlanTest extends TestCase {
 
 	/**
 	 * This test will assign an employee to a project.
+	 * Afterwards, we'll test relieving the employee from the project.
 	 */
 	public void testAssignEmployeeToProject() {
 		addEmployee();
@@ -397,5 +363,81 @@ public class ProjectPlanTest extends TestCase {
 		
 		employee = projectPlan.getEmployees().get(initials);
 		project = projectPlan.getProjects().get(project_ID);
+		assertTrue(project.containsEmployee(employee));
+		
+//We then try to relieve the employee from the project:
+		try {
+			projectPlan.relieveEmployeeFromProject(initials, project_ID, false);
+		} catch (FrozenException e) {
+			print("Project is frozen");
+			fail();
+		} catch (EmployeeException e) {
+			print("FAIL");
+			fail();
+		} catch (UnknownIDException e) {
+			print("Project or Employee ID not found");
+			fail();
+		} catch (ProjectException e) {
+			print("FAIL");
+			fail();
+		}
+		assertFalse(project.containsEmployee(employee));
 	}
+	
+	/**
+	 * In this test, we'll assign an employee to an activity, and then remove it.
+	 */
+	
+	public void testAssignEmployeeToActivity() {
+		addActivity();
+		addEmployee();
+		addProject();
+		
+		try {
+			projectPlan.assignEmployeeToProject(initials, project_ID);
+			projectPlan.addActivityToProject(activity_ID, project_ID);
+		} catch (FrozenException e1) {
+			e1.printStackTrace();
+		} catch (EmployeeException e1) {
+			e1.printStackTrace();
+		} catch (UnknownIDException e1) {
+			e1.printStackTrace();
+		} catch (ProjectException e1) {
+			e1.printStackTrace();
+		}
+		
+		try {
+			projectPlan.assignEmployeeToActivity(initials, activity_ID);
+		} catch (FrozenException e) {
+			e.printStackTrace();
+		} catch (EmployeeException e) {
+			e.printStackTrace();
+		} catch (UnknownIDException e) {
+			e.printStackTrace();
+		} catch (ActivityException e) {
+			print("lol");
+		}
+		employee = projectPlan.getEmployees().get(initials);
+		assertTrue(employee instanceof Employee);
+		assertTrue(employee.isAssignedToActivity(activity));
+		
+// Relieving the employee
+		try {
+			projectPlan.relieveEmployeeFromActivity(initials, activity_ID);
+		} catch (FrozenException e) {
+			e.printStackTrace();
+		} catch (EmployeeException e) {
+			e.printStackTrace();
+		} catch (UnknownIDException e) {
+			e.printStackTrace();
+		} catch (ActivityException e) {
+			e.printStackTrace();
+		}
+		assertFalse(employee.isAssignedToActivity(activity));
+	}
+	
+	/**
+	 * In this test, we will test running a test, testing assigning and employee to assist an activity.
+	 */
+	
 }
