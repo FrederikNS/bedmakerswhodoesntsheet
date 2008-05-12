@@ -158,6 +158,7 @@ public class CommandLineInterface {
 		return Commands.NULL.ordinal();
 	}
 
+	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	private void functionChooser() throws Exception{
 		switch(Commands.values()[commandInt[0]]){
 		case CREATE:
@@ -193,6 +194,7 @@ public class CommandLineInterface {
 		}
 	}
 
+	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	private void createFunc() throws Exception{
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
@@ -222,8 +224,7 @@ public class CommandLineInterface {
 				if(initials != null) {
 					projectPlan.addEmployee(name,initials);
 				} else {
-					//FIXME WTH?
-//					projectPlan.addEmployee(name);
+					projectPlan.addEmployee(name);
 				}
 			} else {
 				System.out.println("You must specify a name for the employee");
@@ -232,6 +233,7 @@ public class CommandLineInterface {
 		}
 	}
 
+	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	private void deleteFunc() throws FrozenException, UnknownIDException{
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
@@ -251,7 +253,8 @@ public class CommandLineInterface {
 			break;
 		}
 	}
-
+	
+	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	private void editFunc() throws FrozenException, UnknownIDException{
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
@@ -278,6 +281,7 @@ public class CommandLineInterface {
 		}
 	}
 
+	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	private void findFunc(){
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
@@ -295,6 +299,7 @@ public class CommandLineInterface {
 		}
 	}
 
+	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	private void viewFunc(){
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
@@ -342,6 +347,7 @@ public class CommandLineInterface {
 		System.out.println("");
 	}
 
+	@SuppressWarnings("incomplete-switch") //Switches intentionally left incomplete
 	private void assignFunc() throws FrozenException, UnknownIDException, ProjectException, EmployeeException, ActivityException{
 		switch(Arguments.values()[commandInt[1]]){
 		case PROJECTARG:
@@ -386,6 +392,7 @@ public class CommandLineInterface {
 		}
 	}
 
+	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	private void unassignFunc() throws FrozenException, EmployeeException, UnknownIDException, ProjectException, ActivityException{
 		switch(Arguments.values()[commandInt[1]]){
 		case PROJECTARG:
@@ -433,6 +440,7 @@ public class CommandLineInterface {
 		}
 	}
 
+	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	private void renameFunc() throws FrozenException, UnknownIDException{
 		switch(Commands.values()[commandInt[1]]){
 		case PROJECT:
