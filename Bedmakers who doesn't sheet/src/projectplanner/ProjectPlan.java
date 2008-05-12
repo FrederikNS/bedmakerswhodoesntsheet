@@ -5,8 +5,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
-import projectplanner.UnknownIDException.ID_EXCEPTION_TYPES;
-
 public class ProjectPlan {
 	private HashMap<String,Project> projects;
 	private HashMap<Integer,Week> weeks;
