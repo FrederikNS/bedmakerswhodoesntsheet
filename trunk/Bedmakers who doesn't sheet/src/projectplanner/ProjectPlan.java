@@ -72,12 +72,8 @@ public class ProjectPlan {
 		week.removeActivity(activity);
 	}
 
-	private void addActivityToProject(Activity activity, Project project) throws FrozenException {
+	private void addActivityToProject(Activity activity, Project project) throws FrozenException, ProjectException {
 		project.addActivity(activity);
-	}
-	
-	private void freezeActivity(Activity activity) throws FrozenException {
-		activity.freeze();
 	}
 	
 	private void renameActivity(Activity activity, String newName) throws FrozenException{
@@ -100,14 +96,14 @@ public class ProjectPlan {
 		project.setEndWeek(week_index);
 	}
 	
-	private void assignEmployeeToProject(Employee e, Project p) throws FrozenException, EmployeeException {
+	private void assignEmployeeToProject(Employee e, Project p) throws FrozenException, EmployeeException, ProjectException {
 		e.checkFreeze();
 		p.checkFreeze();
-		e.assignToProject(p);
 		p.addEmployee(e);
+		e.assignToProject(p);
 	}
 
-	private void relieveEmployeeFromProject(Employee e, Project p, boolean reassignasassistant) throws FrozenException, EmployeeException {
+	private void relieveEmployeeFromProject(Employee e, Project p, boolean reassignasassistant) throws FrozenException, EmployeeException, ProjectException {
 		e.checkFreeze();
 		p.checkFreeze();
 		e.relieveFromProject(p, reassignasassistant);
@@ -213,12 +209,8 @@ public class ProjectPlan {
 		return e.getProjectsBeingLead();
 	}
 	
-	private void freezeProject(Project p) throws FrozenException {
-		p.freeze();
-	}
-
-	private void freezeEmployee(Employee e) throws FrozenException {
-		e.freeze();
+	private void freeze(Freezeable f) throws FrozenException {
+		f.freeze();
 	}
 	
 	private HashMap<Activity, Float> getWorkDoneByEmployee(Employee e) {
@@ -246,21 +238,21 @@ public class ProjectPlan {
 		return id;
 	}
 	
-	public String addProjectWithLeader(String name, String leader_initials) throws Exception, UnknownIDException {
+	public String addProjectWithLeader(String name, String leader_initials) throws UnknownIDException {
 		String id = generateNewProjectID();
 		addProjectWithLeader(id, name, leader_initials);
 		return id;
 	}
 	
-	public void addEmployee(String name, String initials) throws Exception {
-		if(employees.containsKey(initials)) throw new Exception("An employee with the initials " + initials + " already excists.");
+	public void addEmployee(String name, String initials) throws EmployeeException {
+		if(employees.containsKey(initials)) throw new EmployeeException("An employee with the initials " + initials + " already exists.");
 		employees.put(initials, new Employee(name, initials));
 	}
 
-	public void addEmployee(String name) throws Exception {
+	/*public void addEmployee(String name) throws GayException {
 		String initials = Employee.generateInitialsFromName(name);
 		employees.put(initials, new Employee(name, initials));
-	}
+	}*/
 
 	public void assignActivityToWeek(String activity_id, int hours, int weekIndex) throws FrozenException, UnknownIDException {
 		assignActivityToWeek(getActivity(activity_id), hours, getWeek(weekIndex));
@@ -270,12 +262,12 @@ public class ProjectPlan {
 		removeActivityFromWeek(getActivity(activity_id), getWeek(weekIndex));
 	}
 
-	public void addActivityToProject(String activity_id, String project_id) throws FrozenException, UnknownIDException {
+	public void addActivityToProject(String activity_id, String project_id) throws FrozenException, UnknownIDException, ProjectException {
 		addActivityToProject(getActivity(activity_id),getProject(project_id));
 	}
 
 	public void freezeActivity(String activity_id) throws FrozenException, UnknownIDException {
-		freezeActivity(getActivity(activity_id));
+		freeze(getActivity(activity_id));
 	}
 
 	public void renameActivity(String activity_id, String newName) throws FrozenException, UnknownIDException{
@@ -298,11 +290,11 @@ public class ProjectPlan {
 		setProjectEndWeek(getProject(project_id), week);
 	}
 	
-	public void assignEmployeeToProject(String emp_id, String project_id) throws FrozenException, EmployeeException, UnknownIDException {
+	public void assignEmployeeToProject(String emp_id, String project_id) throws FrozenException, EmployeeException, UnknownIDException, ProjectException {
 		assignEmployeeToProject(getEmployee(emp_id), getProject(project_id));
 	}
 
-	public void relieveEmployeeFromProject(String emp_id, String project_id, boolean reassignasassistant) throws FrozenException, EmployeeException, UnknownIDException {
+	public void relieveEmployeeFromProject(String emp_id, String project_id, boolean reassignasassistant) throws FrozenException, EmployeeException, UnknownIDException, ProjectException {
 		relieveEmployeeFromProject(getEmployee(emp_id), getProject(project_id), reassignasassistant);
 	}
 	
@@ -378,10 +370,6 @@ public class ProjectPlan {
 		return getActivitiesAssignedToEmployee(getEmployee(emp_id));
 	}
 
-	/*public ArrayList<Activity> getActivitiesAssistedByEmployee(String emp_id) throws UnknownIDException {
-		return getActivitiesAssistedByEmployee(getEmployee(emp_id));
-	}*/
-	
 	public ArrayList<Project> getProjectsAssignedToEmployee(String emp_id) throws UnknownIDException {
 		return getProjectsAssignedToEmployee(getEmployee(emp_id));
 	}
@@ -391,11 +379,11 @@ public class ProjectPlan {
 	}
 	
 	public void freezeProject(String project_id) throws FrozenException, UnknownIDException {
-		freezeProject(getProject(project_id));
+		freeze(getProject(project_id));
 	}
 
 	public void freezeEmployee(String emp_id) throws FrozenException, UnknownIDException {
-		freezeEmployee(getEmployee(emp_id));
+		freeze(getEmployee(emp_id));
 	}
 	
 	public HashMap<Activity,Float> getWorkDoneByEmployee(String emp_id) throws UnknownIDException {
