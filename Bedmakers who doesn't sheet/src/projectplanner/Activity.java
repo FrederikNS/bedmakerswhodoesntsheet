@@ -3,43 +3,40 @@ package projectplanner;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Activity {
+public class Activity extends Freezeable{
 	private String name;
 	private Project parentProject;
 	private HashMap<Week, Float> weeklyWorkload;
-	private ArrayList<Employee> assignedEmployees;
-	//private ArrayList<Employee> assistants;
 	private HashMap<Employee, Float> progressByEmployee;
+	private ArrayList<Employee> assignedEmployees;
 	private final String id;
-	private boolean frozen;
 	private boolean hasparent;
 
 	public Activity(String id, String name) {
-		hasparent = false;
+		this.hasparent = false;
 		this.id = id;
-		frozen = false;
+		unfreeze();
 		this.name = name;
 		this.parentProject = null;
-		weeklyWorkload = new HashMap<Week, Float>();
-		//assistants = new ArrayList<Employee>();
-		assignedEmployees = new ArrayList<Employee>();
+		this.weeklyWorkload = new HashMap<Week, Float>();
+		this.assignedEmployees = new ArrayList<Employee>();
+		this.progressByEmployee = new HashMap<Employee, Float>();
 	}
 
 	public Activity(String id, String name, Project parent) {
-		hasparent = true;
+		this.hasparent = true;
 		this.id = id;
-		frozen = false;
+		unfreeze();
 		this.name = name;
 		this.parentProject = parent;
-		weeklyWorkload = new HashMap<Week, Float>();
-		//assistants = new ArrayList<Employee>();
-		assignedEmployees = new ArrayList<Employee>();
-		progressByEmployee = new HashMap<Employee, Float>();
+		this.weeklyWorkload = new HashMap<Week, Float>();
+		this.assignedEmployees = new ArrayList<Employee>();
+		this.progressByEmployee = new HashMap<Employee, Float>();
 	}
 
 	public void setParent(Project parentProject) throws FrozenException {
 		checkFreeze();
-		if(hasparent) { } //FIXME: Exception her 
+		if(this.hasparent) { } //FIXME: Exception her 
 		this.parentProject = parentProject;
 	}
 
@@ -47,44 +44,14 @@ public class Activity {
 		checkFreeze();
 		this.name = newName;
 	}
-	
-	public void freeze() throws FrozenException {
-		checkFreeze();
-		frozen = true;
-	}
-
-	public void unfreeze() {
-		frozen = false;
-		/*
-		for(Employee e : assignedEmployees) {
-			if(!e.isAssignedToProject(this.parentProject) && !e.isFrozen()) {
-				try {
-					removeEmployee(e);
-					assignEmployeeAsAssistant(e);
-				} catch (Exception err) { } // Sker aldrig
-			}
-		}
-		for(Employee e : assistants) {
-			if(e.isAssignedToProject(this.parentProject) && !e.isFrozen()) {
-				try {
-					removeAssistant(e);
-					assignEmployee(e);
-				} catch (Exception err) { } // Sker aldrig
-			}
-		}*/
-	}
 
 	public void checkFreeze() throws FrozenException {
+		if(isFrozen()) throw new FrozenException(this);
 		if(hasparent) {
 			parentProject.checkFreeze();
 		}
-		if (frozen)
-			throw new FrozenException(this);
 	}	
 
-	public boolean isFrozen() {
-		return frozen;
-	}
 	
 	public String getID() {
 		return id;
@@ -102,21 +69,11 @@ public class Activity {
 		checkFreeze();
 		assignedEmployees.add(e);
 	}
-	/*
-	public void assignEmployeeAsAssistant(Employee e) throws FrozenException {
-		checkFreeze();
-		if (!assignedEmployees.contains(e))
-			assistants.add(e);
-	}*/
 
 	public ArrayList<Employee> getAssignedEmployees() {
 		return assignedEmployees;
 	}
-/*
-	public ArrayList<Employee> getAssistants() {
-		return assistants;
-	}
-*/
+
 	public void addWeek(Week week, float hours) throws FrozenException {
 		checkFreeze();
 		weeklyWorkload.put(week, hours);
@@ -132,12 +89,7 @@ public class Activity {
 		if(weeklyWorkload.containsKey(week)) return 0;
 		return weeklyWorkload.get(week);
 	}
-/*
-	public void removeAssistant(Employee employee) throws FrozenException {
-		checkFreeze();
-		assistants.remove(employee);
-	}
-*/
+
 	public void removeEmployee(Employee employee) throws FrozenException {
 		checkFreeze();
 		assignedEmployees.remove(employee);
@@ -145,8 +97,9 @@ public class Activity {
 
 	public float getProgress() {
 		float progress = 0;
-		for (Employee e : progressByEmployee.keySet())
-			progress += e.getProgresInActivity(this);
+		//for (Employee e : progressByEmployee.keySet())
+		//	progress += e.getProgresInActivity(this);
+		for(Float p : progressByEmployee.values()) progress += p;
 		return progress;
 	}
 	
@@ -156,8 +109,8 @@ public class Activity {
 	
 	public float getWorkload() {
 		float workload = 0;
-		for (Week w : weeklyWorkload.keySet())
-			workload += getHoursForWeek(w);
+		for (Float load : weeklyWorkload.values())
+			workload += load;
 		return workload;
 	}
 
@@ -172,7 +125,7 @@ public class Activity {
 
 	public String toString() {
 		String out = name;
-		if(frozen) out+=" [FROZEN]";
+		if(isFrozen()) out+=" [FROZEN]";
 		return out;
 	}
 }

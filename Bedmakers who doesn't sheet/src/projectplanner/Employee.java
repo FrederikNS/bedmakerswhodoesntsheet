@@ -3,28 +3,30 @@ package projectplanner;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-//TODO: Lav enum's til Exceptions'ne i stedet for streng-beskeder
+/*
+ * PotKortet assignedActivities er en liste over tildelte aktiviteter.
+ * Den value, der hører til hver key, bestemmer om den er assistent eller ægte ansat.
+ * False: Ansat
+ * True: Assistent
+ */
 
-public class Employee {
+public class Employee extends Freezeable{
 
 	private String name;
 	private String initials;
 	private HashMap<Activity,Boolean> assignedActivities;
 	private ArrayList<Project> assignedProjects;
 	private ArrayList<Project> assignedProjectsLead;
-	//private ArrayList<Activity> assistedActivities;
 	private HashMap<Activity,Float> progress;
-	private boolean frozen;
-	//ArrayList<Project> assistingProject;
 
 	public Employee(String name, String initials) {
-		frozen = false;
+		unfreeze();
 		this.name = name;
 		this.initials = initials;
 		assignedActivities = new HashMap<Activity,Boolean>();
 		assignedProjects = new ArrayList<Project>();
 		assignedProjectsLead = new ArrayList<Project>();
-		//assistedActivities = new ArrayList<Activity>();
+		progress = new HashMap<Activity,Float>();
 	}
 
 	public static String generateInitialsFromName(String name) throws Exception{
@@ -37,24 +39,6 @@ public class Employee {
 		return nameInits;
 	}
 
-	public boolean isFrozen() {
-		return frozen;
-	}
-
-	public void freeze() throws FrozenException {
-		checkFreeze();
-		frozen = true;
-	}
-
-	public void unfreeze() {
-		frozen = false;
-	}
-
-	public void checkFreeze() throws FrozenException {
-		if (frozen)
-			throw new FrozenException(this);
-	}	
-	
 	public String getInitials(){
 		return initials;
 	}
@@ -105,6 +89,13 @@ public class Employee {
 		
 		assignedProjectsLead.add(project);
 	}
+	
+	public void removeFromProjectLead(Project project) throws EmployeeException{
+		//Does not check for freeze
+		if(!isLeaderOfProject(project))
+			throw new EmployeeException("Not leader of project");
+		assignedProjectsLead.remove(project);
+	}
 
 	public void assignToActivity(Activity activity) throws EmployeeException, FrozenException {
 		checkFreeze();
@@ -130,6 +121,9 @@ public class Employee {
 	
 	public void assistActivity(Activity activity) throws EmployeeException, FrozenException {
 		checkFreeze();
+		if(isAssignedToProject(activity.getParentProject())) {
+			throw new EmployeeException("Assigned to project, so cannot be assigned as assitant");
+		}
 		if(isAssignedToActivityAsEmployee(activity)){
 			throw new EmployeeException("Already assigned to activity as employee");
 		}
@@ -164,7 +158,7 @@ public class Employee {
 	
 	public String toString() {
 		String out = initials + ", " + name;
-		if(frozen) out += " [FROZEN]";
+		if(isFrozen()) out += " [FROZEN]";
 		return out;
 	}
 
@@ -189,13 +183,8 @@ public class Employee {
 	}
 	
 	public ArrayList<Activity> getAssignedActivities() {
-		//Late hack, works fine but is unoptimal
 		return new ArrayList<Activity>(assignedActivities.keySet());
 	}
-	/*
-	public ArrayList<Activity> getAssistedActivities() {
-		return assistedActivities;
-	}*/
 	
 	public ArrayList<Project> getAssignedProjects() {
 		return assignedProjects;

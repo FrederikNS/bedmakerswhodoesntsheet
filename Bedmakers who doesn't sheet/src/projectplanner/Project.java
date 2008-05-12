@@ -2,7 +2,7 @@ package projectplanner;
 
 import java.util.ArrayList;
 
-public class Project {
+public class Project extends Freezeable {
 	private String name;
 	private String id;
 	private ArrayList<Activity> activities;
@@ -15,7 +15,7 @@ public class Project {
 	public Project(String id, String name) {
 		startweek = 0;
 		endweek = Integer.MAX_VALUE;
-		frozen = false;
+		unfreeze();
 		leader = null;
 		activities = new ArrayList<Activity>();
 		assignedEmployees = new ArrayList<Employee>(); 
@@ -26,31 +26,13 @@ public class Project {
 	public Project(String id, String name, Employee leader) {
 		startweek = 0;
 		endweek = Integer.MAX_VALUE;
-		frozen = false;
+		unfreeze();
 		activities = new ArrayList<Activity>();
 		assignedEmployees = new ArrayList<Employee>();
 		this.name = name;
 		this.leader = leader;
 		this.id = id;
 	}
-	
-	public boolean isFrozen() {
-		return frozen;
-	}
-
-	public void freeze() throws FrozenException {
-		checkFreeze();
-		frozen = true;
-	}
-
-	public void unfreeze() {
-		frozen = false;
-	}
-
-	public void checkFreeze() throws FrozenException {
-		if (frozen)
-			throw new FrozenException(this);
-	}	
 	
 	public void setName(String name) throws FrozenException {
 		checkFreeze();
@@ -92,8 +74,10 @@ public class Project {
 		this.leader = projectLeader;
 	}
 	
-	public void addActivity(Activity activity) throws FrozenException {
+	public void addActivity(Activity activity) throws FrozenException, ProjectException {
 		checkFreeze();
+		if(containsActivity(activity))
+			throw new ProjectException("Activity already in project");
 		activity.setParent(this);
 		activities.add(activity);
 	}
@@ -103,24 +87,52 @@ public class Project {
 		activity.freeze();
 	}
 	
+	public boolean containsEmployee(Employee e) {
+		return assignedEmployees.contains(e);
+	}
+	
 	public ArrayList<Employee> getEmployees() {
 		return assignedEmployees;
 	}
 	
-	public void addEmployee(Employee e) throws FrozenException {
+	public void addEmployee(Employee e) throws FrozenException, ProjectException {
 		checkFreeze();
+		if(containsEmployee(e))
+			throw new ProjectException("Already contains employee e");
 		assignedEmployees.add(e);
 	}
 
-	public void removeEmployee(Employee e) throws FrozenException {
+	public void removeEmployee(Employee e) throws FrozenException, ProjectException {
 		checkFreeze();
+		if(!containsEmployee(e))
+			throw new ProjectException("Does not contain employee e");
 		assignedEmployees.remove(e);
+	}
+	
+	public boolean containsActivity(Activity activity) {
+		return activities.contains(activity);
 	}
 
 	public ArrayList<Activity> getActivities() {
 		return activities;
 	}
 	
+	public float getWorkload() {
+		float workload = 0;
+		for(Activity a : activities)
+			if(!a.isFrozen())
+				workload+=a.getWorkload();
+		return workload;
+	}
+
+	public float getProgress() {
+		float progress = 0;
+		for(Activity a : activities)
+			if(!a.isFrozen())
+				progress+=a.getProgress();
+		return progress;
+	}
+
 	public String toString() {
 		String out = name;
 		out += ". Start week: " + startweek + ", end week: " + endweek + ".";

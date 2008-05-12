@@ -1,11 +1,10 @@
-import gui.MainFrame;
-
 public class Spawner {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		new MainFrame();
+		String test = "name";
+		System.out.println(Command.get(test));
 	}
 }
