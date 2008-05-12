@@ -89,6 +89,10 @@ public class Activity extends Freezeable{
 			throw new ActivityException("No hours assigned in this week");
 		return weeklyWorkload.get(week);
 	}
+	
+	public float getWorkloadPerEmployeeForWeek(Week week) throws ActivityException {
+		return getHoursForWeek(week) / numberOfNonFrozenEmployees();
+	}
 
 	public void removeEmployee(Employee employee) throws FrozenException, ActivityException {
 		checkRemoveEmployee(employee);
@@ -101,6 +105,16 @@ public class Activity extends Freezeable{
 		//	progress += e.getProgresInActivity(this);
 		for(Float p : progressByEmployee.values()) progress += p;
 		return progress;
+	}
+
+	public int numberOfNonFrozenEmployees() {
+		int num = 0;
+		for(Employee e : getAssignedEmployees()) if(!e.isFrozen()) num++;
+		return num;
+	}
+
+	public int numberOfEmployees() {
+		return assignedEmployees.size();
 	}
 	
 	public HashMap<Employee,Float> getProgressByEmployee() {
