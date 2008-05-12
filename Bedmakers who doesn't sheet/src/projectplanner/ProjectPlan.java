@@ -165,7 +165,7 @@ public class ProjectPlan {
 		return a.getAssistants();
 	}*/
 	
-	private Project getParentProjectToActivity(Activity a) {
+	private Project getActivityParentProject(Activity a) {
 		return a.getParentProject();
 	}
 	
@@ -222,7 +222,7 @@ public class ProjectPlan {
 	}
 
 	/*
-	 * WRAPPER FUNKTIONER MED ID VÆRDIER 
+	 * WRAPPER FUNKTIONER MED ID VAERDIER 
 	 * (Bliver typisk kaldt udefra)
 	 */
 	
@@ -338,8 +338,8 @@ public class ProjectPlan {
 		return getAssistantsToActivity(getActivity(act_id));
 	}*/
 	
-	public Project getParentProjectToActivity(String act_id) throws UnknownIDException {
-		return getParentProjectToActivity(getActivity(act_id));
+	public Project getActivityParentProject(String act_id) throws UnknownIDException {
+		return getActivityParentProject(getActivity(act_id));
 	}
 	
 	public boolean isActivityFrozen(String act_id) throws UnknownIDException {
@@ -420,7 +420,7 @@ public class ProjectPlan {
 	 */
 	
 	private Week getWeek(int index) {
-		//Allokér uger dynamisk.
+		//Alloker uger dynamisk.
 		if(!weeks.containsKey(index))
 			weeks.put(index,new Week(index));
 		return weeks.get(index);
