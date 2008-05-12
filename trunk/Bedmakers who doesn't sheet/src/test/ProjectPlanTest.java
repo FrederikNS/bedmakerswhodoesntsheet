@@ -1,7 +1,5 @@
 package test;
 
-import java.util.HashMap;
-import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
 import projectplanner.Activity;
@@ -26,9 +24,6 @@ public class ProjectPlanTest extends TestCase {
 	private Activity activity;
 	private Project project;
 	private Employee employee;
-	private HashMap<String,Activity> activities;
-	private HashMap<String,Project> projects;
-	private HashMap<String,Employee> employees;
 
 	//Variables used in the tests, pretty chronological. Saves redeclaring them in each test.
 	String activityName = "TestActivity";
