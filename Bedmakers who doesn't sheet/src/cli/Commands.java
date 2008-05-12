@@ -69,11 +69,7 @@ public enum Commands {
 	/**
 	 * When command is progress
 	 */
-	PROGRESS("progress"),
-	/**
-	 * When command is list
-	 */
-	LIST("list");
+	PROGRESS("progress");
 	
 	final String humanmessage;
 	
