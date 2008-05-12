@@ -70,7 +70,7 @@ public class CommandLineInterface {
 						startSet = true;
 						break;
 					case END:
-						end = Integer.parseInt(command[i].substring(6));
+						end = Integer.parseInt(command[i].substring(4));
 						endSet = true;
 						break;
 					case WEEK:
@@ -188,6 +188,9 @@ public class CommandLineInterface {
 			break;
 		case HELP:
 			helpFunc();
+			break;
+		case LIST:
+			listFunc();
 			break;
 		case ASSIGN:
 			assignFunc();
@@ -315,6 +318,21 @@ public class CommandLineInterface {
 		}
 	}
 
+	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
+	private void listFunc(){
+		switch(Commands.values()[commandInt[1]]){
+		case PROJECT:
+			System.out.println(projectPlan.getProjects());
+			break;
+		case ACTIVITY:
+			System.out.println(projectPlan.getActivities());
+			break;
+		case EMPLOYEE:
+			System.out.println(projectPlan.getEmployees());
+			break;
+		}
+	}
+	
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	private void viewFunc() throws UnknownIDException{
 		switch(Commands.values()[commandInt[1]]){
