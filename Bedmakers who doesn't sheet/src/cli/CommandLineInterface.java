@@ -45,9 +45,9 @@ public class CommandLineInterface {
 	public CommandLineInterface() {
 		keyboard = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println(
-				"+---------------------------------------+\n" +
-				"|Welcome to the Project Planner! rev. 70|\n" +
-				"+---------------------------------------+\n" +
+				"+-------------------------------+\n" +
+				"|Welcome to the Project Planner!|\n" +
+				"+-------------------------------+\n" +
 				"\n" +
 		"Type help for a list of commands");
 		while(true){
