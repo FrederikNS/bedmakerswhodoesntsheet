@@ -534,29 +534,42 @@ public class ProjectPlan {
 	}*/
 		
 	public HashMap<Employee, Float> getWorkloadByEmployeeForWeek(int index) {
-		HashMap<Employee,Float> workloadByEmployee = new HashMap<Employee,Float>();
+		//Snup ugen fra vores uge-container med den givne indeks vaerdi.
 		Week week = getWeek(index);
+
+		//Opret en ny HashMap. Til hver ansat (key/employee) hører der en maengde arbejdstid (value/float).
+		HashMap<Employee,Float> workloadByEmployee = new HashMap<Employee,Float>();
 		
+		//Initialiser hashmappen saaledes at den indeholder alle ansatte,
+		//og at de alle har en arbejdstid for ugen paa 0.
 		for(Employee e : employees.values()) {
 			workloadByEmployee.put(e,0.0f);
 		}
 		
+		//Loeb gennem alle aktiviteter i ugen.
 		for(Activity activity : week.getScheduledActivities()) {
+			//Faa den gennemsnitlige arbejdsbyrde for en ansat i aktiviteten for ugen.  
+			//Der er taget hoejde for nedlagte ansatte.
 			float workload_per_employee = 0;
 			try {
 				workload_per_employee = activity.getWorkloadPerEmployeeForWeek(week);
 			} catch (ActivityException e) {
 				System.out.println("Program Sync Error between week and activity");
 			}
+			//Loeb gennem alle ansatte i aktiviteten og laeg den beregende byrde 
+			//til deres samlede byrde for ugen.
 			for(Employee employee : activity.getAssignedEmployees()) {
 				float total_employee_workload = 0;
-				//if(workloadByEmployee.containsKey(employee))
+				//Hent den allerede beregnede byrde for den ansatte for ugen.
 				total_employee_workload = workloadByEmployee.get(employee);
+				//Laeg aktivitetens byrde til.
 				total_employee_workload += workload_per_employee;
+				//Gem den i listen på den ansattes plads.
 				workloadByEmployee.put(employee, total_employee_workload);
 			}
 		}
 		
+		//Fjern alle nedlagte ansatte
 		for(Employee employee : workloadByEmployee.keySet())
 			if(employee.isDeprecated())
 				workloadByEmployee.remove(employee);
