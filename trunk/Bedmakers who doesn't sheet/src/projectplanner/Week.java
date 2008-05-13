@@ -1,14 +1,14 @@
 package projectplanner;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Week {
 	private int index;
-	private ArrayList<Activity> scheduledActivities;
+	private HashSet<Activity> scheduledActivities;
 	
 	public Week(int index) {
 		this.index = index;
-		this.scheduledActivities = new ArrayList<Activity>();
+		this.scheduledActivities = new HashSet<Activity>();
 	}
 	
 	public int getIndex() {
@@ -23,7 +23,7 @@ public class Week {
 		scheduledActivities.remove(activity);
 	}
 	
-	public ArrayList<Activity> getScheduledActivities() {
+	public HashSet<Activity> getScheduledActivities() {
 		return scheduledActivities;
 	}
 	

@@ -1,6 +1,6 @@
 package projectplanner;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.HashMap;
 
 /*
@@ -15,8 +15,8 @@ public class Employee extends Deprecateable{
 	private String name;
 	private String initials;
 	private HashMap<Activity,Boolean> assignedActivities;
-	private ArrayList<Project> assignedProjects;
-	private ArrayList<Project> assignedProjectsLead;
+	private HashSet<Project> assignedProjects;
+	private HashSet<Project> assignedProjectsLead;
 	private HashMap<Activity,Float> progress;
 
 	public Employee(String name, String initials) {
@@ -24,8 +24,8 @@ public class Employee extends Deprecateable{
 		this.name = name;
 		this.initials = initials;
 		assignedActivities = new HashMap<Activity,Boolean>();
-		assignedProjects = new ArrayList<Project>();
-		assignedProjectsLead = new ArrayList<Project>();
+		assignedProjects = new HashSet<Project>();
+		assignedProjectsLead = new HashSet<Project>();
 		progress = new HashMap<Activity,Float>();
 	}
 
@@ -157,11 +157,11 @@ public class Employee extends Deprecateable{
 		return assignedActivities;
 	}
 
-	public ArrayList<Project> getAssignedProjects() {
+	public HashSet<Project> getAssignedProjects() {
 		return assignedProjects;
 	}
 	
-	public ArrayList<Project> getProjectsBeingLead() {
+	public HashSet<Project> getProjectsBeingLead() {
 		return assignedProjectsLead;
 	}
 	

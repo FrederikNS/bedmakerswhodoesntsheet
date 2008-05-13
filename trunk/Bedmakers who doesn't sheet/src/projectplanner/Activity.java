@@ -1,14 +1,14 @@
 package projectplanner;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class Activity extends Deprecateable{
 	private String name;
 	private Project parentProject;
 	private HashMap<Week, Float> weeklyWorkload;
 	private HashMap<Employee, Float> progressByEmployee;
-	private ArrayList<Employee> assignedEmployees;
+	private HashSet<Employee> assignedEmployees;
 	private final String id;
 	private boolean hasparent;
 
@@ -19,7 +19,7 @@ public class Activity extends Deprecateable{
 		this.name = name;
 		this.parentProject = null;
 		this.weeklyWorkload = new HashMap<Week, Float>();
-		this.assignedEmployees = new ArrayList<Employee>();
+		this.assignedEmployees = new HashSet<Employee>();
 		this.progressByEmployee = new HashMap<Employee, Float>();
 	}
 
@@ -30,7 +30,7 @@ public class Activity extends Deprecateable{
 		this.name = name;
 		this.parentProject = parent;
 		this.weeklyWorkload = new HashMap<Week, Float>();
-		this.assignedEmployees = new ArrayList<Employee>();
+		this.assignedEmployees = new HashSet<Employee>();
 		this.progressByEmployee = new HashMap<Employee, Float>();
 	}
 
@@ -61,7 +61,7 @@ public class Activity extends Deprecateable{
 		assignedEmployees.add(e);
 	}
 
-	public ArrayList<Employee> getAssignedEmployees() {
+	public HashSet<Employee> getAssignedEmployees() {
 		return assignedEmployees;
 	}
 

@@ -1,6 +1,6 @@
 package projectplanner;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -159,11 +159,11 @@ public class ProjectPlan {
 		return a.getProgressByEmployee();
 	}
 
-	private ArrayList<Employee> getEmployeesAssignedToActivity(Activity a) {
+	private HashSet<Employee> getEmployeesAssignedToActivity(Activity a) {
 		return a.getAssignedEmployees();
 	}
 
-	/*private ArrayList<Employee> getAssistantsToActivity(Activity a) {
+	/*private HashSet<Employee> getAssistantsToActivity(Activity a) {
 		return a.getAssistants();
 	}*/
 	
@@ -183,11 +183,11 @@ public class ProjectPlan {
 		return e.isDeprecated();
 	}
 	
-	private ArrayList<Activity> getActivitiesInProject(Project p) {
+	private HashSet<Activity> getActivitiesInProject(Project p) {
 		return p.getActivities();
 	}
 	
-	private ArrayList<Employee> getEmployeesAssignedToProject(Project p) {
+	private HashSet<Employee> getEmployeesAssignedToProject(Project p) {
 		return p.getEmployees();
 	}
 	
@@ -199,15 +199,15 @@ public class ProjectPlan {
 		return e.getAssignedActivities();
 	}
 
-	//private ArrayList<Activity> getActivitiesAssistedByEmployee(Employee e) {
+	//private HashSet<Activity> getActivitiesAssistedByEmployee(Employee e) {
 	//	return e.getAssistedActivities();
 	//}
 	
-	private ArrayList<Project> getProjectsAssignedToEmployee(Employee e) {
+	private HashSet<Project> getProjectsAssignedToEmployee(Employee e) {
 		return e.getAssignedProjects();
 	}
 	
-	private ArrayList<Project> getProjectsBeingLeadByEmployee(Employee e) {
+	private HashSet<Project> getProjectsBeingLeadByEmployee(Employee e) {
 		return e.getProjectsBeingLead();
 	}
 	
@@ -271,7 +271,7 @@ public class ProjectPlan {
 		return employee.isAssignedToActivityAsAssistant(activity);
 	}
 
-	private ArrayList<Activity> getActivitiesInWeek(Week week) {
+	private HashSet<Activity> getActivitiesInWeek(Week week) {
 		return week.getScheduledActivities();
 	}
 	
@@ -390,11 +390,11 @@ public class ProjectPlan {
 		return getActivityProgressByEmployee(getActivity(act_id));
 	}
 	
-	public ArrayList<Employee> getEmployeesAssignedToActivity(String act_id) throws UnknownIDException {
+	public HashSet<Employee> getEmployeesAssignedToActivity(String act_id) throws UnknownIDException {
 		return getEmployeesAssignedToActivity(getActivity(act_id));
 	}
 
-	/*public ArrayList<Employee> getAssistantsToActivity(String act_id) throws UnknownIDException {
+	/*public HashSet<Employee> getAssistantsToActivity(String act_id) throws UnknownIDException {
 		return getAssistantsToActivity(getActivity(act_id));
 	}*/
 	
@@ -414,11 +414,11 @@ public class ProjectPlan {
 		return isEmployeeDeprecated(getEmployee(emp_id));
 	}
 	
-	public ArrayList<Activity> getActivitiesInProject(String project_id) throws UnknownIDException {
+	public HashSet<Activity> getActivitiesInProject(String project_id) throws UnknownIDException {
 		return getActivitiesInProject(getProject(project_id));
 	}
 	
-	public ArrayList<Employee> getEmployeesAssignedToProjcet(String project_id) throws UnknownIDException {
+	public HashSet<Employee> getEmployeesAssignedToProjcet(String project_id) throws UnknownIDException {
 		return getEmployeesAssignedToProject(getProject(project_id));
 	}
 	
@@ -430,11 +430,11 @@ public class ProjectPlan {
 		return getActivitiesAssignedToEmployee(getEmployee(emp_id));
 	}
 
-	public ArrayList<Project> getProjectsAssignedToEmployee(String emp_id) throws UnknownIDException {
+	public HashSet<Project> getProjectsAssignedToEmployee(String emp_id) throws UnknownIDException {
 		return getProjectsAssignedToEmployee(getEmployee(emp_id));
 	}
 	
-	public ArrayList<Project> getProjectsBeingLeadByEmployee(String emp_id) throws UnknownIDException {
+	public HashSet<Project> getProjectsBeingLeadByEmployee(String emp_id) throws UnknownIDException {
 		return getProjectsBeingLeadByEmployee(getEmployee(emp_id));
 	}
 	
@@ -502,7 +502,7 @@ public class ProjectPlan {
 		return isEmployeeAssignedToActivityAsAssistant(getEmployee(employee_initials),getActivity(activity_id));
 	}
 		
-	public ArrayList<Activity> getActivitiesInWeek(int week_index) {
+	public HashSet<Activity> getActivitiesInWeek(int week_index) {
 		return getActivitiesInWeek(getWeek(week_index));
 	}
 	
@@ -520,8 +520,8 @@ public class ProjectPlan {
 	 *   Fjern alle uarbejdsdygtige (frosne) ansatte
 	 */
 	/*
-	public ArrayList<Employee> getLazyEmployeesForWeek(int index) {
-		ArrayList<Employee> lazypeons = new ArrayList<Employee>(employees.values());
+	public HashSet<Employee> getLazyEmployeesForWeek(int index) {
+		HashSet<Employee> lazypeons = new HashSet<Employee>(employees.values());
 		Week week = getWeek(index);
 		for(Activity activity : week.getScheduledActivities()) {
 			for(Employee employee : activity.getAssignedEmployees())
@@ -609,8 +609,8 @@ public class ProjectPlan {
 	 * Search
 	 */
 	
-	public ArrayList<Activity> findActivity(String pattern) {
-		ArrayList<Activity> listout = new ArrayList<Activity>();
+	public HashSet<Activity> findActivity(String pattern) {
+		HashSet<Activity> listout = new HashSet<Activity>();
 		Pattern p = Pattern.compile(pattern);
 		for(Activity a : activities.values()) {
 			if(p.matcher(a.getName()).matches()) {
@@ -620,8 +620,8 @@ public class ProjectPlan {
 		return listout;
 	}
 	
-	public ArrayList<Employee> findEmployee(String pattern) {
-		ArrayList<Employee> listout = new ArrayList<Employee>();
+	public HashSet<Employee> findEmployee(String pattern) {
+		HashSet<Employee> listout = new HashSet<Employee>();
 		Pattern p = Pattern.compile(pattern);
 		for(Employee employee : employees.values()) {
 			if(p.matcher(employee.getName()).matches()) {
@@ -631,8 +631,8 @@ public class ProjectPlan {
 		return listout;
 	}	
 
-	public ArrayList<Project> findProject(String pattern) {
-		ArrayList<Project> listout = new ArrayList<Project>();
+	public HashSet<Project> findProject(String pattern) {
+		HashSet<Project> listout = new HashSet<Project>();
 		Pattern p = Pattern.compile(pattern);
 		for(Project project : projects.values()) {
 			if(p.matcher(project.getName()).matches()) {
