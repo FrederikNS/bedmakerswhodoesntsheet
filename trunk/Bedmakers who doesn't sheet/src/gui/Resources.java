@@ -18,6 +18,9 @@ public class Resources extends JPanel {
 	 */
 	private static final long serialVersionUID = 3621067286944916555L;
 
+	/**
+	 * Method for displaying the resource overview panel
+	 */
 	public Resources(){
 		this.setLayout(new GridLayout(0,1));
 

@@ -14,6 +14,9 @@ public class Toolbar extends JPanel {
 	 */
 	private static final long serialVersionUID = -5707394191276063225L;
 
+	/**
+	 * Method for creating the toolbar
+	 */
 	public Toolbar(){
 		JButton newProject = new JButton("New Project");
 		JButton removeProject = new JButton("Remove Project");

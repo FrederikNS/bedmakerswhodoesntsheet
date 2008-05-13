@@ -18,6 +18,9 @@ public class Tasks extends JPanel {
 	 */
 	private static final long serialVersionUID = 4421925036291362007L;
 
+	/**
+	 * Method for displaying the Tasks panel
+	 */
 	public Tasks(){
 		this.setLayout(new GridLayout(0,1));
 		
