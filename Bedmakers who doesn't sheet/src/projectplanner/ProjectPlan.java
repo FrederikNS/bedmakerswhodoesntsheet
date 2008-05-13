@@ -211,7 +211,7 @@ public class ProjectPlan {
 		return e.getProjectsBeingLead();
 	}
 	
-	private void freeze(Deprecateable f) {
+	private void deprecate(Deprecateable f) {
 		f.deprecate();
 	}
 	
@@ -326,8 +326,8 @@ public class ProjectPlan {
 		addActivityToProject(getActivity(activity_id),getProject(project_id));
 	}
 
-	public void freezeActivity(String activity_id) throws UnknownIDException {
-		freeze(getActivity(activity_id));
+	public void deprecateActivity(String activity_id) throws UnknownIDException {
+		deprecate(getActivity(activity_id));
 	}
 
 	public void renameActivity(String activity_id, String newName) throws UnknownIDException{
@@ -438,12 +438,12 @@ public class ProjectPlan {
 		return getProjectsBeingLeadByEmployee(getEmployee(emp_id));
 	}
 	
-	public void freezeProject(String project_id) throws UnknownIDException {
-		freeze(getProject(project_id));
+	public void deprecateProject(String project_id) throws UnknownIDException {
+		deprecate(getProject(project_id));
 	}
 
-	public void freezeEmployee(String emp_id) throws UnknownIDException {
-		freeze(getEmployee(emp_id));
+	public void deprecateEmployee(String emp_id) throws UnknownIDException {
+		deprecate(getEmployee(emp_id));
 	}
 	
 	public HashMap<Activity,Float> getWorkDoneByEmployee(String emp_id) throws UnknownIDException {
