@@ -1,12 +1,12 @@
 package projectplanner;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Project extends Deprecateable {
 	private String name;
 	private String id;
-	private ArrayList<Activity> activities;
-	private ArrayList<Employee> assignedEmployees;
+	private HashSet<Activity> activities;
+	private HashSet<Employee> assignedEmployees;
 	private Employee leader;
 	int startweek;
 	int endweek;
@@ -16,8 +16,8 @@ public class Project extends Deprecateable {
 		endweek = Integer.MAX_VALUE;
 		undeprecate();
 		leader = null;
-		activities = new ArrayList<Activity>();
-		assignedEmployees = new ArrayList<Employee>(); 
+		activities = new HashSet<Activity>();
+		assignedEmployees = new HashSet<Employee>(); 
 		this.name = name;
 		this.id = id;
 	}
@@ -26,8 +26,8 @@ public class Project extends Deprecateable {
 		startweek = 0;
 		endweek = Integer.MAX_VALUE;
 		undeprecate();
-		activities = new ArrayList<Activity>();
-		assignedEmployees = new ArrayList<Employee>();
+		activities = new HashSet<Activity>();
+		assignedEmployees = new HashSet<Employee>();
 		this.name = name;
 		this.leader = leader;
 		this.id = id;
@@ -86,7 +86,7 @@ public class Project extends Deprecateable {
 		return assignedEmployees.contains(e);
 	}
 	
-	public ArrayList<Employee> getEmployees() {
+	public HashSet<Employee> getEmployees() {
 		return assignedEmployees;
 	}
 	
@@ -106,7 +106,7 @@ public class Project extends Deprecateable {
 		return activities.contains(activity);
 	}
 
-	public ArrayList<Activity> getActivities() {
+	public HashSet<Activity> getActivities() {
 		return activities;
 	}
 	
