@@ -5,6 +5,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
+/**
+ * @author Jacob Kjaer
+ *
+ */
 public class ProjectPlan {
 	private HashMap<String,Project> projects;
 	private HashMap<Integer,Week> weeks;
@@ -537,7 +541,7 @@ public class ProjectPlan {
 		//Snup ugen fra vores uge-container med den givne indeks vaerdi.
 		Week week = getWeek(index);
 
-		//Opret en ny HashMap. Til hver ansat (key/employee) hører der en maengde arbejdstid (value/float).
+		//Opret en ny HashMap. Til hver ansat (key/employee) hï¿½rer der en maengde arbejdstid (value/float).
 		HashMap<Employee,Float> workloadByEmployee = new HashMap<Employee,Float>();
 		
 		//Initialiser hashmappen saaledes at den indeholder alle ansatte,
@@ -564,7 +568,7 @@ public class ProjectPlan {
 				total_employee_workload = workloadByEmployee.get(employee);
 				//Laeg aktivitetens byrde til.
 				total_employee_workload += workload_per_employee;
-				//Gem den i listen på den ansattes plads.
+				//Gem den i listen pï¿½ den ansattes plads.
 				workloadByEmployee.put(employee, total_employee_workload);
 			}
 		}

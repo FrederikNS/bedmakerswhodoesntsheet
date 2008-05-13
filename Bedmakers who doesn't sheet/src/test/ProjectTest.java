@@ -6,6 +6,10 @@ import projectplanner.Project;
 import projectplanner.Week;
 import junit.framework.TestCase;
 
+/**
+ * @author Kevin Rene Broloes
+ *
+ */
 public class ProjectTest extends TestCase {
 	Activity activity1;
 	Activity activity2;

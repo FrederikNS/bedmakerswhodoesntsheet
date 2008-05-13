@@ -11,6 +11,10 @@ import projectplanner.ProjectException;
 import projectplanner.ProjectPlan;
 import projectplanner.UnknownIDException;
 
+/**
+ * @author Kevin Rene Broloes
+ *
+ */
 public class ProjectPlanTest extends TestCase {
 
 	private ProjectPlan projectPlan;

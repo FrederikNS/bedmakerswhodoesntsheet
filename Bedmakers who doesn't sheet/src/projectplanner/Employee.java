@@ -5,11 +5,15 @@ import java.util.HashMap;
 
 /*
  * PotKortet assignedActivities er en liste over tildelte aktiviteter.
- * Den value, der hører til hver key, bestemmer om den er assistent eller ægte ansat.
+ * Den value, der hï¿½rer til hver key, bestemmer om den er assistent eller ï¿½gte ansat.
  * False: Ansat
  * True: Assistent
  */
 
+/**
+ * @author Jacob Kjaer
+ *
+ */
 public class Employee extends Deprecateable{
 
 	private String name;

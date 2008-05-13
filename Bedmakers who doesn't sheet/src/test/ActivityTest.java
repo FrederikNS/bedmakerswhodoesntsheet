@@ -4,6 +4,10 @@ import projectplanner.Activity;
 import projectplanner.Week;
 import junit.framework.TestCase;
 
+/**
+ * @author Kevin Rene Broloes
+ *
+ */
 public class ActivityTest extends TestCase {
 	public void testProgress() {
 		try {

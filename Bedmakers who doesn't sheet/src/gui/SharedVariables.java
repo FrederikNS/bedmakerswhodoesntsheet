@@ -2,6 +2,10 @@ package gui;
 
 import javax.swing.JPanel;
 
+/**
+ * @author Frederik Nordahl Sabroe
+ *
+ */
 public class SharedVariables {
 	
 	public static JPanel gantt;

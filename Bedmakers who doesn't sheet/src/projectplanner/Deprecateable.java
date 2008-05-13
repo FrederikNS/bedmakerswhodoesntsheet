@@ -1,5 +1,9 @@
 package projectplanner;
 
+/**
+ * @author Jacob Kjaer
+ *
+ */
 public abstract class Deprecateable {
 	private boolean deprecated;
 	public void deprecate() {

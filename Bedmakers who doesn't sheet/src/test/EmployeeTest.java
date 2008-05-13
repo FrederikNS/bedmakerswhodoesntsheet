@@ -3,6 +3,10 @@ package test;
 import projectplanner.*;
 import junit.framework.TestCase;
 
+/**
+ * @author Kevin Rene Broloes
+ *
+ */
 public class EmployeeTest extends TestCase {
 	Activity activity1;
 	Project project1;
