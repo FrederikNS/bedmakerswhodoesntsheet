@@ -91,10 +91,6 @@ public enum Commands {
 	 */
 	UNASSIGN("unassign"),
 	/**
-	 * When command is rename
-	 */
-	RENAME("rename"),
-	/**
 	 * When command is quit
 	 */
 	QUIT("quit"),

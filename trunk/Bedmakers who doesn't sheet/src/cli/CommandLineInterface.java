@@ -34,8 +34,8 @@ public class CommandLineInterface {
 	private String activity;
 	private int week;
 	private boolean weekSet = false;
-	private float progress;
-	private boolean progressSet = false;
+	private float hours;
+	private boolean hoursSet = false;
 
 	/**
 	 * The constructor for the command line interface,  
@@ -93,8 +93,8 @@ public class CommandLineInterface {
 					activity = command[i].substring(9);
 					break;
 				case PROGRESS:
-					progress = Float.parseFloat(command[i].substring(9));
-					progressSet =true;
+					hours = Float.parseFloat(command[i].substring(9));
+					hoursSet =true;
 					break;
 				}
 			}
@@ -122,7 +122,7 @@ public class CommandLineInterface {
 			activity=null;
 			employee=null;
 			weekSet=false;
-			progressSet=false;
+			hoursSet=false;
 		}
 	}
 
@@ -177,9 +177,6 @@ public class CommandLineInterface {
 			break;
 		case UNASSIGN:
 			unassignFunc();
-			break;
-		case RENAME:
-			renameFunc();
 			break;
 		case PROGRESS:
 			progressFunc();
@@ -358,15 +355,50 @@ public class CommandLineInterface {
 				"The program is operated by Commands and the corresponding arguments\n" +
 				"\n" +
 				"Creating:\n" +
-				"A project can be added with f.x. the name \"Sleep\" by using the command \"create project name=Sleep\"\n" +
-				"A project will be created and assigned an autoegenerated id which can be found by either using the command \"view project\" and looking through the resulting list, og by using the command \"find project=Sleep\"\n" +
-				"The same procedure can be used for activities and employees\n" +
-				"NB! All spaces should be replaced by underscores in the commands, they will be reinterpreted as spaces by the program as spaces\n" +
+				"A project can be added with f.x. the name \"Sleep\" by using the command:\n" +
+				"\"create project name=Sleep\"\n" +
+				"A project will be created and assigned an autoegenerated id\n" +
+				"NB! All spaces should be replaced by underscores in the commands, they will be\n" +
+				"reinterpreted as spaces by the program as spaces\n" +
 				"\n" +
-				"Assigning:" +
-				"An activity can be assigned to a project with the following command: \"assign activity=1 project=080001\" (the numbers should be replaced by the corresponding IDs)\n" +
-				"This also goes for assigning activities to emloyees (though the ID should be replaced with the employees Initials) and assigning employees to projects" +
-				"Assigning activities is a little bit different, and should be done as follows: \"assign activity=1 week=4 ");
+				"Lookup:\n" +
+				"Looking up a projects id can be done by using the command:\n" +
+				"\"find project name=Sleep\"\n" +
+				"Where Sleep is the name of the project to lookup for\n" +
+				"This also works for activities and employees\n" +
+				"\n" +
+				"Viewing:\n" +
+				"The command \"view project\" shows all the projects (projects can be replaced by\n" +
+				"employee or activity)\n" +
+				"Details for a specific activity, week, project or employee can also be viewed by\nadding an equals sign and the identifier, f.x. \"view project=080001\"\n" +
+				"\n" +
+				"Assigning:\n" +
+				"An activity can be assigned to a project with the following command:\n" +
+				"\"assign activity=1 project=080001\"\n" +
+				"The numbers should be replaced by the corresponding IDs\n" +
+				"This also goes for assigning activities to emloyees (though the ID should be\n" +
+				"replaced with the employees Initials) and assigning employees to projects\n" +
+				"Assigning activities is a little bit different, and should be done as follows:\n" +
+				"\"assign activity=1 week=4 hours=20\"\n" +
+				"where 1 is the id of the activity, 4 is the number of the week, and 20 is the\n" +
+				"amount of hours the activity is expected to take\n" +
+				"\n" +
+				"Unassign:\n" +
+				"Unassign uses the same syntax as assigning.\n" +
+				"\n" +
+				"Editing:\n" +
+				"It is possible to edit the name of a project and an activity, as well as the\n" +
+				"start-week and end-week of a project.\n" +
+				"For example all of them can be edited by using the following command\n" +
+				"\"edit project=1 name=newproject start=4 end=5\"\n" +
+				"Any of the arguments can be left out, except the project of activity ID\n" +
+				"\n" +
+				"Registering Work Progress:\n" +
+				"Employees can register how much work they have done on a particular activity by\n" +
+				"using the following command:\n" +
+				"\"progress employee=LaHa hours=10 activity=1\"\n" +
+				"Where LaHa is the employee's initials, 10 is the amount of hours, and 1 is the\n" +
+				"activity ID");
 	}
 
 	@SuppressWarnings("incomplete-switch") //Switches intentionally left incomplete
@@ -381,8 +413,8 @@ public class CommandLineInterface {
 			if(employee!=null){
 				projectPlan.assignEmployeeToActivity(employee, activity);
 			} else if(weekSet==true){
-				if(progressSet==true){
-					projectPlan.assignActivityToWeek(activity, progress, week);	
+				if(hoursSet==true){
+					projectPlan.assignActivityToWeek(activity, hours, week);	
 				}
 			}
 		}
@@ -403,22 +435,11 @@ public class CommandLineInterface {
 		}
 	}
 
-	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
-	private void renameFunc() throws UnknownIDException{
-		if(name!=null){
-			if(project!=null){
-				projectPlan.renameProject(project, name);
-			} else if(activity!=null){
-				projectPlan.renameActivity(activity, name);
-			}
-		}
-	}
-
 	private void progressFunc() throws EmployeeException, UnknownIDException {
-		if(progressSet == true){
+		if(hoursSet == true){
 			if(employee != null){
 				if(activity != null){
-					projectPlan.registerEmployeeProgressInActivity(employee, progress, activity);
+					projectPlan.registerEmployeeProgressInActivity(employee, hours, activity);
 				}
 			}
 		}
