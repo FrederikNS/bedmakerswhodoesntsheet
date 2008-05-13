@@ -589,7 +589,8 @@ public class ProjectPlan {
 	}
 	
 	private Employee getEmployee(String initials) throws UnknownIDException {
-		if(!employees.containsKey(initials.toLowerCase())) throw new UnknownIDException("Unknown initials:" + initials);
+		initials = initials.toLowerCase();
+		if(!employees.containsKey(initials)) throw new UnknownIDException("Unknown initials:" + initials);
 		return employees.get(initials);
 	}
 
