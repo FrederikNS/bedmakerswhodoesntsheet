@@ -2,20 +2,19 @@ package projectplanner;
 
 import java.util.ArrayList;
 
-public class Project extends Freezeable {
+public class Project extends Deprecateable {
 	private String name;
 	private String id;
 	private ArrayList<Activity> activities;
 	private ArrayList<Employee> assignedEmployees;
 	private Employee leader;
-	boolean frozen;
 	int startweek;
 	int endweek;
 	
 	public Project(String id, String name) {
 		startweek = 0;
 		endweek = Integer.MAX_VALUE;
-		unfreeze();
+		undeprecate();
 		leader = null;
 		activities = new ArrayList<Activity>();
 		assignedEmployees = new ArrayList<Employee>(); 
@@ -26,7 +25,7 @@ public class Project extends Freezeable {
 	public Project(String id, String name, Employee leader) {
 		startweek = 0;
 		endweek = Integer.MAX_VALUE;
-		unfreeze();
+		undeprecate();
 		activities = new ArrayList<Activity>();
 		assignedEmployees = new ArrayList<Employee>();
 		this.name = name;
@@ -34,12 +33,14 @@ public class Project extends Freezeable {
 		this.id = id;
 	}
 	
-	public void setName(String name) throws FrozenException {
-		checkFreeze();
+	public void setName(String name) {
+		checkDeprecateAndDoNothing();
 		this.name = name;
 	}
 	
 	public String getName() {
+		if(isDeprecated())
+			return name + " [DEPRECATED]";
 		return name;
 	}
 	
@@ -59,32 +60,32 @@ public class Project extends Freezeable {
 		return leader;
 	}
 	
-	public void setStartWeek(int v) throws FrozenException {
-		checkFreeze();
+	public void setStartWeek(int v) {
+		checkDeprecateAndDoNothing();
 		startweek = v;
 	}
 	
-	public void setEndWeek(int v) throws FrozenException {
-		checkFreeze();
+	public void setEndWeek(int v) {
+		checkDeprecateAndDoNothing();
 		endweek = v;
 	}
 	
-	public void assignLeader(Employee projectLeader) throws FrozenException  {
-		checkFreeze();
+	public void assignLeader(Employee projectLeader) {
+		checkDeprecateAndDoNothing();
 		this.leader = projectLeader;
 	}
 	
-	public void addActivity(Activity activity) throws FrozenException, ProjectException {
-		checkFreeze();
+	public void addActivity(Activity activity) throws ProjectException {
+		checkDeprecateAndDoNothing();
 		if(containsActivity(activity))
 			throw new ProjectException("Activity already in project");
 		activity.setParent(this);
 		activities.add(activity);
 	}
 
-	public void freezeActivity(Activity activity) throws FrozenException {
-		checkFreeze();
-		activity.freeze();
+	public void freezeActivity(Activity activity) {
+		checkDeprecateAndDoNothing();
+		activity.deprecate();
 	}
 	
 	public boolean containsEmployee(Employee e) {
@@ -95,15 +96,15 @@ public class Project extends Freezeable {
 		return assignedEmployees;
 	}
 	
-	public void addEmployee(Employee e) throws FrozenException, ProjectException {
-		checkFreeze();
+	public void addEmployee(Employee e) throws ProjectException {
+		checkDeprecateAndDoNothing();
 		if(containsEmployee(e))
 			throw new ProjectException("Already contains employee e");
 		assignedEmployees.add(e);
 	}
 
-	public void removeEmployee(Employee e) throws FrozenException, ProjectException {
-		checkFreeze();
+	public void removeEmployee(Employee e) throws ProjectException {
+		checkDeprecateAndDoNothing();
 		if(!containsEmployee(e))
 			throw new ProjectException("Does not contain employee e");
 		assignedEmployees.remove(e);
@@ -120,7 +121,7 @@ public class Project extends Freezeable {
 	public float getWorkload() {
 		float workload = 0;
 		for(Activity a : activities)
-			if(!a.isFrozen())
+			if(!a.isDeprecated())
 				workload+=a.getWorkload();
 		return workload;
 	}
@@ -128,30 +129,20 @@ public class Project extends Freezeable {
 	public float getProgress() {
 		float progress = 0;
 		for(Activity a : activities)
-			if(!a.isFrozen())
+			if(!a.isDeprecated())
 				progress+=a.getProgress();
 		return progress;
 	}
 
 	public String toString() {
-		String out = name;
-		out += ". Start week: " + startweek + ", end week: " + endweek + ".";
-		if(frozen) out += " [FROZEN]";
-		out += "\n* Leader: ";
-		if(leader==null) out += "none";
-		else out += leader;
-		out += "\n* Activities (" + activities.size() +"):\n";
-		for(Activity a : activities) {
-			out += "\t" + a + "\n";
-		}
-		return out;
+		return getName();
 	}
 
-	public void checkAssignEmployee(Employee e) throws FrozenException {
-		checkFreeze();
+	public void checkAssignEmployee(Employee e) throws ProjectException {
+		if(containsEmployee(e)) throw new ProjectException("Already contains employee.");
 	}
 
-	public void checkRemoveEmployee(Employee e) throws FrozenException {
-		checkFreeze();		
+	public void checkRemoveEmployee(Employee e) throws ProjectException {
+		if(!containsEmployee(e)) throw new ProjectException("Does not contain employee.");
 	}
 }

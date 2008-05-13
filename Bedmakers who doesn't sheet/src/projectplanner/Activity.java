@@ -3,7 +3,7 @@ package projectplanner;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Activity extends Freezeable{
+public class Activity extends Deprecateable{
 	private String name;
 	private Project parentProject;
 	private HashMap<Week, Float> weeklyWorkload;
@@ -15,7 +15,7 @@ public class Activity extends Freezeable{
 	public Activity(String id, String name) {
 		this.hasparent = false;
 		this.id = id;
-		unfreeze();
+		undeprecate();
 		this.name = name;
 		this.parentProject = null;
 		this.weeklyWorkload = new HashMap<Week, Float>();
@@ -26,7 +26,7 @@ public class Activity extends Freezeable{
 	public Activity(String id, String name, Project parent) {
 		this.hasparent = true;
 		this.id = id;
-		unfreeze();
+		undeprecate();
 		this.name = name;
 		this.parentProject = parent;
 		this.weeklyWorkload = new HashMap<Week, Float>();
@@ -34,30 +34,24 @@ public class Activity extends Freezeable{
 		this.progressByEmployee = new HashMap<Employee, Float>();
 	}
 
-	public void setParent(Project parentProject) throws FrozenException {
-		checkFreeze();
+	public void setParent(Project parentProject) {
+		checkDeprecateAndDoNothing();
 		if(this.hasparent) { } //FIXME: Exception her 
 		this.parentProject = parentProject;
 	}
 
-	public void setName(String newName) throws FrozenException {
-		checkFreeze();
+	public void setName(String newName) {
+		checkDeprecateAndDoNothing();
 		this.name = newName;
 	}
-
-	public void checkFreeze() throws FrozenException {
-		if(isFrozen()) throw new FrozenException(this);
-		if(hasparent) {
-			parentProject.checkFreeze();
-		}
-	}	
-
 	
 	public String getID() {
 		return id;
 	}
 
 	public String getName() {
+		if(isDeprecated())
+			return name + " [DEPRECATED]";
 		return name;
 	}
 
@@ -65,8 +59,8 @@ public class Activity extends Freezeable{
 		return parentProject;
 	}
 
-	public void assignEmployee(Employee e) throws FrozenException, ActivityException {
-		checkFreeze();
+	public void assignEmployee(Employee e) throws ActivityException {
+		checkDeprecateAndDoNothing();
 		assignedEmployees.add(e);
 	}
 
@@ -74,13 +68,13 @@ public class Activity extends Freezeable{
 		return assignedEmployees;
 	}
 
-	public void addWeek(Week week, float hours) throws FrozenException {
-		checkFreeze();
+	public void addWeek(Week week, float hours) {
+		checkDeprecateAndDoNothing();
 		weeklyWorkload.put(week, hours);
 	}
 
-	public void removeWeek(Week week) throws FrozenException {
-		checkFreeze();
+	public void removeWeek(Week week) {
+		checkDeprecateAndDoNothing();
 		weeklyWorkload.remove(week);
 	}
 
@@ -91,25 +85,23 @@ public class Activity extends Freezeable{
 	}
 	
 	public float getWorkloadPerEmployeeForWeek(Week week) throws ActivityException {
-		return getHoursForWeek(week) / numberOfNonFrozenEmployees();
+		return getHoursForWeek(week) / numberOfNonDeprecatedEmployees();
 	}
 
-	public void removeEmployee(Employee employee) throws FrozenException, ActivityException {
+	public void removeEmployee(Employee employee) throws ActivityException {
 		checkRemoveEmployee(employee);
 		assignedEmployees.remove(employee);
 	}
 
 	public float getProgress() {
 		float progress = 0;
-		//for (Employee e : progressByEmployee.keySet())
-		//	progress += e.getProgresInActivity(this);
 		for(Float p : progressByEmployee.values()) progress += p;
 		return progress;
 	}
 
-	public int numberOfNonFrozenEmployees() {
+	public int numberOfNonDeprecatedEmployees() {
 		int num = 0;
-		for(Employee e : getAssignedEmployees()) if(!e.isFrozen()) num++;
+		for(Employee e : getAssignedEmployees()) if(!e.isDeprecated()) num++;
 		return num;
 	}
 
@@ -128,9 +120,8 @@ public class Activity extends Freezeable{
 		return workload;
 	}
 
-	public void registerProgressFromEmployee(float hours, Employee employee)
-			throws FrozenException {
-		checkFreeze();
+	public void registerProgressFromEmployee(float hours, Employee employee) {
+		checkDeprecateAndDoNothing();
 		if (progressByEmployee.containsKey(employee)) {
 			hours += progressByEmployee.get(employee);
 		}
@@ -138,31 +129,29 @@ public class Activity extends Freezeable{
 	}
 
 	public String toString() {
-		String out = name;
-		if(isFrozen()) out+=" [FROZEN]";
-		return out;
+		return getName();
 	}
 	
 	public boolean containsEmployee(Employee e) {
 		return assignedEmployees.contains(e);
 	}
 
-	public void checkAssignEmployee(Employee e) throws ActivityException, FrozenException {
-		checkFreeze();
+	public void checkAssignEmployee(Employee e) throws ActivityException {
+		checkDeprecateAndDoNothing();
 		if(containsEmployee(e))
 			if(e.isAssignedToActivityAsEmployee(this))
 				throw new ActivityException("Already contains this employee");
 	}
 
-	public void checkAssignEmployeeAsAssistant(Employee e) throws FrozenException, ActivityException {
-		checkFreeze();
+	public void checkAssignEmployeeAsAssistant(Employee e) throws ActivityException {
+		checkDeprecateAndDoNothing();
 		if(containsEmployee(e))
 			if(e.isAssignedToActivityAsAssistant(this))
 				throw new ActivityException("Already contains this employee");
 	}
 
-	public void checkRemoveEmployee(Employee e) throws FrozenException, ActivityException {
-		checkFreeze();
+	public void checkRemoveEmployee(Employee e) throws ActivityException {
+		checkDeprecateAndDoNothing();
 		if(!containsEmployee(e))
 			throw new ActivityException("Does not contain employee.");
 	}

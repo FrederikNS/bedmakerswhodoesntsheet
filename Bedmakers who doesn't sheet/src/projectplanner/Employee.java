@@ -10,7 +10,7 @@ import java.util.HashMap;
  * True: Assistent
  */
 
-public class Employee extends Freezeable{
+public class Employee extends Deprecateable{
 
 	private String name;
 	private String initials;
@@ -20,7 +20,7 @@ public class Employee extends Freezeable{
 	private HashMap<Activity,Float> progress;
 
 	public Employee(String name, String initials) {
-		unfreeze();
+		undeprecate();
 		this.name = name;
 		this.initials = initials;
 		assignedActivities = new HashMap<Activity,Boolean>();
@@ -69,7 +69,7 @@ public class Employee extends Freezeable{
 		return assignedActivities.get(a);
 	}
 
-	public void assignToProject(Project project) throws EmployeeException, FrozenException {
+	public void assignToProject(Project project) throws EmployeeException {
 		checkAssignToProject(project);
 		assignedProjects.add(project);
 		for(Activity a : assignedActivities.keySet()) {
@@ -80,22 +80,21 @@ public class Employee extends Freezeable{
 		}
 	}
 
-	public void relieveFromProject(Project project, boolean reassignasassistant) throws EmployeeException, FrozenException {
+	public void relieveFromProject(Project project, boolean reassignasassistant) throws EmployeeException {
 		checkRelieveFromProject(project);
 		assignedProjects.remove(project);
 		for(Activity activity : project.getActivities()) {
 			if(isAssignedToActivity(activity)) {
 				relieveFromActivity(activity);
-				//Force assistance to frozen activities to avoid inconsistency.
-				if(reassignasassistant || activity.isFrozen()) {
+				if(reassignasassistant) {
 					assistActivity(activity);
 				}
 			}
 		}
 	}
 
-	public void assignProjectLead(Project project) throws EmployeeException, FrozenException {
-		checkFreeze();
+	public void assignProjectLead(Project project) throws EmployeeException {
+		checkDeprecateAndDoNothing();
 		if(isLeaderOfProject(project))
 			throw new EmployeeException("Already assigned as project leader");
 
@@ -113,27 +112,27 @@ public class Employee extends Freezeable{
 		assignedProjectsLead.remove(project);
 	}
 
-	public void assignToActivity(Activity activity) throws EmployeeException, FrozenException {
+	public void assignToActivity(Activity activity) throws EmployeeException {
 		checkAssignToActivity(activity);
 		assignedActivities.put(activity, false);
 	}
 
-	public void relieveFromActivity(Activity activity) throws EmployeeException, FrozenException {
+	public void relieveFromActivity(Activity activity) throws EmployeeException {
 		assignedActivities.remove(activity);
 	}
 	
-	public void assistActivity(Activity activity) throws EmployeeException, FrozenException {
+	public void assistActivity(Activity activity) throws EmployeeException {
 		checkAssistActivity(activity);
 		assignedActivities.put(activity,true);
 	}
 
-	public void relieveFromAssistance(Activity activity) throws EmployeeException, FrozenException {
+	public void relieveFromAssistance(Activity activity) throws EmployeeException {
 		checkRelieveFromAssistance(activity);
 		assignedActivities.remove(activity);
 	}	
 	
-	public void registerProgressInActivity(float hours, Activity a) throws FrozenException, EmployeeException {
-		checkFreeze();
+	public void registerProgressInActivity(float hours, Activity a) throws EmployeeException {
+		checkDeprecateAndDoNothing();
 		if(!isAssignedToActivity(a)) {
 			throw new EmployeeException("Not assigned/assisting project");
 		}
@@ -148,12 +147,12 @@ public class Employee extends Freezeable{
 	}
 	
 	public String toString() {
-		String out = initials + ", " + name;
-		if(isFrozen()) out += " [FROZEN]";
-		return out;
+		return getName();
 	}
 
 	public String getName() {
+		if(isDeprecated())
+			return name + " [DEPRECATED]";
 		return name;
 	}
 	
@@ -177,23 +176,23 @@ public class Employee extends Freezeable{
 		return progress;
 	}
 
-	public void checkAssignToProject(Project project) throws FrozenException, EmployeeException {
-		checkFreeze();
+	public void checkAssignToProject(Project project) throws EmployeeException {
+		checkDeprecateAndDoNothing();
 		if(assignedProjects.contains(project)){
 			throw new EmployeeException("Already assigned to project");
 		}
 	}
 
-	public void checkRelieveFromProject(Project project) throws FrozenException, EmployeeException {
-		checkFreeze();
+	public void checkRelieveFromProject(Project project) throws EmployeeException {
+		checkDeprecateAndDoNothing();
 		if(!assignedProjects.contains(project))
 			throw new EmployeeException("Not assigned to project");
 		if(isLeaderOfProject(project))
 			throw new EmployeeException("Assigned to project as leader - unassign first");
 	}
 
-	public void checkAssignToActivity(Activity activity) throws FrozenException, EmployeeException {
-		checkFreeze();
+	public void checkAssignToActivity(Activity activity) throws EmployeeException {
+		checkDeprecateAndDoNothing();
 		if(isAssignedToActivityAsEmployee(activity))
 			throw new EmployeeException("Already assigned to activity");
 
@@ -204,14 +203,14 @@ public class Employee extends Freezeable{
 			throw new EmployeeException("Not assigned to project");		
 	}
 
-	public void checkRelieveFromActivity(Activity activity) throws EmployeeException, FrozenException {
-		checkFreeze();
+	public void checkRelieveFromActivity(Activity activity) throws EmployeeException {
+		checkDeprecateAndDoNothing();
 		if(!isAssignedToActivity(activity))
 			throw new EmployeeException("Not assigned to activity");
 	}
 
-	public void checkAssistActivity(Activity activity) throws EmployeeException, FrozenException {
-		checkFreeze();
+	public void checkAssistActivity(Activity activity) throws EmployeeException {
+		checkDeprecateAndDoNothing();
 		if(isAssignedToProject(activity.getParentProject())) {
 			throw new EmployeeException("Assigned to project, so cannot be assigned as assitant");
 		}
@@ -223,8 +222,8 @@ public class Employee extends Freezeable{
 		}		
 	}
 
-	public void checkRelieveFromAssistance(Activity activity) throws FrozenException, EmployeeException {
-		checkFreeze();
+	public void checkRelieveFromAssistance(Activity activity) throws EmployeeException {
+		checkDeprecateAndDoNothing();
 		if(!isAssignedToActivityAsAssistant(activity)){
 			throw new EmployeeException("Not assigned to activity as assistant");
 		}
