@@ -112,7 +112,7 @@ public class ProjectPlanTest extends TestCase {
 			String project_ID = projectPlan.addProjectWithLeader(projectName, initials);
 			project = projectPlan.getProjects().get(project_ID);
 			
-			project.getLeader();
+			assertTrue(project.getLeader() == employee);
 			assertTrue(project instanceof Project);
 			assertTrue(projectPlan.findProject(projectName).contains(project));
 			
@@ -126,7 +126,13 @@ public class ProjectPlanTest extends TestCase {
 		} catch (UnknownIDException e) {
 			print("The leader ID does not exist");
 			fail();
-		}	
+		} catch (FrozenException e) {
+			print("The project is frozen");
+			fail();
+		} catch (EmployeeException e) {
+			print("FAIL");
+			fail();
+		}
 	}
 	
 	/**
