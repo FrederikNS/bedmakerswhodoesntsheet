@@ -5,7 +5,7 @@ import projectplanner.Week;
 import junit.framework.TestCase;
 
 public class ActivityTest extends TestCase {
-	public void testProgres() {
+	public void testProgress() {
 		try {
 			Activity a = new Activity("", "test");
 			Week w = new Week(0);
