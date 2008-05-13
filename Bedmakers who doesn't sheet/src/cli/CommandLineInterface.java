@@ -274,7 +274,7 @@ public class CommandLineInterface {
 	private void viewFunc() throws UnknownIDException{
 		if(project!=null){
 			System.out.println("Project Name: "+projectPlan.getProjectName(project));
-			System.out.println("Leader: "+projectPlan.getProjectLeader(project));
+			System.out.println("Leader: "+projectPlan.getProjectLeader(project).getInitials()+", "+projectPlan.getProjectLeader(project).getName());
 			System.out.println("Start Week: "+projectPlan.getProjectStartWeek(project));
 			System.out.println("End Week: "+projectPlan.getProjectEndWeek(project));
 			System.out.println("Workload: "+projectPlan.getProjectWorkload(project));
@@ -287,9 +287,10 @@ public class CommandLineInterface {
 			for(Activity key:projectPlan.getActivitiesInProject(project)){
 				System.out.println(key.getID()+", "+key.getName());
 			}
+			System.out.println();
 		}else if(activity!=null){
 			System.out.println("Activity Name: "+projectPlan.getActivityName(activity));
-			System.out.println("Parent Project: "+projectPlan.getActivityParentProject(activity));
+			System.out.println("Parent Project: "+projectPlan.getActivityParentProject(activity).getId()+", "+projectPlan.getActivityParentProject(activity).getName());
 			System.out.println("Start Week: "+projectPlan.getActivityStartWeek(activity));
 			System.out.println("End Week: "+projectPlan.getActivityEndWeek(activity));
 			System.out.println("Assigned Employees:");
@@ -298,9 +299,14 @@ public class CommandLineInterface {
 			}
 			System.out.println("Workload: "+projectPlan.getActivityWorkload(activity));
 			System.out.println("Progress: "+projectPlan.getActivityProgress(activity));
+			System.out.println();
 		}else if(employee!=null){
 			System.out.println("Employee Name: "+projectPlan.getEmployeeName(employee));
-			System.out.println("Work Done: "+projectPlan.getWorkDoneByEmployee(employee));
+			System.out.println("Initials: "+employee);
+			System.out.println("Work Done:");
+			for(Activity key:projectPlan.getWorkDoneByEmployee(employee).keySet()){
+				System.out.println(key.getID()+", "+key.getName()+", "+projectPlan.getWorkDoneByEmployee(employee).get(key));
+			}
 			System.out.println("Assigned Activities:");
 			for(Activity key:projectPlan.getActivitiesAssignedToEmployee(employee).keySet()){
 				System.out.println(key.getID()+", "+key.getName()+(projectPlan.getActivitiesAssignedToEmployee(employee).get(key)?", (Assisting)":""));
@@ -313,15 +319,19 @@ public class CommandLineInterface {
 			for(Project key:projectPlan.getProjectsAssignedToEmployee(employee)){
 				System.out.println(key.getId()+", "+key.getName());
 			}
+			System.out.println();
 		}else if(commandInt[1]==Commands.ACTIVITY.ordinal()){
 			for(Activity act:projectPlan.getActivities().values())
 				System.out.println(act.getID()+", "+act.getName());
+			System.out.println();
 		}else if(commandInt[1]==Commands.PROJECT.ordinal()){
 			for(Project act:projectPlan.getProjects().values())
 				System.out.println(act.getId()+", "+act.getName());
+			System.out.println();
 		}else if(commandInt[1]==Commands.EMPLOYEE.ordinal()){
 			for(Employee act:projectPlan.getEmployees().values())
 				System.out.println(act.getInitials()+", "+act.getName());
+			System.out.println();
 		}else if(commandInt[1]==Commands.WEEK.ordinal()){
 			if(weekSet ==true){
 				System.out.println("Number of Activities: "+projectPlan.getNumberOfActivitiesInWeek(week));
@@ -333,6 +343,7 @@ public class CommandLineInterface {
 				for(Employee key:projectPlan.getWorkloadByEmployeeForWeek(week).keySet()){
 					System.out.println(key.getInitials()+", "+key.getName()+", "+projectPlan.getWorkloadByEmployeeForWeek(week).get(key));
 				}
+				System.out.println();
 			}
 		}
 	}
