@@ -66,7 +66,7 @@ public class ProjectPlan {
 		projects.put(id,project);
 	}
 
-	private void assignActivityToWeek(Activity activity, int hours, Week week) {
+	private void assignActivityToWeek(Activity activity, float hours, Week week) {
 		activity.addWeek(week, hours);
 		week.addActivity(activity);
 	}
@@ -315,7 +315,7 @@ public class ProjectPlan {
 		employees.put(initials, new Employee(name, initials));
 	}
 
-	public void assignActivityToWeek(String activity_id, int hours, int weekIndex) throws UnknownIDException {
+	public void assignActivityToWeek(String activity_id, float hours, int weekIndex) throws UnknownIDException {
 		assignActivityToWeek(getActivity(activity_id), hours, getWeek(weekIndex));
 	}
 
