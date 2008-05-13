@@ -144,7 +144,7 @@ public class ProjectPlanTest extends TestCase {
 //First, a regular activity that should work out fine.
 		try {
 			projectPlan.assignActivityToWeek(activity_ID, hours, weekIndex);
-			actHours = (int)activity.getHoursForWeek(projectPlan.getWeekFromIndex(weekIndex));
+			actHours = (int)activity.getWorkloadForWeek(projectPlan.getWeekFromIndex(weekIndex));
 			weekHours = (int)((projectPlan.getWeekFromIndex(weekIndex)).getAssignedHours());
 			
 			//We assert that the week returned should contain the hours specified.
