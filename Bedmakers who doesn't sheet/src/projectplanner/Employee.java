@@ -186,9 +186,10 @@ public class Employee extends Freezeable{
 
 	public void checkRelieveFromProject(Project project) throws FrozenException, EmployeeException {
 		checkFreeze();
-		if(!assignedProjects.contains(project)) {
+		if(!assignedProjects.contains(project))
 			throw new EmployeeException("Not assigned to project");
-		}
+		if(isLeaderOfProject(project))
+			throw new EmployeeException("Assigned to project as leader - unassign first");
 	}
 
 	public void checkAssignToActivity(Activity activity) throws FrozenException, EmployeeException {
