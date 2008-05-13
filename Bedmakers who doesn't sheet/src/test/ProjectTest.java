@@ -52,7 +52,7 @@ public class ProjectTest extends TestCase {
 			activity2.registerProgressFromEmployee(6, employee1);
 			assertTrue(project1.getProgress()==9);
 			assertTrue(project1.getWorkload()==17);
-//			activity1.freeze();
+			activity1.deprecate();
 			assertTrue(project1.getProgress()==6);
 			assertTrue(project1.getWorkload()==7);
 		} catch (Exception e) { e.printStackTrace(); fail(); }
