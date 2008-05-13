@@ -230,11 +230,11 @@ public class CommandLineInterface {
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	private void deleteFunc() throws UnknownIDException{
 		if(project!=null){
-			projectPlan.freezeProject(project);
+			projectPlan.deprecateProject(project);
 		} if(activity!=null){
-			projectPlan.freezeActivity(activity);
+			projectPlan.deprecateActivity(activity);
 		} if(employee!=null){
-			projectPlan.freezeEmployee(employee);
+			projectPlan.deprecateEmployee(employee);
 		}
 	}
 
