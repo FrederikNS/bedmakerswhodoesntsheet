@@ -34,7 +34,6 @@ public class Project extends Deprecateable {
 	}
 	
 	public void setName(String name) {
-		checkDeprecateAndDoNothing();
 		this.name = name;
 	}
 	
@@ -61,22 +60,18 @@ public class Project extends Deprecateable {
 	}
 	
 	public void setStartWeek(int v) {
-		checkDeprecateAndDoNothing();
 		startweek = v;
 	}
 	
 	public void setEndWeek(int v) {
-		checkDeprecateAndDoNothing();
 		endweek = v;
 	}
 	
 	public void assignLeader(Employee projectLeader) {
-		checkDeprecateAndDoNothing();
 		this.leader = projectLeader;
 	}
 	
 	public void addActivity(Activity activity) throws ProjectException {
-		checkDeprecateAndDoNothing();
 		if(containsActivity(activity))
 			throw new ProjectException("Activity already in project");
 		activity.setParent(this);
@@ -84,7 +79,6 @@ public class Project extends Deprecateable {
 	}
 
 	public void freezeActivity(Activity activity) {
-		checkDeprecateAndDoNothing();
 		activity.deprecate();
 	}
 	
@@ -97,14 +91,12 @@ public class Project extends Deprecateable {
 	}
 	
 	public void addEmployee(Employee e) throws ProjectException {
-		checkDeprecateAndDoNothing();
 		if(containsEmployee(e))
 			throw new ProjectException("Already contains employee e");
 		assignedEmployees.add(e);
 	}
 
 	public void removeEmployee(Employee e) throws ProjectException {
-		checkDeprecateAndDoNothing();
 		if(!containsEmployee(e))
 			throw new ProjectException("Does not contain employee e");
 		assignedEmployees.remove(e);

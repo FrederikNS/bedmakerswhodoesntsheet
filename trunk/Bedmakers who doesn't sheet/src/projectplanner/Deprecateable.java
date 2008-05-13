@@ -10,11 +10,6 @@ public abstract class Deprecateable {
 		this.deprecated = false;
 	}
 
-	public void checkDeprecateAndDoNothing(){ // throws FrozenException {
-//		if (deprecated)
-//			throw new FrozenException(this);
-	}	
-
 	public boolean isDeprecated() {
 		return deprecated;
 	}
