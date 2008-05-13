@@ -59,8 +59,11 @@ public class ProjectPlan {
 		projects.put(id,new Project(id, name));
 	}
 	
-	private void addProjectWithLeader(String id, String name, String leader_initials) throws UnknownIDException {
-		projects.put(id,new Project(id, name, getEmployee(leader_initials)));
+	private void addProjectWithLeader(String id, String name, String leader_initials) throws UnknownIDException, EmployeeException, FrozenException {
+		Employee employee = getEmployee(leader_initials);
+		Project project = new Project(id, name, employee);
+		employee.assignProjectLead(project);
+		projects.put(id,project);
 	}
 
 	private void assignActivityToWeek(Activity activity, int hours, Week week) throws FrozenException {
@@ -295,7 +298,7 @@ public class ProjectPlan {
 		return id;
 	}
 	
-	public String addProjectWithLeader(String name, String leader_initials) throws UnknownIDException {
+	public String addProjectWithLeader(String name, String leader_initials) throws UnknownIDException, EmployeeException, FrozenException {
 		String id = generateNewProjectID();
 		addProjectWithLeader(id, name, leader_initials);
 		return id;
@@ -554,6 +557,10 @@ public class ProjectPlan {
 				workloadByEmployee.put(employee, total_employee_workload);
 			}
 		}
+		
+		for(Employee employee : workloadByEmployee.keySet())
+			if(employee.isFrozen())
+				workloadByEmployee.remove(employee);
 		
 		return workloadByEmployee;
 	}
