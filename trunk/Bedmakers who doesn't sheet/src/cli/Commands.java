@@ -2,7 +2,7 @@ package cli;
 
 /**
  * Contains the different user commands
- * @author frederikns
+ * @author Frederik Nordahl Sabroe
  *
  */
 public enum Commands {

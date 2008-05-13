@@ -2,6 +2,10 @@ package projectplanner;
 
 import java.util.HashSet;
 
+/**
+ * @author Jacob Kjaer
+ *
+ */
 public class Week {
 	private int index;
 	private HashSet<Activity> scheduledActivities;

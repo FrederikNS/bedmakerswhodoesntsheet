@@ -3,6 +3,10 @@ package gui;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+/**
+ * @author Frederik Nordahl Sabroe
+ *
+ */
 public class Toolbar extends JPanel {
 
 	/**

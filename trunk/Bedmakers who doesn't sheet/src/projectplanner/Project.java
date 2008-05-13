@@ -2,6 +2,11 @@ package projectplanner;
 
 import java.util.HashSet;
 
+/**
+ * @author Jacob
+ *  Kjaer
+ *
+ */
 public class Project extends Deprecateable {
 	private String name;
 	private String id;

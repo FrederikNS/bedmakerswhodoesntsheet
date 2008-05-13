@@ -1,7 +1,7 @@
 import cli.CommandLineInterface;
 
 /**
- * @author Spawner
+ * @author Frederik Nordahl Sabroe
  *
  */
 public class Spawner {

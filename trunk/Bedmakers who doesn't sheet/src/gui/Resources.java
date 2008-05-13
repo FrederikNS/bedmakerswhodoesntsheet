@@ -7,6 +7,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
+/**
+ * @author Frederik Nordahl Sabroe
+ *
+ */
 public class Resources extends JPanel {
 
 	/**

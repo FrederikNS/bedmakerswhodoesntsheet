@@ -3,6 +3,10 @@ package projectplanner;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/**
+ * @author Jacob Kjaer
+ *
+ */
 public class Activity extends Deprecateable{
 	private String name;
 	private Project parentProject;

@@ -10,6 +10,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+/**
+ * @author Frederik Nordahl Sabroe
+ *
+ */
 public class MainFrame extends JFrame{
 
 	/**
