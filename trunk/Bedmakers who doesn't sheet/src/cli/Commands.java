@@ -35,6 +35,10 @@ public enum Commands {
 	 */
 	EMPLOYEEARG("employee="),
 	/**
+	 * Contains an assistant-id
+	 */
+	ASSISTANT("assistant="),
+	/**
 	 * Contains a project-id argument
 	 */
 	PROJECTARG("project="),
