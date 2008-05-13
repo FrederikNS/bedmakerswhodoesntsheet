@@ -30,9 +30,12 @@ public class ProjectPlan {
 	private String generateNewProjectID() {
 		next_project_id++;
 		String currentYear = String.valueOf((Calendar.getInstance().get(Calendar.YEAR))%100);
+		if(currentYear.length() == 1) {
+			currentYear = "0"+currentYear;
+		}
 		String numberPrefix = "";
 		for(int i = 4; i > String.valueOf(next_project_id).length(); i--){
-			numberPrefix += String.valueOf(0);
+			numberPrefix += "0";
 		}
 		String issuedNumber = numberPrefix + String.valueOf(next_project_id);
 		String projectID = currentYear + issuedNumber;

@@ -334,7 +334,7 @@ public class ProjectPlanTest extends TestCase {
 	}
 	
 	/**
-	 * In this test, we will test running a test, testing assigning and employee to assist an activity.
+	 * In this test, we will test running a test, testing assigning an employee to assist an activity.
 	 * Afterwards, we will remove the employee.
 	 */
 	
@@ -373,6 +373,7 @@ public class ProjectPlanTest extends TestCase {
 			projectPlan.assignEmployeeToActivity(initials, activity_ID);
 			projectPlan.registerEmployeeProgressInActivity(initials, hours, activity_ID);
 			assertTrue(projectPlan.getActivityProgress(activity_ID) == hours);
+			print("Everything has passed! We win x-mas!");
 		} catch (FrozenException e) {
 			print("Frozen.");
 			fail();
