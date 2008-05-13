@@ -67,16 +67,16 @@ public class EmployeeTest extends TestCase {
 		} catch (Exception e) { fail(); }
 	}
 	
-	public void testFreeze() {
-		assertFalse(employee1.isFrozen());
-		try { employee1.freeze(); } catch (Exception e) { fail(); }
-		assertTrue(employee1.isFrozen());
-		try { employee1.assignProjectLead(project1); fail(); } catch (Exception e) {}
-		try { employee1.removeFromProjectLead(project1); fail(); } catch (Exception e) {}
-		try { employee1.assignToActivity(activity1); fail(); } catch (Exception e) {}
-		try { employee1.unfreeze(); } catch (Exception e) { fail(); }
-		try { employee1.assignProjectLead(project1); } catch (Exception e) { fail(); }
-		try { employee1.removeFromProjectLead(project1); } catch (Exception e) { fail(); }
-		try { employee1.assignToActivity(activity1); } catch (Exception e) { fail(); }
-	}
+//	public void testFreeze() {
+//		assertFalse(employee1.isFrozen());
+//		try { employee1.freeze(); } catch (Exception e) { fail(); }
+//		assertTrue(employee1.isFrozen());
+//		try { employee1.assignProjectLead(project1); fail(); } catch (Exception e) {}
+//		try { employee1.removeFromProjectLead(project1); fail(); } catch (Exception e) {}
+//		try { employee1.assignToActivity(activity1); fail(); } catch (Exception e) {}
+//		try { employee1.unfreeze(); } catch (Exception e) { fail(); }
+//		try { employee1.assignProjectLead(project1); } catch (Exception e) { fail(); }
+//		try { employee1.removeFromProjectLead(project1); } catch (Exception e) { fail(); }
+//		try { employee1.assignToActivity(activity1); } catch (Exception e) { fail(); }
+//	}
 }
