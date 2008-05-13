@@ -132,7 +132,7 @@ public class CommandLineInterface {
 
 	private static String[] splitCommand(String cmd) {
 		String[] split = cmd.trim().split("\\s");
-		for(int i = 0; i < split.length; i++)  split[i].replace('_', ' ');
+		for(int i = 0; i < split.length; i++) split[i]=split[i].replace('_', ' ');
 		return split;
 	}
 
@@ -274,7 +274,7 @@ public class CommandLineInterface {
 	private void viewFunc() throws UnknownIDException{
 		if(project!=null){
 			System.out.println("Project Name: "+projectPlan.getProjectName(project));
-			System.out.println("Leader: "+projectPlan.getProjectLeader(project).getInitials()+", "+projectPlan.getProjectLeader(project).getName());
+			System.out.println("Leader: "+(projectPlan.getProjectLeader(project)!=null?projectPlan.getProjectLeader(project).getInitials()+", "+projectPlan.getProjectLeader(project).getName():"No Leader"));
 			System.out.println("Start Week: "+projectPlan.getProjectStartWeek(project));
 			System.out.println("End Week: "+projectPlan.getProjectEndWeek(project));
 			System.out.println("Workload: "+projectPlan.getProjectWorkload(project));
@@ -290,7 +290,7 @@ public class CommandLineInterface {
 			System.out.println();
 		}else if(activity!=null){
 			System.out.println("Activity Name: "+projectPlan.getActivityName(activity));
-			System.out.println("Parent Project: "+projectPlan.getActivityParentProject(activity).getId()+", "+projectPlan.getActivityParentProject(activity).getName());
+			System.out.println("Parent Project: "+(projectPlan.getActivityParentProject(activity)!=null?projectPlan.getActivityParentProject(activity).getId()+", "+projectPlan.getActivityParentProject(activity).getName():"No Parent Project"));
 			System.out.println("Start Week: "+projectPlan.getActivityStartWeek(activity));
 			System.out.println("End Week: "+projectPlan.getActivityEndWeek(activity));
 			System.out.println("Assigned Employees:");
