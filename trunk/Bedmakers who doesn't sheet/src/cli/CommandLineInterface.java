@@ -458,7 +458,7 @@ public class CommandLineInterface {
 			} else if(assistant!= null){
 				projectPlan.relieveEmployeeFromAssistingActivity(assistant, activity);
 				System.out.println("Unassign Registered");
-			} else if(weekSet==false){
+			} else if(weekSet==true){
 				projectPlan.removeActivityFromWeek(activity, week);
 				System.out.println("Unassign Registered");
 			}
