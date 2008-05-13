@@ -161,8 +161,8 @@ public class CommandLineInterface {
 		case CREATE:
 			createFunc();
 			break;
-		case DELETE:
-			deleteFunc();
+		case DEPRECATE:
+			deprecateFunc();
 			break;
 		case EDIT:
 			editFunc();
@@ -196,11 +196,13 @@ public class CommandLineInterface {
 				if(leader != null) {
 					try{
 						projectPlan.addProjectWithLeader(name,leader);
+						System.out.println("Create Registered");
 					} catch(Exception e) {
 
 					}
 				} else {
 					projectPlan.addProject(name);
+					System.out.println("Create Registered");
 				}
 			} else {
 				System.out.println("You must specify a name for the project");
@@ -209,6 +211,7 @@ public class CommandLineInterface {
 		case ACTIVITY:
 			if(name != null){
 				projectPlan.addActivity(name);
+				System.out.println("Create Registered");
 			} else {
 				System.out.println("You must specify a name for the activity");
 			}
@@ -217,8 +220,10 @@ public class CommandLineInterface {
 			if(name != null){
 				if(initials != null) {
 					projectPlan.addEmployee(name,initials);
+					System.out.println("Create Registered");
 				} else {
 					projectPlan.addEmployee(name);
+					System.out.println("Create Registered");
 				}
 			} else {
 				System.out.println("You must specify a name for the employee");
@@ -228,13 +233,16 @@ public class CommandLineInterface {
 	}
 
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
-	private void deleteFunc() throws UnknownIDException{
+	private void deprecateFunc() throws UnknownIDException{
 		if(project!=null){
 			projectPlan.deprecateProject(project);
+			System.out.println("Deprecate Registered");
 		} if(activity!=null){
 			projectPlan.deprecateActivity(activity);
+			System.out.println("Deprecate Registered");
 		} if(employee!=null){
 			projectPlan.deprecateEmployee(employee);
+			System.out.println("Deprecate Registered");
 		}
 	}
 
@@ -243,14 +251,18 @@ public class CommandLineInterface {
 		if(project!=null){
 			if(name!=null){
 				projectPlan.renameProject(project, name);
+				System.out.println("Rename Registered");
 			}if(startSet==true){
 				projectPlan.setProjectStartWeek(project, start);
+				System.out.println("Start Week Registered");
 			}if(endSet==true){
 				projectPlan.setProjectEndWeek(project, end);
+				System.out.println("End Week Registered");
 			}
 		} else if(activity!=null){
 			if(name!=null){
 				projectPlan.renameActivity(activity, name);
+				System.out.println("Rename Registered");
 			}
 		}
 	}
@@ -408,19 +420,25 @@ public class CommandLineInterface {
 		if(project!= null){
 			if(activity!=null){
 				projectPlan.addActivityToProject(activity, project);
+				System.out.println("Assign Registered");
 			}else if(employee!=null){
 				projectPlan.assignEmployeeToProject(employee, project);
+				System.out.println("Assign Registered");
 			}else if(leader!=null){
 				projectPlan.assignLeaderToProject(leader, project);
+				System.out.println("Assign Registered");
 			}
 		} else if(activity!=null){
 			if(employee!=null){
 				projectPlan.assignEmployeeToActivity(employee, activity);
+				System.out.println("Assign Registered");
 			} else if(assistant!=null) {
 				projectPlan.assignEmployeeToAssistActivity(assistant, activity);
+				System.out.println("Assign Registered");
 			} else if(weekSet==true){
 				if(hoursSet==true){
-					projectPlan.assignActivityToWeek(activity, hours, week);	
+					projectPlan.assignActivityToWeek(activity, hours, week);
+					System.out.println("Assign Registered");
 				}
 			}
 		}
@@ -430,15 +448,19 @@ public class CommandLineInterface {
 	private void unassignFunc() throws EmployeeException, UnknownIDException, ProjectException, ActivityException{
 		if(project!=null){
 			if(employee!=null){
-				projectPlan.relieveEmployeeFromProject(employee, project, true);	
+				projectPlan.relieveEmployeeFromProject(employee, project, true);
+				System.out.println("Unassign Registered");
 			}
 		} else if(activity!=null){
 			if(employee!=null){
 				projectPlan.relieveEmployeeFromActivity(employee, activity);
+				System.out.println("Unassign Registered");
 			} else if(assistant!= null){
 				projectPlan.relieveEmployeeFromAssistingActivity(assistant, activity);
+				System.out.println("Unassign Registered");
 			} else if(weekSet==false){
 				projectPlan.removeActivityFromWeek(activity, week);
+				System.out.println("Unassign Registered");
 			}
 		}
 	}
@@ -448,6 +470,7 @@ public class CommandLineInterface {
 			if(employee != null){
 				if(activity != null){
 					projectPlan.registerEmployeeProgressInActivity(employee, hours, activity);
+					System.out.println("Progress Registered");
 				}
 			}
 		}
