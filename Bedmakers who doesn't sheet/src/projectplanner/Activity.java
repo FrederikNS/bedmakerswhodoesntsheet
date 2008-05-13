@@ -78,14 +78,15 @@ public class Activity extends Deprecateable{
 		weeklyWorkload.remove(week);
 	}
 
-	public float getHoursForWeek(Week week) throws ActivityException {
+	public float getWorkloadForWeek(Week week) throws ActivityException {
 		if(!weeklyWorkload.containsKey(week))
 			throw new ActivityException("No hours assigned in this week");
 		return weeklyWorkload.get(week);
 	}
 	
 	public float getWorkloadPerEmployeeForWeek(Week week) throws ActivityException {
-		return getHoursForWeek(week) / numberOfNonDeprecatedEmployees();
+		if(isDeprecated()) return 0;
+		return getWorkloadForWeek(week) / numberOfNonDeprecatedEmployees();
 	}
 
 	public void removeEmployee(Employee employee) throws ActivityException {
