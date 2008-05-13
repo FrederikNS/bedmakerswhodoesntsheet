@@ -30,6 +30,7 @@ public class CommandLineInterface {
 	private boolean startSet = false;
 	private boolean endSet = false;
 	private String employee;
+	private String assistant;
 	private String project;
 	private String activity;
 	private int week;
@@ -82,6 +83,9 @@ public class CommandLineInterface {
 				case WEEK2:
 					week = Integer.parseInt(command[i].substring(5));
 					weekSet = true;
+					break;
+				case ASSISTANT:
+					assistant = command[i].substring(10);
 					break;
 				case EMPLOYEEARG:
 					employee = command[i].substring(9);
@@ -412,6 +416,8 @@ public class CommandLineInterface {
 		} else if(activity!=null){
 			if(employee!=null){
 				projectPlan.assignEmployeeToActivity(employee, activity);
+			} else if(assistant!=null) {
+				projectPlan.assignEmployeeToAssistActivity(assistant, activity);
 			} else if(weekSet==true){
 				if(hoursSet==true){
 					projectPlan.assignActivityToWeek(activity, hours, week);	
@@ -429,6 +435,8 @@ public class CommandLineInterface {
 		} else if(activity!=null){
 			if(employee!=null){
 				projectPlan.relieveEmployeeFromActivity(employee, activity);
+			} else if(assistant!= null){
+				projectPlan.relieveEmployeeFromAssistingActivity(assistant, activity);
 			} else if(weekSet==false){
 				projectPlan.removeActivityFromWeek(activity, week);
 			}
