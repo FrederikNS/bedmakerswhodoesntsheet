@@ -11,8 +11,8 @@ public class ActivityTest extends TestCase {
 			Week w = new Week(0);
 			a.addWeek(w, 10);
 			w.addActivity(a);
-			assertEquals(10.0f,a.getHoursForWeek(w));
-			assertEquals(w.getAssignedHours(),a.getHoursForWeek(w));
+			assertEquals(10.0f,a.getWorkloadForWeek(w));
+			assertEquals(w.getAssignedHours(),a.getWorkloadForWeek(w));
 		} catch (Exception e) {
 			fail();
 		}
