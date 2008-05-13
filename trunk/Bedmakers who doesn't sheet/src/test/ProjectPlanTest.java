@@ -162,7 +162,7 @@ public class ProjectPlanTest extends TestCase {
 			
 			//We then try freezing a valid activity and then test to see if we can 
 			//assign it to a week. This serves to test both the freeze method and the freeze exception.
-			projectPlan.freezeActivity(activity_ID);
+			projectPlan.deprecateActivity(activity_ID);
 			
 		} catch (UnknownIDException e) {
 			print("Activity could not be found from ID");
