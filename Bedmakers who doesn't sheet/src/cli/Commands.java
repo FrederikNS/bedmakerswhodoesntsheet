@@ -65,7 +65,7 @@ public enum Commands {
 	/**
 	 * When command is delete
 	 */
-	DELETE("delete"),
+	DEPRECATE("deprecate"),
 	/**
 	 * When command is view
 	 */
