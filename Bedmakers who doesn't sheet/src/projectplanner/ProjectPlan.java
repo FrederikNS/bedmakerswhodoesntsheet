@@ -143,8 +143,6 @@ public class ProjectPlan {
 	}	
 	
 	private void registerEmployeeProgressInActivity(Employee e, float hours, Activity a) throws EmployeeException {
-		a.checkDeprecateAndDoNothing();
-		e.checkDeprecateAndDoNothing();
 		e.registerProgressInActivity(hours, a);
 		a.registerProgressFromEmployee(hours, e);		
 	}

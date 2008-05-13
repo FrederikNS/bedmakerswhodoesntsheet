@@ -35,13 +35,11 @@ public class Activity extends Deprecateable{
 	}
 
 	public void setParent(Project parentProject) {
-		checkDeprecateAndDoNothing();
 		if(this.hasparent) { } //FIXME: Exception her 
 		this.parentProject = parentProject;
 	}
 
 	public void setName(String newName) {
-		checkDeprecateAndDoNothing();
 		this.name = newName;
 	}
 	
@@ -60,7 +58,6 @@ public class Activity extends Deprecateable{
 	}
 
 	public void assignEmployee(Employee e) throws ActivityException {
-		checkDeprecateAndDoNothing();
 		assignedEmployees.add(e);
 	}
 
@@ -69,12 +66,10 @@ public class Activity extends Deprecateable{
 	}
 
 	public void addWeek(Week week, float hours) {
-		checkDeprecateAndDoNothing();
 		weeklyWorkload.put(week, hours);
 	}
 
 	public void removeWeek(Week week) {
-		checkDeprecateAndDoNothing();
 		weeklyWorkload.remove(week);
 	}
 
@@ -122,7 +117,6 @@ public class Activity extends Deprecateable{
 	}
 
 	public void registerProgressFromEmployee(float hours, Employee employee) {
-		checkDeprecateAndDoNothing();
 		if (progressByEmployee.containsKey(employee)) {
 			hours += progressByEmployee.get(employee);
 		}
@@ -138,21 +132,18 @@ public class Activity extends Deprecateable{
 	}
 
 	public void checkAssignEmployee(Employee e) throws ActivityException {
-		checkDeprecateAndDoNothing();
 		if(containsEmployee(e))
 			if(e.isAssignedToActivityAsEmployee(this))
 				throw new ActivityException("Already contains this employee");
 	}
 
 	public void checkAssignEmployeeAsAssistant(Employee e) throws ActivityException {
-		checkDeprecateAndDoNothing();
 		if(containsEmployee(e))
 			if(e.isAssignedToActivityAsAssistant(this))
 				throw new ActivityException("Already contains this employee");
 	}
 
 	public void checkRemoveEmployee(Employee e) throws ActivityException {
-		checkDeprecateAndDoNothing();
 		if(!containsEmployee(e))
 			throw new ActivityException("Does not contain employee.");
 	}

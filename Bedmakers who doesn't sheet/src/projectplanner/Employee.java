@@ -94,7 +94,6 @@ public class Employee extends Deprecateable{
 	}
 
 	public void assignProjectLead(Project project) throws EmployeeException {
-		checkDeprecateAndDoNothing();
 		if(isLeaderOfProject(project))
 			throw new EmployeeException("Already assigned as project leader");
 
@@ -106,7 +105,6 @@ public class Employee extends Deprecateable{
 	
 	
 	public void removeFromProjectLead(Project project) throws EmployeeException{
-		//Does not check for freeze.
 		if(!isLeaderOfProject(project))
 			throw new EmployeeException("Not leader of project");
 		assignedProjectsLead.remove(project);
@@ -132,7 +130,6 @@ public class Employee extends Deprecateable{
 	}	
 	
 	public void registerProgressInActivity(float hours, Activity a) throws EmployeeException {
-		checkDeprecateAndDoNothing();
 		if(!isAssignedToActivity(a)) {
 			throw new EmployeeException("Not assigned/assisting project");
 		}
@@ -156,10 +153,6 @@ public class Employee extends Deprecateable{
 		return name;
 	}
 	
-	//public ArrayList<Activity> getAssignedActivities() {
-	//	return new ArrayList<Activity>(assignedActivities.keySet());
-	//}
-
 	public HashMap<Activity,Boolean> getAssignedActivities() {
 		return assignedActivities;
 	}
@@ -177,14 +170,12 @@ public class Employee extends Deprecateable{
 	}
 
 	public void checkAssignToProject(Project project) throws EmployeeException {
-		checkDeprecateAndDoNothing();
 		if(assignedProjects.contains(project)){
 			throw new EmployeeException("Already assigned to project");
 		}
 	}
 
 	public void checkRelieveFromProject(Project project) throws EmployeeException {
-		checkDeprecateAndDoNothing();
 		if(!assignedProjects.contains(project))
 			throw new EmployeeException("Not assigned to project");
 		if(isLeaderOfProject(project))
@@ -192,7 +183,6 @@ public class Employee extends Deprecateable{
 	}
 
 	public void checkAssignToActivity(Activity activity) throws EmployeeException {
-		checkDeprecateAndDoNothing();
 		if(isAssignedToActivityAsEmployee(activity))
 			throw new EmployeeException("Already assigned to activity");
 
@@ -204,13 +194,11 @@ public class Employee extends Deprecateable{
 	}
 
 	public void checkRelieveFromActivity(Activity activity) throws EmployeeException {
-		checkDeprecateAndDoNothing();
 		if(!isAssignedToActivity(activity))
 			throw new EmployeeException("Not assigned to activity");
 	}
 
 	public void checkAssistActivity(Activity activity) throws EmployeeException {
-		checkDeprecateAndDoNothing();
 		if(isAssignedToProject(activity.getParentProject())) {
 			throw new EmployeeException("Assigned to project, so cannot be assigned as assitant");
 		}
@@ -223,7 +211,6 @@ public class Employee extends Deprecateable{
 	}
 
 	public void checkRelieveFromAssistance(Activity activity) throws EmployeeException {
-		checkDeprecateAndDoNothing();
 		if(!isAssignedToActivityAsAssistant(activity)){
 			throw new EmployeeException("Not assigned to activity as assistant");
 		}
