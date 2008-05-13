@@ -303,12 +303,13 @@ public class ProjectPlan {
 	}
 	
 	public void addEmployee(String name, String initials) throws EmployeeException {
+		initials = initials.toLowerCase();
 		if(employees.containsKey(initials)) throw new EmployeeException("An employee with the initials " + initials + " already exists.");
 		employees.put(initials, new Employee(name, initials));
 	}
 
 	public void addEmployee(String name) throws EmployeeException {
-		String initials = Employee.generateInitialsFromName(name);
+		String initials = Employee.generateInitialsFromName(name).toLowerCase();
 		if(employees.containsKey(initials)) throw new EmployeeException("An employee with the initials " + initials + " already exists.");
 		employees.put(initials, new Employee(name, initials));
 	}
@@ -588,7 +589,7 @@ public class ProjectPlan {
 	}
 	
 	private Employee getEmployee(String initials) throws UnknownIDException {
-		if(!employees.containsKey(initials)) throw new UnknownIDException("Unknown initials:" + initials);
+		if(!employees.containsKey(initials.toLowerCase())) throw new UnknownIDException("Unknown initials:" + initials);
 		return employees.get(initials);
 	}
 
