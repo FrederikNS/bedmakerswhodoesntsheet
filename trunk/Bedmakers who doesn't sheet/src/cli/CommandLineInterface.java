@@ -8,7 +8,6 @@ import projectplanner.Activity;
 import projectplanner.ActivityException;
 import projectplanner.Employee;
 import projectplanner.EmployeeException;
-import projectplanner.FrozenException;
 import projectplanner.Project;
 import projectplanner.ProjectException;
 import projectplanner.ProjectPlan;
@@ -34,9 +33,9 @@ public class CommandLineInterface {
 	private String project;
 	private String activity;
 	private int week;
-	private boolean weekSet;
+	private boolean weekSet = false;
 	private float progress;
-	private boolean progressSet;
+	private boolean progressSet = false;
 
 	/**
 	 * The constructor for the command line interface,  
@@ -93,6 +92,10 @@ public class CommandLineInterface {
 				case ACTIVITYARG:
 					activity = command[i].substring(9);
 					break;
+				case PROGRESS:
+					progress = Float.parseFloat(command[i].substring(9));
+					progressSet =true;
+					break;
 				}
 			}
 			if(commandInt[0]==Commands.QUIT.ordinal()){
@@ -101,8 +104,6 @@ public class CommandLineInterface {
 			}
 			try {
 				functionChooser();
-			} catch (FrozenException e) {
-				System.out.println("Frozen Error: "+e);
 			} catch (UnknownIDException e) {
 				System.out.println("Unknown ID Error: "+e);
 			} catch (ProjectException e) {
@@ -151,7 +152,7 @@ public class CommandLineInterface {
 	}
 
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
-	private void functionChooser() throws FrozenException, UnknownIDException, ProjectException, EmployeeException, ActivityException{
+	private void functionChooser() throws UnknownIDException, ProjectException, EmployeeException, ActivityException{
 		switch(Commands.values()[commandInt[0]]){
 		case CREATE:
 			createFunc();
@@ -226,7 +227,7 @@ public class CommandLineInterface {
 	}
 
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
-	private void deleteFunc() throws FrozenException, UnknownIDException{
+	private void deleteFunc() throws UnknownIDException{
 		if(project!=null){
 			projectPlan.freezeProject(project);
 		} if(activity!=null){
@@ -237,7 +238,7 @@ public class CommandLineInterface {
 	}
 
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
-	private void editFunc() throws FrozenException, UnknownIDException{
+	private void editFunc() throws UnknownIDException{
 		if(project!=null){
 			if(name!=null){
 				projectPlan.renameProject(project, name);
@@ -349,11 +350,27 @@ public class CommandLineInterface {
 	}
 
 	private void helpFunc(){
-		System.out.println("");
+		System.out.println(
+				"+----+\n" +
+				"|Help|\n" +
+				"+----+\n" +
+				"\n" +
+				"The program is operated by Commands and the corresponding arguments\n" +
+				"\n" +
+				"Creating:\n" +
+				"A project can be added with f.x. the name \"Sleep\" by using the command \"create project name=Sleep\"\n" +
+				"A project will be created and assigned an autoegenerated id which can be found by either using the command \"view project\" and looking through the resulting list, og by using the command \"find project=Sleep\"\n" +
+				"The same procedure can be used for activities and employees\n" +
+				"NB! All spaces should be replaced by underscores in the commands, they will be reinterpreted as spaces by the program as spaces\n" +
+				"\n" +
+				"Assigning:" +
+				"An activity can be assigned to a project with the following command: \"assign activity=1 project=080001\" (the numbers should be replaced by the corresponding IDs)\n" +
+				"This also goes for assigning activities to emloyees (though the ID should be replaced with the employees Initials) and assigning employees to projects" +
+				"Assigning activities is a little bit different, and should be done as follows: \"assign activity=1 week=4 ");
 	}
 
 	@SuppressWarnings("incomplete-switch") //Switches intentionally left incomplete
-	private void assignFunc() throws FrozenException, UnknownIDException, ProjectException, EmployeeException, ActivityException{
+	private void assignFunc() throws UnknownIDException, ProjectException, EmployeeException, ActivityException{
 		if(project!= null){
 			if(activity!=null){
 				projectPlan.addActivityToProject(activity, project);
@@ -363,12 +380,16 @@ public class CommandLineInterface {
 		} else if(activity!=null){
 			if(employee!=null){
 				projectPlan.assignEmployeeToActivity(employee, activity);
+			} else if(weekSet==true){
+				if(progressSet==true){
+					projectPlan.assignActivityToWeek(activity, progress, week);	
+				}
 			}
 		}
 	}
 
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
-	private void unassignFunc() throws FrozenException, EmployeeException, UnknownIDException, ProjectException, ActivityException{
+	private void unassignFunc() throws EmployeeException, UnknownIDException, ProjectException, ActivityException{
 		if(project!=null){
 			if(employee!=null){
 				projectPlan.relieveEmployeeFromProject(employee, project, true);	
@@ -383,7 +404,7 @@ public class CommandLineInterface {
 	}
 
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
-	private void renameFunc() throws FrozenException, UnknownIDException{
+	private void renameFunc() throws UnknownIDException{
 		if(name!=null){
 			if(project!=null){
 				projectPlan.renameProject(project, name);
@@ -393,7 +414,7 @@ public class CommandLineInterface {
 		}
 	}
 
-	private void progressFunc() throws FrozenException, EmployeeException, UnknownIDException {
+	private void progressFunc() throws EmployeeException, UnknownIDException {
 		if(progressSet == true){
 			if(employee != null){
 				if(activity != null){

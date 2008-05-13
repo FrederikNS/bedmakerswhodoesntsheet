@@ -6,7 +6,6 @@ import projectplanner.Activity;
 import projectplanner.ActivityException;
 import projectplanner.Employee;
 import projectplanner.EmployeeException;
-import projectplanner.FrozenException;
 import projectplanner.Project;
 import projectplanner.ProjectException;
 import projectplanner.ProjectPlan;
@@ -126,9 +125,6 @@ public class ProjectPlanTest extends TestCase {
 		} catch (UnknownIDException e) {
 			print("The leader ID does not exist");
 			fail();
-		} catch (FrozenException e) {
-			print("The project is frozen");
-			fail();
 		} catch (EmployeeException e) {
 			print("FAIL");
 			fail();
@@ -168,16 +164,6 @@ public class ProjectPlanTest extends TestCase {
 			//assign it to a week. This serves to test both the freeze method and the freeze exception.
 			projectPlan.freezeActivity(activity_ID);
 			
-			//Adding the frozen activity.
-			try {
-				projectPlan.assignActivityToWeek(activity_ID, hours, weekIndex);
-				fail();
-			} catch (FrozenException e) {
-				print("Activity is frozen and unavailable\nTest Passed.");
-			}
-		} catch (FrozenException e) {
-			print("Activity is frozen and unavailable");
-			fail();
 		} catch (UnknownIDException e) {
 			print("Activity could not be found from ID");
 			fail();
@@ -199,9 +185,6 @@ public class ProjectPlanTest extends TestCase {
 //We then assert the week is empty after removing the activity, knowing we only added the one.
 //This will assure us the activity was removed.
 			assertTrue((projectPlan.getWeekFromIndex(weekIndex)).isEmpty());
-		} catch (FrozenException e) {
-			print("Activity is frozen and unavailable");
-			fail();
 		} catch (UnknownIDException e) {
 			print("Activity could not be found from ID");
 			fail();
@@ -228,9 +211,6 @@ public class ProjectPlanTest extends TestCase {
 				print("Project already contains activity\nTest Passed.");
 			}
 			
-		} catch (FrozenException e) {
-			print("Activity or project is frozen");
-			fail();
 		} catch (UnknownIDException e) {
 			print("Activity or project ID unknown");
 			fail();
@@ -261,9 +241,6 @@ public class ProjectPlanTest extends TestCase {
 		} catch (UnknownIDException e) {
 			print("ID unknown");
 			fail();
-		} catch (FrozenException e) {
-			print("Project Frozen");
-			fail();
 		}		
 	}
 
@@ -281,9 +258,6 @@ public class ProjectPlanTest extends TestCase {
 			projectPlan.relieveEmployeeFromProject(initials, project_ID, false);
 			//TODO: MARK
 			assertFalse(project.containsEmployee(employee));
-		} catch (FrozenException e) {
-			print("Project or Employee frozen");
-			fail();
 		} catch (EmployeeException e) {
 			print("FAIL");
 			fail();
@@ -311,8 +285,6 @@ public class ProjectPlanTest extends TestCase {
 			projectPlan.assignEmployeeToActivity(initials, activity_ID);
 			
 			assertTrue(projectPlan.isEmployeeAssignedToActivity(initials, activity_ID));
-		} catch (FrozenException e1) {
-			e1.printStackTrace();
 		} catch (EmployeeException e1) {
 			e1.printStackTrace();
 		} catch (UnknownIDException e1) {
@@ -327,8 +299,6 @@ public class ProjectPlanTest extends TestCase {
 // Relieving the employee
 		try {
 			projectPlan.relieveEmployeeFromActivity(initials, activity_ID);
-		} catch (FrozenException e) {
-			e.printStackTrace();
 		} catch (EmployeeException e) {
 			e.printStackTrace();
 		} catch (UnknownIDException e) {
@@ -353,8 +323,6 @@ public class ProjectPlanTest extends TestCase {
 			assertTrue(projectPlan.isEmployeeAssignedToActivityAsAssistant(initials, activity_ID));
 			projectPlan.relieveEmployeeFromAssistingActivity(initials, activity_ID);
 			assertFalse(projectPlan.isEmployeeAssignedToActivityAsAssistant(initials, activity_ID));
-		} catch (FrozenException e) {
-			e.printStackTrace();
 		} catch (EmployeeException e) {
 			e.printStackTrace();
 		} catch (UnknownIDException e) {
@@ -380,9 +348,6 @@ public class ProjectPlanTest extends TestCase {
 			projectPlan.registerEmployeeProgressInActivity(initials, hours, activity_ID);
 			assertTrue(projectPlan.getActivityProgress(activity_ID) == hours);
 			print("Everything has passed! We win x-mas!");
-		} catch (FrozenException e) {
-			print("Frozen.");
-			fail();
 		} catch (EmployeeException e) {
 			print("FAIL!");
 			fail();
