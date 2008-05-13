@@ -4,7 +4,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import projectplanner.*;
+import projectplanner.Activity;
+import projectplanner.ActivityException;
+import projectplanner.Employee;
+import projectplanner.EmployeeException;
+import projectplanner.FrozenException;
+import projectplanner.Project;
+import projectplanner.ProjectException;
+import projectplanner.ProjectPlan;
+import projectplanner.UnknownIDException;
 
 /**
  * The command line interface for using the program
@@ -18,7 +26,6 @@ public class CommandLineInterface {
 	private String name;
 	private String leader;
 	private String initials;
-	private String id;
 	private int start;
 	private int end;
 	private boolean startSet = false;
@@ -52,42 +59,40 @@ public class CommandLineInterface {
 			commandInt = new int[command.length];
 			for(int i = 0;i<command.length;i++){
 				commandInt[i] = converter(i);
-				if(i>1){
-					switch(Commands.values()[commandInt[i]]){
-					case NAME:
-						name = command[i].substring(5);
-						break;
-					case LEADER:
-						leader = command[i].substring(7);
-						break;
-					case INITIALS:
-						initials = command[i].substring(9);
-						break;
-					case ID:
-						id = command[i].substring(3);
-						break;
-					case START:
-						start = Integer.parseInt(command [i].substring(6));
-						startSet = true;
-						break;
-					case END:
-						end = Integer.parseInt(command[i].substring(4));
-						endSet = true;
-						break;
-					case WEEK2:
-						week = Integer.parseInt(command[i].substring(5));
-						weekSet = true;
-						break;
-					case EMPLOYEEARG:
-						employee = command[i].substring(9);
-						break;
-					case PROJECTARG:
-						project = command[i].substring(8);
-						break;
-					case ACTIVITYARG:
-						activity = command[i].substring(9);
-						break;
-					}
+				switch(Commands.values()[commandInt[i]]){
+				case NAME:
+					name = command[i].substring(5);
+					break;
+				case LEADER:
+					leader = command[i].substring(7);
+					break;
+				case INITIALS:
+					initials = command[i].substring(9);
+					break;
+				case ID:
+					command[i].substring(3);
+					break;
+				case START:
+					start = Integer.parseInt(command[i].substring(6));
+					startSet = true;
+					break;
+				case END:
+					end = Integer.parseInt(command[i].substring(4));
+					endSet = true;
+					break;
+				case WEEK2:
+					week = Integer.parseInt(command[i].substring(5));
+					weekSet = true;
+					break;
+				case EMPLOYEEARG:
+					employee = command[i].substring(9);
+					break;
+				case PROJECTARG:
+					project = command[i].substring(8);
+					break;
+				case ACTIVITYARG:
+					activity = command[i].substring(9);
+					break;
 				}
 			}
 			if(commandInt[0]==Commands.QUIT.ordinal()){
@@ -110,9 +115,13 @@ public class CommandLineInterface {
 			name = null;
 			leader = null;
 			initials = null;
-			id = null;
 			startSet = false;
 			endSet = false;
+			project=null;
+			activity=null;
+			employee=null;
+			weekSet=false;
+			progressSet=false;
 		}
 	}
 
@@ -128,9 +137,16 @@ public class CommandLineInterface {
 	}
 
 	private int converter(int i){
-		for(Commands comm:Commands.values())
-			if(command[i].equals(comm.toString()) || command[i].startsWith(comm.toString()))
-				return comm.ordinal();
+		for(Commands comm:Commands.values()){
+			if(comm.toString().contains("=")){
+				if(command[i].startsWith(comm.toString())){
+					return comm.ordinal();
+				}
+			} else
+				if(command[i].equals(comm.toString())){ 
+					return comm.ordinal();
+				}
+		}
 		return Commands.NULL.ordinal();
 	}
 
@@ -211,122 +227,112 @@ public class CommandLineInterface {
 
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	private void deleteFunc() throws FrozenException, UnknownIDException{
-		switch(Commands.values()[commandInt[1]]){
-		case PROJECT:
-			if(id != null){
-				projectPlan.freezeProject(id);
-			}
-			break;
-		case ACTIVITY:
-			if(id != null){
-				projectPlan.freezeActivity(id);
-			}
-			break;
-		case EMPLOYEE:
-			if(initials != null){
-				projectPlan.freezeEmployee(initials);
-			}
-			break;
+		if(project!=null){
+			projectPlan.freezeProject(project);
+		} if(activity!=null){
+			projectPlan.freezeActivity(activity);
+		} if(employee!=null){
+			projectPlan.freezeEmployee(employee);
 		}
 	}
 
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	private void editFunc() throws FrozenException, UnknownIDException{
-		switch(Commands.values()[commandInt[1]]){
-		case PROJECT:
-			if(name != null){
-				if(id != null){
-					projectPlan.renameProject(id, name);
-				}
-			} if(startSet ==true){
-				projectPlan.setProjectStartWeek(id, start);
-			} if(endSet ==true){
-				projectPlan.setProjectEndWeek(id, end);
+		if(project!=null){
+			if(name!=null){
+				projectPlan.renameProject(project, name);
+			}if(startSet==true){
+				projectPlan.setProjectStartWeek(project, start);
+			}if(endSet==true){
+				projectPlan.setProjectEndWeek(project, end);
 			}
-			break;
-		case ACTIVITY:
-			if(id != null){
-				if(name != null){
-					projectPlan.renameActivity(id, name);
-				}
-				/*if(workloadSet ==true){
-					projectPlan.
-				}*/
+		} else if(activity!=null){
+			if(name!=null){
+				projectPlan.renameActivity(activity, name);
 			}
-			break;
 		}
 	}
 
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	private void findFunc(){
-		switch(Commands.values()[commandInt[1]]){
-		case PROJECT:
-			if(name != null)
-				for(Project proj:projectPlan.findProject(name)) {
-					System.out.println(proj.getName()+", "+proj.getId());
-				}
-			break;
-		case ACTIVITY:
-			if(name != null)
-				for(Activity act:projectPlan.findActivity(name)) {
-					System.out.println(act.getName()+", "+act.getID());
-				}
-			break;
-		case EMPLOYEE:
-			if(name != null)
-				for(Employee emp:projectPlan.findEmployee(name)) {
-					System.out.println("*"+emp.getName()+", "+emp.getInitials());
-				}
-			break;
+		if(project!=null){
+			for(Project proj:projectPlan.findProject(project)) {
+				System.out.println(proj.getName()+", "+proj.getId());
+			}
+		}if(activity!=null){
+			for(Activity act:projectPlan.findActivity(activity)) {
+				System.out.println(act.getName()+", "+act.getID());
+			}
+		}if(employee!=null){
+			for(Employee emp:projectPlan.findEmployee(employee)) {
+				System.out.println("*"+emp.getName()+", "+emp.getInitials());
+			}
 		}
 	}
 
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	private void viewFunc() throws UnknownIDException{
-		switch(Commands.values()[commandInt[1]]){
-		case PROJECT:
-			if(id != null){
-				System.out.println("Project Name: "+projectPlan.getProjectName(id));
-				System.out.println("Leader: "+projectPlan.getProjectLeader(id));
-				System.out.println("Start Week: "+projectPlan.getProjectStartWeek(id));
-				System.out.println("End Week: "+projectPlan.getProjectEndWeek(id));
-				System.out.println("Workload: "+projectPlan.getProjectWorkload(id));
-				System.out.println("Progress: "+projectPlan.getProjectProgress(id));
-				System.out.println("Activities: "+projectPlan.getActivitiesInProject(id));
-			} else
-				for(Project proj:projectPlan.getProjects().values())
-					System.out.println(proj.getId()+", "+proj.getName());
-			break;
-		case ACTIVITY:
-			if(id!=null){
-				System.out.println("Activity Name: "+projectPlan.getActivityName(id));
-				System.out.println("Parent Project: "+projectPlan.getActivityParentProject(id));
-				System.out.println("Start Week: "+projectPlan.getActivityStartWeek(id));
-				System.out.println("End Week: "+projectPlan.getActivityEndWeek(id));
-				System.out.println("Assigned Employees: "+projectPlan.getEmployeesAssignedToActivity(id));
-				System.out.println("Workload: "+projectPlan.getActivityWorkload(id));
-				System.out.println("Progress: "+projectPlan.getActivityProgress(id));
-			} else
-				for(Activity act:projectPlan.getActivities().values())
-					System.out.println(act.getID()+", "+act.getName());
-			break;
-		case EMPLOYEE:
-			if(initials!=null){
-				System.out.println("Employee Name: "+projectPlan.getEmployeeName(initials));
-				System.out.println("Work Done: "+projectPlan.getWorkDoneByEmployee(initials));
-				System.out.println("Assigned Projects: "+projectPlan.getActivitiesAssignedToEmployee(initials));
-				System.out.println("Leading Projects: "+projectPlan.getProjectsBeingLeadByEmployee(initials));
-				System.out.println("Assigned Activities: "+projectPlan.getProjectsAssignedToEmployee(initials));
-			} else
-				for(Employee emp:projectPlan.getEmployees().values())
-					System.out.println(emp.getInitials()+", "+emp.getName());
-			break;
-		case WEEK:
+		if(project!=null){
+			System.out.println("Project Name: "+projectPlan.getProjectName(project));
+			System.out.println("Leader: "+projectPlan.getProjectLeader(project));
+			System.out.println("Start Week: "+projectPlan.getProjectStartWeek(project));
+			System.out.println("End Week: "+projectPlan.getProjectEndWeek(project));
+			System.out.println("Workload: "+projectPlan.getProjectWorkload(project));
+			System.out.println("Progress: "+projectPlan.getProjectProgress(project));
+			System.out.println("Assigned Employees:");
+			for(Employee key:projectPlan.getEmployeesAssignedToProjcet(project)){
+				System.out.println(key.getInitials()+", "+key.getName());
+			}
+			System.out.println("Activities:");
+			for(Activity key:projectPlan.getActivitiesInProject(project)){
+				System.out.println(key.getID()+", "+key.getName());
+			}
+		}else if(activity!=null){
+			System.out.println("Activity Name: "+projectPlan.getActivityName(activity));
+			System.out.println("Parent Project: "+projectPlan.getActivityParentProject(activity));
+			System.out.println("Start Week: "+projectPlan.getActivityStartWeek(activity));
+			System.out.println("End Week: "+projectPlan.getActivityEndWeek(activity));
+			System.out.println("Assigned Employees:");
+			for(Employee key:projectPlan.getEmployeesAssignedToActivity(activity)){
+				System.out.println(key.getInitials()+", "+key.getName());
+			}
+			System.out.println("Workload: "+projectPlan.getActivityWorkload(activity));
+			System.out.println("Progress: "+projectPlan.getActivityProgress(activity));
+		}else if(employee!=null){
+			System.out.println("Employee Name: "+projectPlan.getEmployeeName(employee));
+			System.out.println("Work Done: "+projectPlan.getWorkDoneByEmployee(employee));
+			System.out.println("Assigned Activities:");
+			for(Activity key:projectPlan.getActivitiesAssignedToEmployee(employee).keySet()){
+				System.out.println(key.getID()+", "+key.getName()+(projectPlan.getActivitiesAssignedToEmployee(employee).get(key)?", (Assisting)":""));
+			}
+			System.out.println("Leading Projects:");
+			for(Project key:projectPlan.getProjectsBeingLeadByEmployee(employee)){
+				System.out.println(key.getId()+", "+key.getName());
+			}
+			System.out.println("Assigned Projects:");
+			for(Project key:projectPlan.getProjectsAssignedToEmployee(employee)){
+				System.out.println(key.getId()+", "+key.getName());
+			}
+		}else if(commandInt[1]==Commands.ACTIVITY.ordinal()){
+			for(Activity act:projectPlan.getActivities().values())
+				System.out.println(act.getID()+", "+act.getName());
+		}else if(commandInt[1]==Commands.PROJECT.ordinal()){
+			for(Project act:projectPlan.getProjects().values())
+				System.out.println(act.getId()+", "+act.getName());
+		}else if(commandInt[1]==Commands.EMPLOYEE.ordinal()){
+			for(Employee act:projectPlan.getEmployees().values())
+				System.out.println(act.getInitials()+", "+act.getName());
+		}else if(commandInt[1]==Commands.WEEK.ordinal()){
 			if(weekSet ==true){
 				System.out.println("Number of Activities: "+projectPlan.getNumberOfActivitiesInWeek(week));
-				System.out.println("Running Activities: "+projectPlan.getActivitiesInWeek(week));
+				System.out.println("Running Activities:");
+				for(Activity key:projectPlan.getActivitiesInWeek(week)){
+					System.out.println(key.getID()+", "+key.getName());
+				}
 				System.out.println("Occupied Employees: "+projectPlan.getWorkloadByEmployeeForWeek(week));
-				System.out.println("Employees With Spare Time: "+projectPlan.getWorkloadByEmployeeForWeek(week));
+				for(Employee key:projectPlan.getWorkloadByEmployeeForWeek(week).keySet()){
+					System.out.println(key.getInitials()+", "+key.getName()+", "+projectPlan.getWorkloadByEmployeeForWeek(week).get(key));
+				}
 			}
 		}
 	}
@@ -337,114 +343,42 @@ public class CommandLineInterface {
 
 	@SuppressWarnings("incomplete-switch") //Switches intentionally left incomplete
 	private void assignFunc() throws FrozenException, UnknownIDException, ProjectException, EmployeeException, ActivityException{
-		switch(Commands.values()[commandInt[1]]){
-		case PROJECTARG:
-			switch(Commands.values()[commandInt[2]]){
-			case PROJECTARG:
-				System.out.println("Can not assign project to project");
-				break;
-			case ACTIVITYARG:
+		if(project!= null){
+			if(activity!=null){
 				projectPlan.addActivityToProject(activity, project);
-				break;
-			case EMPLOYEEARG:
+			}else if(employee!=null){
 				projectPlan.assignEmployeeToProject(employee, project);
-				break;
 			}
-			break;
-		case ACTIVITYARG:
-			switch(Commands.values()[commandInt[2]]){
-			case PROJECTARG:
-				projectPlan.addActivityToProject(activity, project);
-				break;
-			case ACTIVITYARG:
-				System.out.println("Can not assign activity to activity");
-				break;
-			case EMPLOYEEARG:
+		} else if(activity!=null){
+			if(employee!=null){
 				projectPlan.assignEmployeeToActivity(employee, activity);
-				break;
 			}
-			break;
-		case EMPLOYEEARG:
-			switch(Commands.values()[commandInt[2]]){
-			case PROJECTARG:
-				projectPlan.assignEmployeeToProject(employee, project);
-				break;
-			case ACTIVITYARG:
-				projectPlan.assignEmployeeToActivity(employee, activity);
-				break;
-			case EMPLOYEEARG:
-				System.out.println("Can not assign employee to employee");
-				break;
-			}
-			break;
 		}
 	}
 
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	private void unassignFunc() throws FrozenException, EmployeeException, UnknownIDException, ProjectException, ActivityException{
-		switch(Commands.values()[commandInt[1]]){
-		case PROJECTARG:
-			switch(Commands.values()[commandInt[2]]){
-			case PROJECTARG:
-				System.out.println("Can not unassign project from project");
-				break;
-				/*case ACTIVITYARG:
-				projectPlan.
-				break;*/
-			case EMPLOYEEARG:
-				projectPlan.relieveEmployeeFromProject(employee, project, true);
-				break;
+		if(project!=null){
+			if(employee!=null){
+				projectPlan.relieveEmployeeFromProject(employee, project, true);	
 			}
-			break;
-		case ACTIVITYARG:
-			switch(Commands.values()[commandInt[2]]){
-			/*case PROJECTARG:
-
-				break;*/
-			case ACTIVITYARG:
-				System.out.println("Can not unassign activity from activity");
-				break;
-			case EMPLOYEEARG:
+		} else if(activity!=null){
+			if(employee!=null){
 				projectPlan.relieveEmployeeFromActivity(employee, activity);
-				break;
-			case WEEK2:
+			} else if(weekSet==false){
 				projectPlan.removeActivityFromWeek(activity, week);
-				break;
 			}
-			break;
-		case EMPLOYEEARG:
-			switch(Commands.values()[commandInt[2]]){
-			case PROJECTARG:
-				projectPlan.relieveEmployeeFromProject(employee, project, true);
-				break;
-			case ACTIVITYARG:
-				projectPlan.relieveEmployeeFromActivity(employee, activity);
-				break;
-			case EMPLOYEEARG:
-				System.out.println("Can not unassign employee from employee");
-				break;
-			}
-			break;
 		}
 	}
 
 	@SuppressWarnings("incomplete-switch") //Switch intentionally left incomplete
 	private void renameFunc() throws FrozenException, UnknownIDException{
-		switch(Commands.values()[commandInt[1]]){
-		case PROJECT:
-			if(name!=null){
-				if(id!=null){
-					projectPlan.renameProject(id, name);
-				}
+		if(name!=null){
+			if(project!=null){
+				projectPlan.renameProject(project, name);
+			} else if(activity!=null){
+				projectPlan.renameActivity(activity, name);
 			}
-			break;
-		case ACTIVITY:
-			if(name!=null){
-				if(id!=null){
-					projectPlan.renameProject(id, name);
-				}
-			}
-			break;
 		}
 	}
 

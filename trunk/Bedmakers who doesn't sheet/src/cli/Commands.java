@@ -7,6 +7,46 @@ package cli;
  */
 public enum Commands {
 	/**
+	 * Contains a name argument
+	 */
+	NAME("name="),
+	/**
+	 * Contains a leader-id argument
+	 */
+	LEADER("leader="),
+	/**
+	 * Contains an initial argument
+	 */
+	INITIALS("initials="),
+	/**
+	 * Contains an id argument
+	 */
+	ID("id="),
+	/**
+	 * Contains a start week number argument
+	 */
+	START("start="),
+	/**
+	 * Contains an end week number argument
+	 */
+	END("end="), 
+	/**
+	 * Contains an employee-id argument
+	 */
+	EMPLOYEEARG("employee="),
+	/**
+	 * Contains a project-id argument
+	 */
+	PROJECTARG("project="),
+	/**
+	 * Contains an activity-id argument
+	 */
+	ACTIVITYARG("activity="),
+	/**
+	 * Contains an employee-id argument
+	 */
+	WEEK2("week="),
+	/**
 	 * When command is create
 	 */
 	CREATE("create"),
@@ -66,46 +106,6 @@ public enum Commands {
 	 * When command is progress
 	 */
 	PROGRESS("progress"),
-	/**
-	 * Contains a name argument
-	 */
-	NAME("name="),
-	/**
-	 * Contains a leader-id argument
-	 */
-	LEADER("leader="),
-	/**
-	 * Contains an initial argument
-	 */
-	INITIALS("initials="),
-	/**
-	 * Contains an id argument
-	 */
-	ID("id="),
-	/**
-	 * Contains a start week number argument
-	 */
-	START("start="),
-	/**
-	 * Contains an end week number argument
-	 */
-	END("end="), 
-	/**
-	 * Contains an employee-id argument
-	 */
-	EMPLOYEEARG("employee="),
-	/**
-	 * Contains a project-id argument
-	 */
-	PROJECTARG("project="),
-	/**
-	 * Contains an activity-id argument
-	 */
-	ACTIVITYARG("activity="),
-	/**
-	 * Contains an employee-id argument
-	 */
-	WEEK2("week="),
 	/**
 	 * When no input is detected
 	 */
