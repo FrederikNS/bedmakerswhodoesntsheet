@@ -29,7 +29,15 @@ public enum Commands {
 	/**
 	 * Contains an end week number argument
 	 */
-	END("end="), 
+	END("end="),
+	/**
+	 * Contains an hour argument
+	 */
+	HOURS("hours="),
+	/**
+	 * When command is progress
+	 */
+	PROGRESS("progress"),
 	/**
 	 * Contains an employee-id argument
 	 */
@@ -102,10 +110,6 @@ public enum Commands {
 	 * When command is week
 	 */
 	WEEK("week"),
-	/**
-	 * When command is progress
-	 */
-	PROGRESS("progress"),
 	/**
 	 * When no input is detected
 	 */

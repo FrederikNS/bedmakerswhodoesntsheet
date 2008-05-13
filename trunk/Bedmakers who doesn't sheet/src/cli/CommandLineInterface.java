@@ -80,6 +80,10 @@ public class CommandLineInterface {
 					end = Integer.parseInt(command[i].substring(4));
 					endSet = true;
 					break;
+				case HOURS:
+					hours=Float.parseFloat(command[i].substring(6));
+					hoursSet = true;
+					break;
 				case WEEK2:
 					week = Integer.parseInt(command[i].substring(5));
 					weekSet = true;
@@ -95,10 +99,6 @@ public class CommandLineInterface {
 					break;
 				case ACTIVITYARG:
 					activity = command[i].substring(9);
-					break;
-				case PROGRESS:
-					hours = Float.parseFloat(command[i].substring(9));
-					hoursSet =true;
 					break;
 				}
 			}
@@ -334,19 +334,17 @@ public class CommandLineInterface {
 			for(Employee act:projectPlan.getEmployees().values())
 				System.out.println(act.getInitials()+", "+act.getName());
 			System.out.println();
-		}else if(commandInt[1]==Commands.WEEK.ordinal()){
-			if(weekSet ==true){
-				System.out.println("Number of Activities: "+projectPlan.getNumberOfActivitiesInWeek(week));
-				System.out.println("Running Activities:");
-				for(Activity key:projectPlan.getActivitiesInWeek(week)){
-					System.out.println(key.getID()+", "+key.getName());
-				}
-				System.out.println("Occupied Employees: "+projectPlan.getWorkloadByEmployeeForWeek(week));
-				for(Employee key:projectPlan.getWorkloadByEmployeeForWeek(week).keySet()){
-					System.out.println(key.getInitials()+", "+key.getName()+", "+projectPlan.getWorkloadByEmployeeForWeek(week).get(key));
-				}
-				System.out.println();
+		}if(weekSet ==true){
+			System.out.println("Number of Activities: "+projectPlan.getNumberOfActivitiesInWeek(week));
+			System.out.println("Running Activities:");
+			for(Activity key:projectPlan.getActivitiesInWeek(week)){
+				System.out.println(key.getID()+", "+key.getName());
 			}
+			System.out.println("Occupied Employees: "+projectPlan.getWorkloadByEmployeeForWeek(week));
+			for(Employee key:projectPlan.getWorkloadByEmployeeForWeek(week).keySet()){
+				System.out.println(key.getInitials()+", "+key.getName()+", "+projectPlan.getWorkloadByEmployeeForWeek(week).get(key));
+			}
+			System.out.println();
 		}
 	}
 
@@ -402,7 +400,7 @@ public class CommandLineInterface {
 				"using the following command:\n" +
 				"\"progress employee=LaHa hours=10 activity=1\"\n" +
 				"Where LaHa is the employee's initials, 10 is the amount of hours, and 1 is the\n" +
-				"activity ID");
+		"activity ID");
 	}
 
 	@SuppressWarnings("incomplete-switch") //Switches intentionally left incomplete
@@ -412,6 +410,8 @@ public class CommandLineInterface {
 				projectPlan.addActivityToProject(activity, project);
 			}else if(employee!=null){
 				projectPlan.assignEmployeeToProject(employee, project);
+			}else if(leader!=null){
+				projectPlan.assignLeaderToProject(leader, project);
 			}
 		} else if(activity!=null){
 			if(employee!=null){
