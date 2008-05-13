@@ -58,7 +58,7 @@ public class ProjectPlanTest extends TestCase {
 	public void addEmployee() {
 		try {
 			projectPlan.addEmployee(employeeName, initials);
-			employee = projectPlan.getEmployees().get(initials);
+			employee = projectPlan.getEmployees().get(initials.toLowerCase());
 		} catch (EmployeeException e) {
 			print("FAIL");
 			fail();
@@ -256,7 +256,6 @@ public class ProjectPlanTest extends TestCase {
 			projectPlan.assignEmployeeToProject(initials, project_ID);
 			assertTrue(project.containsEmployee(employee));
 			projectPlan.relieveEmployeeFromProject(initials, project_ID, false);
-			//TODO: MARK
 			assertFalse(project.containsEmployee(employee));
 		} catch (EmployeeException e) {
 			print("FAIL");
