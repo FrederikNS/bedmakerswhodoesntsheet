@@ -30,7 +30,7 @@ public class Week {
 	public float getAssignedHours() throws ActivityException {
 		float hoursum = 0;
 		for(Activity activity : scheduledActivities) {
-			hoursum += activity.getHoursForWeek(this);
+			hoursum += activity.getWorkloadForWeek(this);
 		}
 		return hoursum;
 	}
