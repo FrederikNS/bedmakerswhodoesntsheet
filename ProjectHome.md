@@ -1,0 +1,1 @@
+This is a student project for creating a project time management application
